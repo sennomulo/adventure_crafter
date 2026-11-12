@@ -5,6 +5,7 @@ import '../../data/adventure.dart';
 import '../../data/rules.dart';
 import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
+import '../adventure/adventure_page.dart';
 import '../tables/lookup_dialogs.dart';
 import '../widgets/common.dart';
 
@@ -45,6 +46,9 @@ class TurningPointsController extends GetxController {
     s.themeId = outcome.theme;
     s.plotPointId = outcome.plotPoint.id;
     s.metaId = outcome.meta?.id;
+    s.themeDie = outcome.themeDie;
+    s.roll = outcome.roll;
+    s.metaRoll = outcome.metaRoll;
     changed();
     if (outcome.meta != null) {
       showMetaResult(context, outcome.meta!, roll: outcome.metaRoll);
@@ -102,6 +106,14 @@ class TurningPointsController extends GetxController {
             onPressed: () => Navigator.pop(dialogContext),
             child: const Text('保持未聚焦'),
           ),
+          if (hint == '新情节线')
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                goToAdventureTab(1);
+              },
+              child: const Text('前往情节线列表'),
+            ),
           FilledButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
@@ -432,7 +444,8 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
             if (pp == null)
               const Text('（未掷）', style: TextStyle(color: Colors.grey))
             else ...[
-              Text('$themeLabel → ${pp.title}',
+              Text(
+                  '${s.themeDie == null ? '' : '主题骰 ${s.themeDie}（$themeLabel）　情节点骰 ${s.roll}　→　'}${pp.title}',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               if (s.plotPointId != 'meta' && pp.desc.isNotEmpty)
                 Padding(
@@ -445,7 +458,8 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                   padding: const EdgeInsets.only(top: 2),
                   child: Row(
                     children: [
-                      Text('元情节点：${meta?.title ?? '未掷'}',
+                      Text(
+                          '元情节点${s.metaRoll == null ? '' : '（1d100=${s.metaRoll}）'}：${meta?.title ?? '未掷'}',
                           style: const TextStyle(
                               color: Colors.deepOrange,
                               fontWeight: FontWeight.bold)),

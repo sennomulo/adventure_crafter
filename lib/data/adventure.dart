@@ -1,5 +1,21 @@
 import 'dart:convert';
 
+class RollLogEntry {
+  final String time;
+  final String label;
+  final String detail;
+
+  RollLogEntry({required this.time, required this.label, required this.detail});
+
+  Map<String, dynamic> toJson() => {'time': time, 'label': label, 'detail': detail};
+
+  factory RollLogEntry.fromJson(Map<String, dynamic> json) => RollLogEntry(
+        time: (json['time'] ?? '') as String,
+        label: (json['label'] ?? '') as String,
+        detail: (json['detail'] ?? '') as String,
+      );
+}
+
 class ListEntry {
   final int id;
   String name;
@@ -155,6 +171,9 @@ class Slot {
   String? metaId;
   List<int> invoked;
   String notes;
+  int? themeDie;
+  int? roll;
+  int? metaRoll;
 
   Slot({
     this.themeId,
@@ -162,6 +181,9 @@ class Slot {
     this.metaId,
     List<int>? invoked,
     this.notes = '',
+    this.themeDie,
+    this.roll,
+    this.metaRoll,
   }) : invoked = invoked ?? [];
 
   bool get isEmpty => plotPointId == null && metaId == null;
@@ -172,6 +194,9 @@ class Slot {
         'metaId': metaId,
         'invoked': invoked,
         'notes': notes,
+        if (themeDie != null) 'themeDie': themeDie,
+        if (roll != null) 'roll': roll,
+        if (metaRoll != null) 'metaRoll': metaRoll,
       };
 
   factory Slot.fromJson(Map<String, dynamic> json) => Slot(
@@ -180,6 +205,9 @@ class Slot {
         metaId: json['metaId'] as String?,
         invoked: ((json['invoked'] ?? []) as List).cast<int>().toList(),
         notes: (json['notes'] ?? '') as String,
+        themeDie: json['themeDie'] as int?,
+        roll: json['roll'] as int?,
+        metaRoll: json['metaRoll'] as int?,
       );
 }
 
@@ -229,6 +257,7 @@ class Adventure {
   final PagedList plotlines;
   final PagedList characters;
   final List<TurningPoint> turningPoints;
+  final List<RollLogEntry> rollLog;
 
   Adventure({
     required this.id,
@@ -240,10 +269,12 @@ class Adventure {
     PagedList? plotlines,
     PagedList? characters,
     List<TurningPoint>? turningPoints,
+    List<RollLogEntry>? rollLog,
   })  : themes = themes ?? [],
         plotlines = plotlines ?? PagedList(),
         characters = characters ?? PagedList(),
-        turningPoints = turningPoints ?? [];
+        turningPoints = turningPoints ?? [],
+        rollLog = rollLog ?? [];
 
   Map<String, dynamic> toJson() => {
         'schemaVersion': schemaVersion,
@@ -256,6 +287,7 @@ class Adventure {
         'plotlines': plotlines.toJson(),
         'characters': characters.toJson(),
         'turningPoints': turningPoints.map((t) => t.toJson()).toList(),
+        'rollLog': rollLog.map((r) => r.toJson()).toList(),
       };
 
   factory Adventure.fromJson(Map<String, dynamic> json) => Adventure(
@@ -270,6 +302,9 @@ class Adventure {
             PagedList.fromJson(json['characters'] as Map<String, dynamic>),
         turningPoints: ((json['turningPoints'] ?? []) as List)
             .map((t) => TurningPoint.fromJson(t as Map<String, dynamic>))
+            .toList(),
+        rollLog: ((json['rollLog'] ?? []) as List)
+            .map((r) => RollLogEntry.fromJson(r as Map<String, dynamic>))
             .toList(),
       );
 

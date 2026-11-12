@@ -6,6 +6,7 @@ import '../../data/rules.dart';
 import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
 import '../../services/settings_service.dart';
+import '../adventure/adventure_page.dart';
 import '../widgets/common.dart';
 
 class PagedListController extends GetxController {
@@ -148,14 +149,33 @@ class PagedListPage extends StatelessWidget {
                       final hint = defaults[r.rowIdx];
                       showDialog(
                         context: context,
-                        builder: (context) => AlertDialog(
+                        builder: (dialogContext) => AlertDialog(
                           title: Text('掷骰结果：第${r.pageIdx + 1}页 第${r.rowIdx + 1}行'),
                           content: Text(entry != null
                               ? '${entry.name}${c.list.weightOf(entry.id) > 1 ? '（当前权重 x${c.list.weightOf(entry.id)}）' : ''}\n\n如需提升权重，请手动对该条目 +1。'
                               : '空行 → 默认提示：$hint'),
                           actions: [
+                            if (entry == null && hint == '新情节线')
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(dialogContext);
+                                  final result =
+                                      await _entryDialog(context, c, null);
+                                  if (result == null) return;
+                                  c.addEntry(result.$1, result.$2);
+                                },
+                                child: const Text('新建情节线'),
+                              ),
+                            if (entry == null && hint == '新角色')
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(dialogContext);
+                                  goToAdventureTab(4);
+                                },
+                                child: const Text('前往角色铸造'),
+                              ),
                             TextButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () => Navigator.pop(dialogContext),
                               child: const Text('关闭'),
                             ),
                           ],
@@ -326,7 +346,6 @@ class PagedListPage extends StatelessWidget {
               child: const Text('删除',
                   style: TextStyle(color: Colors.red)),
             ),
-          const Spacer(),
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
           FilledButton(
             onPressed: () {

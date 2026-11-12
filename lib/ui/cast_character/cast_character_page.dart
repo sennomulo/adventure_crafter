@@ -5,6 +5,7 @@ import '../../data/adventure.dart';
 import '../../data/rules.dart';
 import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
+import '../adventure/adventure_page.dart';
 import '../tables/lookup_dialogs.dart';
 import '../widgets/common.dart';
 
@@ -16,6 +17,7 @@ class CastController extends GetxController {
   final identity = Rxn<NumberedEntry>();
   final descriptor = Rxn<NumberedEntry>();
   final relatedRollResult = ''.obs;
+  final relatedRollIsNewCharacter = false.obs;
   final identityNotesCtrl = TextEditingController();
   final descriptorNotesCtrl = TextEditingController();
 
@@ -28,16 +30,15 @@ class CastController extends GetxController {
       traitDie.value = roll;
       trait.value = rules.entryAt(rules.traits, roll);
       relatedRollResult.value = '';
+      relatedRollIsNewCharacter.value = false;
       service.logRoll('角色铸造·特殊特质', '1d100=$roll → ${trait.value!.text}');
     } else if (which == 1) {
       identityDie.value = roll;
       identity.value = rules.entryAt(rules.identities, roll);
-      identityNotesCtrl.clear();
       service.logRoll('角色铸造·身份', '1d100=$roll → ${identity.value!.text}');
     } else {
       descriptorDie.value = roll;
       descriptor.value = rules.entryAt(rules.descriptors, roll);
-      descriptorNotesCtrl.clear();
       service.logRoll('角色铸造·描述词', '1d100=$roll → ${descriptor.value!.text}');
     }
   }
@@ -62,6 +63,7 @@ class CastController extends GetxController {
     final hint = rules.characterRowDefaults[rowIdx];
     service.logRoll('角色铸造·关联角色掷骰',
         '$pageDesc 1d100=$roll → 第${rowIdx + 1}行${entry == null ? '（空行）' : '：${entry.name}'}');
+    relatedRollIsNewCharacter.value = entry == null && hint == '新角色';
     relatedRollResult.value =
         '第${pageIdx + 1}页 第${rowIdx + 1}行：${entry != null ? entry.name : '空行 → $hint'}';
   }
@@ -91,6 +93,7 @@ class CastController extends GetxController {
     identity.value = null;
     descriptor.value = null;
     relatedRollResult.value = '';
+    relatedRollIsNewCharacter.value = false;
     identityNotesCtrl.clear();
     descriptorNotesCtrl.clear();
   }
@@ -104,7 +107,7 @@ class CastCharacterPage extends StatelessWidget {
     final c = Get.put(CastController());
     final nameCtrl = TextEditingController();
     return Obx(() {
-      final adv = c.service.current.value!;
+      Get.find<AdventureService>().current.value;
       return ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -146,16 +149,56 @@ class CastCharacterPage extends StatelessWidget {
               ),
             ),
           ),
-          if (adv.characters.entries.isNotEmpty) ...[
+          if (c.relatedRollResult.value.isNotEmpty) ...[
             const SizedBox(height: 8),
-            Center(
-              child: TextButton(
-                onPressed: () => showNumberedLookup(
-                    context, c.rules.identities, '身份表'),
-                child: const Text('浏览身份表'),
+            Card(
+              color: Colors.blueGrey.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(c.relatedRollResult.value,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    if (c.relatedRollIsNewCharacter.value)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: FilledButton.tonal(
+                          onPressed: () => goToAdventureTab(4),
+                          child: const Text('前往角色铸造'),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ],
+          const SizedBox(height: 8),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Wrap(
+                spacing: 8,
+                children: [
+                  OutlinedButton(
+                    onPressed: () => showNumberedLookup(
+                        context, c.rules.traits, '特殊特质表'),
+                    child: const Text('浏览特殊特质表'),
+                  ),
+                  OutlinedButton(
+                    onPressed: () => showNumberedLookup(
+                        context, c.rules.identities, '身份表'),
+                    child: const Text('浏览身份表'),
+                  ),
+                  OutlinedButton(
+                    onPressed: () => showNumberedLookup(
+                        context, c.rules.descriptors, '描述词表'),
+                    child: const Text('浏览描述词表'),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       );
     });
@@ -216,27 +259,25 @@ class CastCharacterPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   width: double.infinity,
                   color: Colors.amber.shade100,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('此结果要求掷两个：请自行再掷（软件不自动重骰），并在下方记录两次结果。',
-                          style: TextStyle(fontSize: 12)),
-                      const SizedBox(height: 6),
-                      TextField(
-                        controller: which == 1
-                            ? c.identityNotesCtrl
-                            : c.descriptorNotesCtrl,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          hintText: which == 1
-                              ? '记录两次身份掷骰结果…'
-                              : '记录两次描述词掷骰结果…',
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ],
+                  child: const Text('此结果要求掷两个：请自行再掷（软件不自动重骰），并记录到下方常驻文本框。',
+                      style: TextStyle(fontSize: 12)),
+                ),
+              if (which >= 1) ...[
+                const SizedBox(height: 8),
+                TextField(
+                  controller: which == 1
+                      ? c.identityNotesCtrl
+                      : c.descriptorNotesCtrl,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    labelText: which == 1
+                        ? '两次身份掷骰结果记录'
+                        : '两次描述词掷骰结果记录',
+                    helperText: '常驻记录框：重掷不会清除已录入内容',
+                    border: const OutlineInputBorder(),
                   ),
                 ),
+              ],
             ],
           ],
         ),
