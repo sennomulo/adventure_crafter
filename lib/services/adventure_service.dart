@@ -70,16 +70,8 @@ class AdventureService extends GetxService {
     final pp = rules.plotPointAt(theme, roll);
     logRoll('情节点掷骰', '1d100=$roll（${rules.themeName(theme)}）→ ${pp.id == 'meta' ? '元情节点！' : pp.title}');
     if (pp.id == 'meta') {
-      final metaRoll = roll100();
-      final meta = rules.metaAt(metaRoll);
-      logRoll('元情节点', '1d100=$metaRoll → ${meta.title}');
-      return RollOutcome(
-          theme: theme,
-          themeDie: die,
-          roll: roll,
-          plotPoint: pp,
-          meta: meta,
-          metaRoll: metaRoll);
+      logRoll('情节点掷骰', '1d100=$roll（${rules.themeName(theme)}）→ 元情节点触发（未掷）');
+      return RollOutcome(theme: theme, themeDie: die, roll: roll, plotPoint: pp);
     }
     return RollOutcome(theme: theme, themeDie: die, roll: roll, plotPoint: pp);
   }

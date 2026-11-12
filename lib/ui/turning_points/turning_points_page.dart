@@ -45,14 +45,25 @@ class TurningPointsController extends GetxController {
     final s = tp.slots[slotIdx];
     s.themeId = outcome.theme;
     s.plotPointId = outcome.plotPoint.id;
-    s.metaId = outcome.meta?.id;
+    s.metaId = null;
+    s.metaRoll = null;
     s.themeDie = outcome.themeDie;
     s.roll = outcome.roll;
-    s.metaRoll = outcome.metaRoll;
     changed();
-    if (outcome.meta != null) {
-      showMetaResult(context, outcome.meta!, roll: outcome.metaRoll);
+    if (outcome.plotPoint.id == 'meta') {
+      showSnack(context, '触发元情节点：请点击该槽位的「为元情节点掷骰」。');
     }
+  }
+
+  void rollMeta(TurningPoint tp, int slotIdx, BuildContext context) {
+    final roll = roll100();
+    final meta = rules.metaAt(roll);
+    final s = tp.slots[slotIdx];
+    s.metaId = meta.id;
+    s.metaRoll = roll;
+    service.logRoll('元情节点', '1d100=$roll → ${meta.title}');
+    changed();
+    showMetaResult(context, meta, roll: roll);
   }
 
   void setNone(TurningPoint tp, int slotIdx) {
@@ -456,20 +467,26 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
               if (s.plotPointId == 'meta')
                 Padding(
                   padding: const EdgeInsets.only(top: 2),
-                  child: Row(
-                    children: [
-                      Text(
-                          '元情节点${s.metaRoll == null ? '' : '（1d100=${s.metaRoll}）'}：${meta?.title ?? '未掷'}',
-                          style: const TextStyle(
-                              color: Colors.deepOrange,
-                              fontWeight: FontWeight.bold)),
-                      if (meta != null)
-                        TextButton(
-                          onPressed: () => showMetaResult(context, meta),
-                          child: const Text('查看原文'),
+                  child: meta == null
+                      ? FilledButton.tonalIcon(
+                          icon: const Icon(Icons.casino, size: 18),
+                          label: const Text('为元情节点掷骰'),
+                          onPressed: () =>
+                              widget.c.rollMeta(widget.tp, i, context),
+                        )
+                      : Row(
+                          children: [
+                            Text(
+                                '元情节点（1d100=${s.metaRoll}）：${meta.title}',
+                                style: const TextStyle(
+                                    color: Colors.deepOrange,
+                                    fontWeight: FontWeight.bold)),
+                            TextButton(
+                              onPressed: () => showMetaResult(context, meta),
+                              child: const Text('查看原文'),
+                            ),
+                          ],
                         ),
-                    ],
-                  ),
                 ),
             ],
             const SizedBox(height: 6),

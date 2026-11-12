@@ -27,7 +27,7 @@ class ThemesPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium),
               const Spacer(),
               Tooltip(
-                message: '仅为未设置的优先位依次掷骰，手动设置过的保持不变',
+                message: '每次点击掷 1d10 并装填一个优先位，未装填完可反复点击',
                 child: FilledButton.tonalIcon(
                   icon: const Icon(Icons.casino),
                   label: const Text('掷骰装配'),
@@ -107,23 +107,45 @@ class ThemesPage extends StatelessWidget {
   void _assemble(BuildContext context, AdventureService service) {
     final rules = Get.find<RulesService>();
     final adv = service.current.value!;
-    final used = adv.themes.toSet();
-    final start = adv.themes.length;
-    if (start >= 5) {
+    if (adv.themes.length >= 5) {
       showSnack(context, '5 个优先位已全部设置。');
       return;
     }
-    var rolled = 0;
-    for (var i = start; i < 5; i++) {
-      final die = rollDie(10);
-      final theme = randomThemeForRoll(rules, die, used);
-      if (theme == null) break;
-      used.add(theme);
-      adv.themes.add(theme);
-      rolled++;
-      service.logRoll('随机主题装配', '第${i + 1}优先：1d10=$die → ${rules.themeName(theme)}');
+    final slotIndex = adv.themes.length;
+    final die = rollDie(10);
+    final direct = rules.randomThemes
+        .firstWhere((o) => die >= o.min && die <= o.max)
+        .theme;
+    final theme = randomThemeForRoll(rules, die, adv.themes.toSet());
+    if (theme == null) {
+      showSnack(context, '无法生成未占用的主题。');
+      return;
     }
-    service.save();
-    showSnack(context, '已为 $rolled 个未设置优先位掷出主题');
+    final shifted = theme != direct;
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text('第${slotIndex + 1}优先掷骰'),
+        content: Text(
+            '1d10=$die → ${shifted ? '掷出「${rules.themeName(direct)}」已被占用，环形顺延至' : ''}「${rules.themeName(theme)}」\n\n'
+            '确定装填为第${slotIndex + 1}优先？后续主题需再次点击「掷骰装配」。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('取消'),
+          ),
+          FilledButton(
+            onPressed: () {
+              adv.themes.add(theme);
+              service.logRoll('随机主题装配',
+                  '第${slotIndex + 1}优先：1d10=$die → ${rules.themeName(theme)}${shifted ? '（顺延）' : ''}');
+              service.save();
+              Navigator.pop(dialogContext);
+            },
+            child: const Text('确定装填'),
+          ),
+        ],
+      ),
+    );
   }
 }

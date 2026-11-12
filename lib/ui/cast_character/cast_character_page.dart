@@ -18,8 +18,8 @@ class CastController extends GetxController {
   final descriptor = Rxn<NumberedEntry>();
   final relatedRollResult = ''.obs;
   final relatedRollIsNewCharacter = false.obs;
-  final identityNotesCtrl = TextEditingController();
-  final descriptorNotesCtrl = TextEditingController();
+  final identityHistory = <String>[].obs;
+  final descriptorHistory = <String>[].obs;
 
   RulesService get rules => Get.find<RulesService>();
   AdventureService get service => Get.find<AdventureService>();
@@ -35,10 +35,12 @@ class CastController extends GetxController {
     } else if (which == 1) {
       identityDie.value = roll;
       identity.value = rules.entryAt(rules.identities, roll);
+      identityHistory.add(identity.value!.text);
       service.logRoll('角色铸造·身份', '1d100=$roll → ${identity.value!.text}');
     } else {
       descriptorDie.value = roll;
       descriptor.value = rules.entryAt(rules.descriptors, roll);
+      descriptorHistory.add(descriptor.value!.text);
       service.logRoll('角色铸造·描述词', '1d100=$roll → ${descriptor.value!.text}');
     }
   }
@@ -76,8 +78,8 @@ class CastController extends GetxController {
       id: id,
       name: name,
       trait: trait.value?.text,
-      identities: identity.value == null ? [] : [identity.value!.text],
-      descriptors: descriptor.value == null ? [] : [descriptor.value!.text],
+      identities: identityHistory.toList(),
+      descriptors: descriptorHistory.toList(),
     ));
     chars.assignNextEmpty(id);
     service.save();
@@ -94,8 +96,8 @@ class CastController extends GetxController {
     descriptor.value = null;
     relatedRollResult.value = '';
     relatedRollIsNewCharacter.value = false;
-    identityNotesCtrl.clear();
-    descriptorNotesCtrl.clear();
+    identityHistory.clear();
+    descriptorHistory.clear();
   }
 }
 
@@ -259,24 +261,30 @@ class CastCharacterPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   width: double.infinity,
                   color: Colors.amber.shade100,
-                  child: const Text('此结果要求掷两个：请自行再掷（软件不自动重骰），并记录到下方常驻文本框。',
+                  child: const Text('此结果要求掷两个：请自行再掷（软件不自动处理），历次掷骰出目已自动记录到下方列表。',
                       style: TextStyle(fontSize: 12)),
                 ),
               if (which >= 1) ...[
                 const SizedBox(height: 8),
-                TextField(
-                  controller: which == 1
-                      ? c.identityNotesCtrl
-                      : c.descriptorNotesCtrl,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    labelText: which == 1
-                        ? '两次身份掷骰结果记录'
-                        : '两次描述词掷骰结果记录',
-                    helperText: '常驻记录框：重掷不会清除已录入内容',
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
+                Obx(() {
+                  final history =
+                      which == 1 ? c.identityHistory : c.descriptorHistory;
+                  if (history.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return Wrap(
+                    spacing: 6,
+                    runSpacing: 4,
+                    children: [
+                      for (var i = 0; i < history.length; i++)
+                        Chip(
+                          label: Text(history[i],
+                              style: const TextStyle(fontSize: 12)),
+                          onDeleted: () => history.removeAt(i),
+                        ),
+                    ],
+                  );
+                }),
               ],
             ],
           ],
