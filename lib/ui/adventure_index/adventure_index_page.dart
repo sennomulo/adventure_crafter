@@ -17,13 +17,13 @@ class AdventureIndexPage extends StatelessWidget {
         title: const Text('Adventure Crafter'),
         actions: [
           IconButton(
-            tooltip: '设置',
+            tooltip: 'Settings'.tr,
             icon: const Icon(Icons.settings),
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => Scaffold(
-                          appBar: AppBar(title: const Text('设置')),
+                          appBar: AppBar(title: Text('Settings'.tr)),
                           body: const SettingsPage(),
                         ))),
           ),
@@ -33,7 +33,9 @@ class AdventureIndexPage extends StatelessWidget {
       body: Obx(() {
         final list = service.adventures;
         if (list.isEmpty) {
-          return const Center(child: Text('还没有冒险。点击右下角「新建冒险」开始。'));
+          return Center(
+              child: Text('No adventures yet. Tap "New adventure" at the bottom right to start.'
+                  .tr));
         }
         return ListView.separated(
           padding: const EdgeInsets.all(16),
@@ -56,10 +58,11 @@ class AdventureIndexPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      tooltip: '重命名',
+                      tooltip: 'Rename'.tr,
                       icon: const Icon(Icons.edit),
                       onPressed: () async {
-                        final name = await textInputDialog(context, '重命名冒险',
+                        final name = await textInputDialog(
+                            context, 'Rename adventure'.tr,
                             initial: meta.title);
                         if (name == null || name.trim().isEmpty) return;
                         final adv = await service.open(meta.id);
@@ -70,11 +73,14 @@ class AdventureIndexPage extends StatelessWidget {
                       },
                     ),
                     IconButton(
-                      tooltip: '删除',
+                      tooltip: 'Delete'.tr,
                       icon: const Icon(Icons.delete_outline),
                       onPressed: () async {
                         final ok = await confirmDialog(
-                            context, '删除冒险', '确定删除「${meta.title}」？此操作不可恢复。');
+                            context,
+                            'Delete adventure'.tr,
+                            'Delete adventure "@title"? This cannot be undone.'
+                                .trParams({'title': meta.title}));
                         if (!ok) return;
                         await service.remove(meta.id);
                       },
@@ -88,9 +94,10 @@ class AdventureIndexPage extends StatelessWidget {
       }),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add),
-        label: const Text('新建冒险'),
+        label: Text('New adventure'.tr),
         onPressed: () async {
-          final name = await textInputDialog(context, '新建冒险', hint: '冒险标题');
+          final name = await textInputDialog(context, 'New adventure'.tr,
+              hint: 'Adventure title'.tr);
           if (name == null) return;
           final adv = await service.create(name.trim());
           await service.open(adv.id);

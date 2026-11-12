@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../data/rules.dart';
 
@@ -28,7 +29,7 @@ class _PlotPointLookupDialogState extends State<_PlotPointLookupDialog> {
       return p.title.contains(query) || p.desc.contains(query);
     }).toList();
     return AlertDialog(
-      title: const Text('情节点表'),
+      title: Text('Plot point table'.tr),
       content: SizedBox(
         width: 560,
         height: 560,
@@ -36,10 +37,10 @@ class _PlotPointLookupDialogState extends State<_PlotPointLookupDialog> {
           children: [
             TextField(
               autofocus: true,
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: '搜索标题或描述',
-                  border: OutlineInputBorder()),
+              decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: 'Search title or description'.tr,
+                  border: const OutlineInputBorder()),
               onChanged: (v) => setState(() => query = v.trim()),
             ),
             const SizedBox(height: 8),
@@ -76,11 +77,11 @@ class _PlotPointLookupDialogState extends State<_PlotPointLookupDialog> {
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text('返回'),
+                              child: Text('Back'.tr),
                             ),
                             FilledButton(
                               onPressed: () => Navigator.pop(context, pp),
-                              child: const Text('选用'),
+                              child: Text('Select'.tr),
                             ),
                           ],
                         ),
@@ -97,7 +98,7 @@ class _PlotPointLookupDialogState extends State<_PlotPointLookupDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('关闭')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text('Close'.tr)),
       ],
     );
   }
@@ -119,8 +120,10 @@ Future<NumberedEntry?> showNumberedLookup(BuildContext context,
             return ExpansionTile(
               dense: true,
               title: Text('${e.min}-${e.max}　${e.text}'),
-              subtitle: e.desc == null ? null : const Text('点开查看原文说明',
-                  style: TextStyle(fontSize: 11, color: Colors.grey)),
+              subtitle: e.desc == null
+                  ? null
+                  : Text('Tap to view original text'.tr,
+                      style: const TextStyle(fontSize: 11, color: Colors.grey)),
               children: [
                 if (e.desc != null)
                   Padding(
@@ -136,7 +139,7 @@ Future<NumberedEntry?> showNumberedLookup(BuildContext context,
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('关闭')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text('Close'.tr)),
       ],
     ),
   );
@@ -146,7 +149,7 @@ void showMetaTable(BuildContext context, RulesService rules) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('元情节点表'),
+      title: Text('Meta plot point table'.tr),
       content: SizedBox(
         width: 480,
         height: 420,
@@ -169,16 +172,20 @@ void showMetaTable(BuildContext context, RulesService rules) {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('关闭')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text('Close'.tr)),
       ],
     ),
   );
 }
 
-void showMetaResult(BuildContext context, MetaPlotPoint meta, {int? roll}) {  showDialog(
+void showMetaResult(BuildContext context, MetaPlotPoint meta, {int? roll}) {
+  showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text('元情节点${roll == null ? '' : '（1d100=$roll）'}：${meta.title}'),
+      title: Text('Meta plot point (1d100=@roll): @title'.trParams({
+        'roll': roll == null ? '' : '$roll',
+        'title': meta.title,
+      })),
       content: SizedBox(
         width: 460,
         child: SingleChildScrollView(
@@ -187,14 +194,109 @@ void showMetaResult(BuildContext context, MetaPlotPoint meta, {int? roll}) {  sh
             children: [
               Text(meta.desc),
               const SizedBox(height: 8),
-              Text('以上为原文规则说明，副作用不自动执行，由玩家自行处置。',
+              Text(
+                  'The above is the original rule text; side effects are not executed automatically and are handled by the player.'
+                      .tr,
                   style: TextStyle(color: Theme.of(context).colorScheme.primary)),
             ],
           ),
         ),
       ),
       actions: [
-        FilledButton(onPressed: () => Navigator.pop(context), child: const Text('确定')),
+        FilledButton(onPressed: () => Navigator.pop(context), child: Text('OK'.tr)),
+      ],
+    ),
+  );
+}
+
+void showRandomThemeTableLookup(BuildContext context, RulesService rules) {
+  showDialog(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: Text('Random theme table (1d10)'.tr),
+      content: SizedBox(
+        width: 380,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Physical dice: roll yourself and read the result from the table.'
+                .tr),
+            const SizedBox(height: 8),
+            for (final o in rules.randomThemes)
+              ListTile(
+                dense: true,
+                leading: SizedBox(
+                    width: 56,
+                    child: Text(
+                        o.min == o.max ? '${o.min}' : '${o.min}-${o.max}')),
+                title: Text(rules.themeName(o.theme)),
+              ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text('Close'.tr)),
+      ],
+    ),
+  );
+}
+
+void showPhysicalSlotLookup(
+    BuildContext context, RulesService rules, List<String> themes) {
+  final alternator = 4;
+  String themeAt(int idx) =>
+      idx < themes.length ? rules.themeName(themes[idx]) : 'Unset'.tr;
+  showDialog(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: Text('Theme die (1d10)'.tr),
+      content: SizedBox(
+        width: 420,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Physical dice: roll yourself and read the result from the table.'
+                .tr),
+            const SizedBox(height: 8),
+            ListTile(
+                dense: true,
+                leading: const SizedBox(width: 56, child: Text('1-4')),
+                title: Text('1-4 → priority 1 (@theme)'
+                    .trParams({'theme': themeAt(0)}))),
+            ListTile(
+                dense: true,
+                leading: const SizedBox(width: 56, child: Text('5-7')),
+                title: Text('5-7 → priority 2 (@theme)'
+                    .trParams({'theme': themeAt(1)}))),
+            ListTile(
+                dense: true,
+                leading: const SizedBox(width: 56, child: Text('8-9')),
+                title: Text('8-9 → priority 3 (@theme)'
+                    .trParams({'theme': themeAt(2)}))),
+            ListTile(
+                dense: true,
+                leading: const SizedBox(width: 56, child: Text('10')),
+                title: Text('10 → alternator (@theme)'.trParams({
+                  'theme': themeAt(alternator - 1),
+                }))),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text('Close'.tr)),
+        FilledButton(
+          onPressed: () {
+            Navigator.pop(dialogContext);
+            showPlotPointLookup(context, rules);
+          },
+          child: Text('Open plot point table'.tr),
+        ),
       ],
     ),
   );

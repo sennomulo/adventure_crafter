@@ -5,7 +5,9 @@ import '../../data/adventure.dart';
 import '../../data/rules.dart';
 import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
+import '../../services/settings_service.dart';
 import '../adventure/adventure_page.dart';
+import '../tables/list_roll_lookup.dart';
 import '../tables/lookup_dialogs.dart';
 import '../widgets/common.dart';
 
@@ -31,17 +33,20 @@ class CastController extends GetxController {
       trait.value = rules.entryAt(rules.traits, roll);
       relatedRollResult.value = '';
       relatedRollIsNewCharacter.value = false;
-      service.logRoll('角色铸造·特殊特质', '1d100=$roll → ${trait.value!.text}');
+      service.logRoll(
+          'Casting · special trait'.tr, '1d100=$roll → ${trait.value!.text}');
     } else if (which == 1) {
       identityDie.value = roll;
       identity.value = rules.entryAt(rules.identities, roll);
       identityHistory.add(identity.value!.text);
-      service.logRoll('角色铸造·身份', '1d100=$roll → ${identity.value!.text}');
+      service.logRoll(
+          'Casting · identity'.tr, '1d100=$roll → ${identity.value!.text}');
     } else {
       descriptorDie.value = roll;
       descriptor.value = rules.entryAt(rules.descriptors, roll);
       descriptorHistory.add(descriptor.value!.text);
-      service.logRoll('角色铸造·描述词', '1d100=$roll → ${descriptor.value!.text}');
+      service.logRoll(
+          'Casting · descriptor'.tr, '1d100=$roll → ${descriptor.value!.text}');
     }
   }
 
@@ -49,7 +54,7 @@ class CastController extends GetxController {
     final adv = service.current.value!;
     final list = adv.characters;
     if (list.pages.isEmpty) {
-      relatedRollResult.value = '（角色列表为空）';
+      relatedRollResult.value = '(character list is empty)'.tr;
       return;
     }
     int pageIdx = 0;
@@ -57,17 +62,20 @@ class CastController extends GetxController {
     if (list.pages.length > 1) {
       final die = rollDie(list.pages.length);
       pageIdx = die - 1;
-      pageDesc = '1d${list.pages.length}=$die（第${pageIdx + 1}页），';
+      pageDesc = '1d${list.pages.length}=$die，';
     }
     final roll = roll100();
     final rowIdx = rowForRoll(roll);
     final entry = list.entryById(list.pages[pageIdx][rowIdx]);
     final hint = rules.characterRowDefaults[rowIdx];
-    service.logRoll('角色铸造·关联角色掷骰',
-        '$pageDesc 1d100=$roll → 第${rowIdx + 1}行${entry == null ? '（空行）' : '：${entry.name}'}');
+    service.logRoll('Casting · related character roll'.tr,
+        '$pageDesc 1d100=$roll → ${rowIdx + 1}${entry == null ? '（${'empty'.tr}）' : '：${entry.name}'}');
     relatedRollIsNewCharacter.value = entry == null && hint == '新角色';
-    relatedRollResult.value =
-        '第${pageIdx + 1}页 第${rowIdx + 1}行：${entry != null ? entry.name : '空行 → $hint'}';
+    relatedRollResult.value = 'page @page, row @row: @result'.trParams({
+      'page': '${pageIdx + 1}',
+      'row': '${rowIdx + 1}',
+      'result': entry != null ? entry.name : '${'empty'.tr} → $hint',
+    });
   }
 
   void addToCharacters(String name) {
@@ -83,7 +91,8 @@ class CastController extends GetxController {
     ));
     chars.assignNextEmpty(id);
     service.save();
-    service.logRoll('角色铸造', '新角色「$name」已加入角色列表');
+    service.logRoll('Casting'.tr,
+        '"@name" added to the character list.'.trParams({'name': name}));
     reset();
   }
 
@@ -113,15 +122,18 @@ class CastCharacterPage extends StatelessWidget {
       return ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text('角色铸造向导', style: Theme.of(context).textTheme.titleMedium),
+          Text('Character casting wizard'.tr,
+              style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 4),
-          Text('依次掷特殊特质 → 身份 → 描述词，综合解读后命名并加入角色列表。特殊特质 93-100、身份 1-33、描述词 1-21 的原文说明仅作展示，由玩家自行处置。',
-              style: Theme.of(context).textTheme.bodySmall),
+          Text('Roll trait → identity → descriptor in order, interpret, name, then add to the character list. Original text for trait 93-100, identity 1-33, descriptor 1-21 is display-only; the player handles it.'
+              .tr),
           const SizedBox(height: 12),
-          _rollCard(context, c, 0, '第一步：特殊特质', c.trait.value, c.traitDie.value),
-          _rollCard(context, c, 1, '第二步：身份', c.identity.value, c.identityDie.value),
-          _rollCard(
-              context, c, 2, '第三步：描述词', c.descriptor.value, c.descriptorDie.value),
+          _rollCard(context, c, 0, 'Step 1: special trait'.tr, c.trait.value,
+              c.traitDie.value),
+          _rollCard(context, c, 1, 'Step 2: identity'.tr, c.identity.value,
+              c.identityDie.value),
+          _rollCard(context, c, 2, 'Step 3: descriptor'.tr, c.descriptor.value,
+              c.descriptorDie.value),
           const SizedBox(height: 8),
           Card(
             child: Padding(
@@ -131,9 +143,11 @@ class CastCharacterPage extends StatelessWidget {
                   Expanded(
                     child: TextField(
                       controller: nameCtrl,
-                      decoration: const InputDecoration(
-                          labelText: '角色名称（综合三表结果解读后命名）',
-                          border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                          labelText:
+                              'Character name (interpret the three tables, then name)'
+                                  .tr,
+                          border: const OutlineInputBorder()),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -143,9 +157,12 @@ class CastCharacterPage extends StatelessWidget {
                       if (name.isEmpty) return;
                       c.addToCharacters(name);
                       nameCtrl.clear();
-                      showSnack(context, '「$name」已加入角色列表');
+                      showSnack(
+                          context,
+                          '"@name" added to the character list.'
+                              .trParams({'name': name}));
                     },
-                    child: const Text('加入角色列表'),
+                    child: Text('Add to character list'.tr),
                   ),
                 ],
               ),
@@ -167,7 +184,7 @@ class CastCharacterPage extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 6),
                         child: FilledButton.tonal(
                           onPressed: () => goToAdventureTab(4),
-                          child: const Text('前往角色铸造'),
+                          child: Text('Go to character casting'.tr),
                         ),
                       ),
                   ],
@@ -184,18 +201,18 @@ class CastCharacterPage extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     onPressed: () => showNumberedLookup(
-                        context, c.rules.traits, '特殊特质表'),
-                    child: const Text('浏览特殊特质表'),
+                        context, c.rules.traits, 'Special trait table'.tr),
+                    child: Text('Browse special trait table'.tr),
                   ),
                   OutlinedButton(
                     onPressed: () => showNumberedLookup(
-                        context, c.rules.identities, '身份表'),
-                    child: const Text('浏览身份表'),
+                        context, c.rules.identities, 'Identity table'.tr),
+                    child: Text('Browse identity table'.tr),
                   ),
                   OutlinedButton(
                     onPressed: () => showNumberedLookup(
-                        context, c.rules.descriptors, '描述词表'),
-                    child: const Text('浏览描述词表'),
+                        context, c.rules.descriptors, 'Descriptor table'.tr),
+                    child: Text('Browse descriptor table'.tr),
                   ),
                 ],
               ),
@@ -208,6 +225,7 @@ class CastCharacterPage extends StatelessWidget {
 
   Widget _rollCard(BuildContext context, CastController c, int which,
       String title, NumberedEntry? result, int die) {
+    final settings = Get.find<GlobalSettingsService>();
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -220,8 +238,21 @@ class CastCharacterPage extends StatelessWidget {
                 const Spacer(),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.casino, size: 18),
-                  label: Text(die == 0 ? '掷 1d100' : '重掷'),
-                  onPressed: () => c.roll(which),
+                  label: Text(die == 0 ? 'Roll 1d100'.tr : 'Reroll'.tr),
+                  onPressed: () {
+                    if (settings.getPhysicalDiceModeEnabled) {
+                      showNumberedLookup(
+                          context,
+                          which == 0
+                              ? c.rules.traits
+                              : which == 1
+                                  ? c.rules.identities
+                                  : c.rules.descriptors,
+                          title);
+                      return;
+                    }
+                    c.roll(which);
+                  },
                 ),
               ],
             ),
@@ -242,15 +273,26 @@ class CastCharacterPage extends StatelessWidget {
                     children: [
                       OutlinedButton.icon(
                         icon: const Icon(Icons.casino, size: 18),
-                        label: const Text('掷角色列表查询关联角色'),
-                        onPressed: () => c.rollRelatedCharacter(),
+                        label:
+                            Text('Roll character list for the related character'.tr),
+                        onPressed: () {
+                          if (settings.getPhysicalDiceModeEnabled) {
+                            showListRollLookup(
+                              context,
+                              title: 'Character list'.tr,
+                              list: c.service.current.value!.characters,
+                              defaults: c.rules.characterRowDefaults,
+                            );
+                            return;
+                          }
+                          c.rollRelatedCharacter();
+                        },
                       ),
                       if (c.relatedRollResult.value.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(c.relatedRollResult.value,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold)),
+                              style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                     ],
                   ),
@@ -261,8 +303,9 @@ class CastCharacterPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   width: double.infinity,
                   color: Colors.amber.shade100,
-                  child: const Text('此结果要求掷两个：请自行再掷（软件不自动处理），历次掷骰出目已自动记录到下方列表。',
-                      style: TextStyle(fontSize: 12)),
+                  child: Text(
+                      'This result requires rolling two: roll again yourself (the software does not handle it); every roll result is recorded in the list below.'
+                          .tr),
                 ),
               if (which >= 1) ...[
                 const SizedBox(height: 8),

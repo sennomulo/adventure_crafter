@@ -5,7 +5,9 @@ import '../../data/adventure.dart';
 import '../../data/rules.dart';
 import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
+import '../../services/settings_service.dart';
 import '../adventure/adventure_page.dart';
+import '../tables/list_roll_lookup.dart';
 import '../tables/lookup_dialogs.dart';
 import '../widgets/common.dart';
 
@@ -39,7 +41,7 @@ class TurningPointsController extends GetxController {
   void rollSlot(TurningPoint tp, int slotIdx, BuildContext context) {
     final outcome = service.rollPlotPoint(adv);
     if (outcome == null) {
-      showSnack(context, '请先在「主题」页设置冒险主题。');
+      showSnack(context, 'Set adventure themes on the Themes page first.'.tr);
       return;
     }
     final s = tp.slots[slotIdx];
@@ -51,7 +53,9 @@ class TurningPointsController extends GetxController {
     s.roll = outcome.roll;
     changed();
     if (outcome.plotPoint.id == 'meta') {
-      showSnack(context, '触发元情节点：请点击该槽位的「为元情节点掷骰」。');
+      showSnack(context,
+          'Meta plot point triggered: click "Roll for meta plot point" in this slot.'
+              .tr);
     }
   }
 
@@ -61,7 +65,8 @@ class TurningPointsController extends GetxController {
     final s = tp.slots[slotIdx];
     s.metaId = meta.id;
     s.metaRoll = roll;
-    service.logRoll('元情节点', '1d100=$roll → ${meta.title}');
+    service.logRoll(
+        'Meta plot point'.tr, '1d100=$roll → ${meta.title}');
     changed();
     showMetaResult(context, meta, roll: roll);
   }
@@ -85,7 +90,7 @@ class TurningPointsController extends GetxController {
   void rollFocus(TurningPoint tp, BuildContext context) {
     final list = adv.plotlines;
     if (list.pages.isEmpty) {
-      showSnack(context, '情节线列表为空。');
+      showSnack(context, 'The plotline list is empty.'.tr);
       return;
     }
     int pageIdx = 0;
@@ -93,29 +98,33 @@ class TurningPointsController extends GetxController {
     if (list.pages.length > 1) {
       final die = rollDie(list.pages.length);
       pageIdx = die - 1;
-      pageDesc = '1d${list.pages.length}=$die（第${pageIdx + 1}页），';
+      pageDesc = '1d${list.pages.length}=$die，';
     }
     final roll = roll100();
     final rowIdx = rowForRoll(roll);
     final entry = list.entryById(list.pages[pageIdx][rowIdx]);
-    service.logRoll('聚焦情节线掷骰',
-        '$pageDesc 1d100=$roll → 第${rowIdx + 1}行（${rowIdx * 4 + 1}~${rowIdx * 4 + 4}）${entry == null ? '（空行）' : '：${entry.name}'}');
+    service.logRoll('Rolling focus plotline'.tr,
+        '$pageDesc 1d100=$roll → ${rowIdx * 4 + 1}~${rowIdx * 4 + 4}${entry == null ? '（${'empty'.tr}）' : '：${entry.name}'}');
     if (entry != null) {
       tp.plotlineId = entry.id;
       changed();
-      showSnack(context, '聚焦情节线：${entry.name}。如需提升权重，请到「情节线」页手动 +1。');
+      showSnack(
+          context,
+          'Focused plotline: @name. To raise its weight, manually +1 on the Plotlines page.'
+              .trParams({'name': entry.name}));
       return;
     }
     final hint = rules.rowDefault(true, rowIdx);
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: Text('掷中空行（第${rowIdx + 1}行）'),
-        content: Text('默认提示：$hint'),
+        title:
+            Text('Empty row rolled (row @row)'.trParams({'row': '${rowIdx + 1}'})),
+        content: Text('Default hint: @hint'.trParams({'hint': hint})),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('保持未聚焦'),
+            child: Text('Keep unfocused'.tr),
           ),
           if (hint == '新情节线')
             TextButton(
@@ -123,14 +132,14 @@ class TurningPointsController extends GetxController {
                 Navigator.pop(dialogContext);
                 goToAdventureTab(1);
               },
-              child: const Text('前往情节线列表'),
+              child: Text('Go to plotline list'.tr),
             ),
           FilledButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
               await _pickFocusManually(tp, context);
             },
-            child: const Text('选择最合理的情节线'),
+            child: Text('Pick the most likely plotline'.tr),
           ),
         ],
       ),
@@ -140,13 +149,14 @@ class TurningPointsController extends GetxController {
   Future<void> _pickFocusManually(TurningPoint tp, BuildContext context) async {
     final entries = adv.plotlines.entries;
     if (entries.isEmpty) {
-      showSnack(context, '情节线列表为空，请先到「情节线」页新建。');
+      showSnack(context,
+          'The plotline list is empty. Create one on the Plotlines page first.'.tr);
       return;
     }
     final picked = await showDialog<int>(
       context: context,
       builder: (dialogContext) => SimpleDialog(
-        title: const Text('选择最合理的情节线'),
+        title: Text('Pick the most likely plotline'.tr),
         children: entries
             .map((e) => SimpleDialogOption(
                   onPressed: () => Navigator.pop(dialogContext, e.id),
@@ -166,6 +176,17 @@ class TurningPointsController extends GetxController {
   }
 }
 
+String turningPointStatusLabel(String status) {
+  switch (status) {
+    case 'development':
+      return 'Development'.tr;
+    case 'conclusion':
+      return 'Conclusion'.tr;
+    default:
+      return 'Undecided'.tr;
+  }
+}
+
 class TurningPointsPage extends StatelessWidget {
   const TurningPointsPage({super.key});
 
@@ -181,11 +202,12 @@ class TurningPointsPage extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Row(
               children: [
-                Text('转折点', style: Theme.of(context).textTheme.titleMedium),
+                Text('Turning points'.tr,
+                    style: Theme.of(context).textTheme.titleMedium),
                 const Spacer(),
                 FilledButton.icon(
                   icon: const Icon(Icons.add),
-                  label: const Text('新转折点'),
+                  label: Text('New turning point'.tr),
                   onPressed: () {
                     final tp = c.addTurningPoint();
                     showDialog(
@@ -199,7 +221,10 @@ class TurningPointsPage extends StatelessWidget {
           ),
           Expanded(
             child: adv.turningPoints.isEmpty
-                ? const Center(child: Text('还没有转折点。点击「新转折点」开始。'))
+                ? Center(
+                    child: Text(
+                        'No turning points yet. Click "New turning point" to start.'
+                            .tr))
                 : ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: adv.turningPoints.length,
@@ -210,11 +235,16 @@ class TurningPointsPage extends StatelessWidget {
                       return Card(
                         child: ListTile(
                           leading: CircleAvatar(child: Text('${tp.index}')),
-                          title:
-                              Text('转折点 ${tp.index}　聚焦：${focus?.name ?? '未聚焦'}'),
-                          subtitle: Text(
-                              '状态：${statusLabel(tp.status)}　'
-                              '情节点：${tp.slots.where((s) => !s.isEmpty).length}/5'),
+                          title: Text('Turning point @index　Focus: @focus'
+                              .trParams({
+                            'index': '${tp.index}',
+                            'focus': focus?.name ?? '—',
+                          })),
+                          subtitle: Text('Status: @status　Plot points: @filled/5'
+                              .trParams({
+                            'status': turningPointStatusLabel(tp.status),
+                            'filled': '${tp.slots.where((s) => !s.isEmpty).length}',
+                          })),
                           onTap: () => showDialog(
                             context: context,
                             builder: (_) => TurningPointEditor(c: c, tp: tp),
@@ -223,7 +253,10 @@ class TurningPointsPage extends StatelessWidget {
                             icon: const Icon(Icons.delete_outline),
                             onPressed: () async {
                               final ok = await confirmDialog(
-                                  context, '删除转折点', '删除转折点 ${tp.index}？');
+                                  context,
+                                  'Delete turning point'.tr,
+                                  'Delete turning point @index?'
+                                      .trParams({'index': '${tp.index}'}));
                               if (ok) c.removeTurningPoint(i);
                             },
                           ),
@@ -235,17 +268,6 @@ class TurningPointsPage extends StatelessWidget {
         ],
       );
     });
-  }
-
-  static String statusLabel(String status) {
-    switch (status) {
-      case 'development':
-        return '发展';
-      case 'conclusion':
-        return '结束';
-      default:
-        return '未定';
-    }
   }
 }
 
@@ -283,6 +305,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
   @override
   Widget build(BuildContext context) {
     final c = widget.c;
+    final settings = Get.find<GlobalSettingsService>();
     return Obx(() {
       final adv = c.service.current.value!;
       final focus = adv.plotlines.entryById(widget.tp.plotlineId);
@@ -296,7 +319,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                 child: Row(
                   children: [
-                    Text('转折点 ${widget.tp.index}',
+                    Text('Turning point @index'.trParams({'index': '${widget.tp.index}'}),
                         style: Theme.of(context).textTheme.titleLarge),
                     const Spacer(),
                     FilledButton.tonal(
@@ -304,7 +327,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                         c.changed();
                         Navigator.pop(context);
                       },
-                      child: const Text('保存并关闭'),
+                      child: Text('Save & close'.tr),
                     ),
                   ],
                 ),
@@ -316,24 +339,39 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                     Card(
                       child: ListTile(
                         leading: const Icon(Icons.account_tree_outlined),
-                        title: Text('聚焦情节线：${focus?.name ?? '未聚焦'}'),
-                        subtitle: const Text('可掷骰确定，或手动指定（含「新情节线」）'),
+                        title: Text('Focus plotline: @focus'
+                            .trParams({'focus': focus?.name ?? '—'})),
+                        subtitle: Text(
+                            'Roll to decide, or pick manually (including "new plotline")'
+                                .tr),
                         trailing: PopupMenuButton<String>(
-                          tooltip: '指定聚焦情节线',
+                          tooltip: 'Focus plotline: @focus'
+                              .trParams({'focus': focus?.name ?? '—'}),
                           icon: const Icon(Icons.more_vert),
                           itemBuilder: (context) => [
-                            const PopupMenuItem(
-                                value: 'roll', child: Text('掷情节线列表')),
-                            const PopupMenuItem(
-                                value: 'new', child: Text('新情节线并聚焦')),
-                            const PopupMenuItem(
-                                value: 'clear', child: Text('清除聚焦')),
+                            PopupMenuItem(
+                                value: 'roll',
+                                child: Text('Roll plotline list'.tr)),
+                            PopupMenuItem(
+                                value: 'new',
+                                child: Text('New plotline and focus'.tr)),
+                            PopupMenuItem(
+                                value: 'clear', child: Text('Clear focus'.tr)),
                             ...adv.plotlines.entries.map((e) => PopupMenuItem(
                                 value: 'e${e.id}', child: Text(e.name))),
                           ],
                           onSelected: (v) {
                             if (v == 'roll') {
-                              c.rollFocus(widget.tp, context);
+                              if (settings.getPhysicalDiceModeEnabled) {
+                                showListRollLookup(
+                                  context,
+                                  title: 'Plotline list'.tr,
+                                  list: c.adv.plotlines,
+                                  defaults: c.rules.plotlineRowDefaults,
+                                );
+                              } else {
+                                c.rollFocus(widget.tp, context);
+                              }
                             } else if (v == 'clear') {
                               c.setFocusManually(widget.tp, null);
                             } else if (v == 'new') {
@@ -353,23 +391,28 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('转折点状态（由玩家手动设置）'),
+                            Text('Turning point status (set by the player)'.tr),
                             SegmentedButton<String>(
-                              segments: const [
+                              segments: [
                                 ButtonSegment(
-                                    value: 'undecided', label: Text('未定')),
+                                    value: 'undecided',
+                                    label: Text('Undecided'.tr)),
                                 ButtonSegment(
-                                    value: 'development', label: Text('发展')),
+                                    value: 'development',
+                                    label: Text('Development'.tr)),
                                 ButtonSegment(
-                                    value: 'conclusion', label: Text('结束')),
+                                    value: 'conclusion',
+                                    label: Text('Conclusion'.tr)),
                               ],
                               selected: {widget.tp.status},
                               onSelectionChanged: (selection) {
                                 widget.tp.status = selection.first;
                                 c.changed();
                                 if (selection.first == 'conclusion') {
-                                  showSnack(context,
-                                      '转折点为「结束」：请自行将该情节线移出情节线列表（编辑快捷操作不实现，交由玩家操作）。');
+                                  showSnack(
+                                      context,
+                                      '"Conclusion": remove this plotline from the plotline list yourself (edit shortcuts are not implemented; the player operates).'
+                                          .tr);
                                 }
                               },
                             ),
@@ -383,18 +426,19 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                         padding: const EdgeInsets.all(10),
                         width: double.infinity,
                         color: Colors.deepOrange.shade50,
-                        child: const Text(
-                            '「结束」：将结束该情节线所需的一切纳入本转折点，并自行从情节线列表中移除该情节线。',
-                            style: TextStyle(fontSize: 12)),
+                        child: Text(
+                            '"Conclusion": include whatever is needed to end this plotline, and remove the plotline from the plotline list yourself.'
+                                .tr,
+                            style: const TextStyle(fontSize: 12)),
                       ),
                     const SizedBox(height: 8),
                     for (var i = 0; i < 5; i++) _slotCard(context, i),
                     TextField(
                       controller: tpNotesCtrl,
                       onChanged: (v) => widget.tp.notes = v,
-                      decoration: const InputDecoration(
-                          labelText: '转折点笔记',
-                          border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                          labelText: 'Turning point notes'.tr,
+                          border: const OutlineInputBorder()),
                     ),
                   ],
                 ),
@@ -407,7 +451,8 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
   }
 
   Future<void> _newFocus(BuildContext context) async {
-    final name = await textInputDialog(context, '新情节线', hint: '情节线名称');
+    final name = await textInputDialog(context, 'New plotline'.tr,
+        hint: 'Plotline name'.tr);
     if (name == null || name.trim().isEmpty) return;
     final list = widget.c.adv.plotlines;
     final id = list.nextEntryId();
@@ -423,6 +468,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
     final meta = widget.c.rules.metaById(s.metaId);
     final themeLabel =
         s.themeId == null ? '' : widget.c.rules.themeName(s.themeId!);
+    final settings = Get.find<GlobalSettingsService>();
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: Padding(
@@ -432,31 +478,37 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
           children: [
             Row(
               children: [
-                Text('情节点 ${i + 1}',
+                Text('Plot point @index'.trParams({'index': '${i + 1}'}),
                     style: Theme.of(context).textTheme.titleSmall),
                 const Spacer(),
                 TextButton.icon(
                   icon: const Icon(Icons.casino, size: 18),
-                  label: Text(pp == null ? '掷骰' : '重掷'),
-                  onPressed: () =>
-                      widget.c.rollSlot(widget.tp, i, context),
+                  label: Text(pp == null ? 'Roll'.tr : 'Reroll'.tr),
+                  onPressed: () {
+                    if (settings.getPhysicalDiceModeEnabled) {
+                      showPhysicalSlotLookup(
+                          context, widget.c.rules, widget.c.adv.themes);
+                      return;
+                    }
+                    widget.c.rollSlot(widget.tp, i, context);
+                  },
                 ),
                 TextButton(
                   onPressed: () => widget.c.setNone(widget.tp, i),
-                  child: const Text('改为「无」'),
+                  child: Text('Change to "None"'.tr),
                 ),
                 TextButton(
                   onPressed: () =>
                       widget.c.setMostLikely(widget.tp, i, context),
-                  child: const Text('改为最合理'),
+                  child: Text('Change to most likely'.tr),
                 ),
               ],
             ),
             if (pp == null)
-              const Text('（未掷）', style: TextStyle(color: Colors.grey))
+              Text('Not rolled yet'.tr, style: const TextStyle(color: Colors.grey))
             else ...[
               Text(
-                  '${s.themeDie == null ? '' : '主题骰 ${s.themeDie}（$themeLabel）　情节点骰 ${s.roll}　→　'}${pp.title}',
+                  '${s.themeDie == null ? '' : 'Theme die @die (@theme)　plot point die @roll　→　'.trParams({'die': '${s.themeDie}', 'theme': themeLabel, 'roll': '${s.roll}'})}${pp.title}',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               if (s.plotPointId != 'meta' && pp.desc.isNotEmpty)
                 Padding(
@@ -470,20 +522,30 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                   child: meta == null
                       ? FilledButton.tonalIcon(
                           icon: const Icon(Icons.casino, size: 18),
-                          label: const Text('为元情节点掷骰'),
-                          onPressed: () =>
-                              widget.c.rollMeta(widget.tp, i, context),
+                          label: Text('Roll for meta plot point'.tr),
+                          onPressed: () {
+                            if (settings.getPhysicalDiceModeEnabled) {
+                              showMetaTable(context, widget.c.rules);
+                              return;
+                            }
+                            widget.c.rollMeta(widget.tp, i, context);
+                          },
                         )
                       : Row(
                           children: [
-                            Text(
-                                '元情节点（1d100=${s.metaRoll}）：${meta.title}',
-                                style: const TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontWeight: FontWeight.bold)),
+                            Flexible(
+                              child: Text(
+                                  'Meta plot point (1d100=@roll): @title'.trParams({
+                                    'roll': '${s.metaRoll}',
+                                    'title': meta.title,
+                                  }),
+                                  style: const TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontWeight: FontWeight.bold)),
+                            ),
                             TextButton(
                               onPressed: () => showMetaResult(context, meta),
-                              child: const Text('查看原文'),
+                              child: Text('View original text'.tr),
                             ),
                           ],
                         ),
@@ -494,10 +556,10 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
             TextField(
               controller: slotNotesCtrls[i],
               onChanged: (v) => s.notes = v,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   isDense: true,
-                  labelText: '槽位笔记',
-                  border: OutlineInputBorder()),
+                  labelText: 'Slot notes'.tr,
+                  border: const OutlineInputBorder()),
             ),
           ],
         ),
@@ -515,7 +577,8 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
       spacing: 6,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Text('征引角色：', style: Theme.of(context).textTheme.bodySmall),
+        Text('Invoked characters:'.tr,
+            style: Theme.of(context).textTheme.bodySmall),
         for (final ch in invoked)
           Chip(
             label: Text(ch.name, style: const TextStyle(fontSize: 12)),
@@ -525,7 +588,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
             },
           ),
         ActionChip(
-          label: const Text('选择', style: TextStyle(fontSize: 12)),
+          label: Text('Select'.tr, style: const TextStyle(fontSize: 12)),
           onPressed: () => _pickInvoked(context, s),
         ),
       ],
@@ -535,14 +598,14 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
   Future<void> _pickInvoked(BuildContext context, Slot s) async {
     final entries = widget.c.adv.characters.entries;
     if (entries.isEmpty) {
-      showSnack(context, '角色列表为空。');
+      showSnack(context, 'The plotline list is empty.'.tr);
       return;
     }
     final selected = Set<int>.from(s.invoked);
     final ok = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('征引角色'),
+        title: Text('Invoked characters:'.tr),
         content: SizedBox(
           width: 360,
           height: 380,
@@ -564,10 +627,10 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: const Text('取消')),
+              child: Text('Cancel'.tr)),
           FilledButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: const Text('确定')),
+              child: Text('OK'.tr)),
         ],
       ),
     );

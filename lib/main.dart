@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'data/rules.dart';
+import 'i18n/translations.dart';
 import 'services/adventure_service.dart';
 import 'services/roll_log_service.dart';
 import 'services/settings_service.dart';
@@ -13,10 +14,10 @@ const kChineseFontFallback = ['Noto Sans SC'];
 
 String _elapsedFromNow(DateTime t) {
   final d = DateTime.now().difference(t);
-  if (d.inMinutes < 1) return '刚刚';
-  if (d.inMinutes < 60) return '${d.inMinutes}分钟前';
-  if (d.inHours < 24) return '${d.inHours}小时前';
-  return '${d.inDays}天前';
+  if (d.inMinutes < 1) return 'just now'.tr;
+  if (d.inMinutes < 60) return '${d.inMinutes}${'minutes ago'.tr}';
+  if (d.inHours < 24) return '${d.inHours}${'hours ago'.tr}';
+  return '${d.inDays}${'days ago'.tr}';
 }
 
 Future<void> main() async {
@@ -27,6 +28,10 @@ Future<void> main() async {
   await settings.load();
   Get.put(rules);
   Get.put(settings);
+  Get.updateLocale(
+      settings.uiLanguage.value == 'en'
+          ? const Locale('en', 'US')
+          : const Locale('zh', 'CN'));
   Get.put(RollLogService());
   final adventureService = Get.put(AdventureService());
   await adventureService.refreshList();
@@ -60,21 +65,21 @@ class _ExitGuardState extends State<ExitGuard> {
   Future<AppExitResponse> _onExitRequested() async {
     final last = Get.find<AdventureService>().lastSavedAt.value;
     final savedText = last == null
-        ? '尚无保存记录。'
-        : '数据上次保存于 '
+        ? 'No save record yet.'.tr
+        : '${'Data was last saved at'.tr} '
             '${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}:${last.second.toString().padLeft(2, '0')}（${_elapsedFromNow(last)}）。';
     final result = await Get.dialog<bool>(
       AlertDialog(
-        title: const Text('退出 Adventure Crafter？'),
-        content: Text('$savedText\n\n所有未保存的进度将会丢失。'),
+        title: Text('Quit Adventure Crafter?'.tr),
+        content: Text('$savedText\n\n${'All unsaved progress will be lost.'.tr}'),
         actions: [
           TextButton(
             onPressed: () => Get.back(result: false),
-            child: const Text('取消'),
+            child: Text('Cancel'.tr),
           ),
           FilledButton(
             onPressed: () => Get.back(result: true),
-            child: const Text('退出'),
+            child: Text('Quit'.tr),
           ),
         ],
       ),
@@ -91,18 +96,35 @@ class AdventureCrafterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Get.find<GlobalSettingsService>();
     final base = ThemeData(
       colorSchemeSeed: Colors.brown,
       useMaterial3: true,
       visualDensity: VisualDensity.comfortable,
     );
-    return GetMaterialApp(
-      title: 'Adventure Crafter',
-      debugShowCheckedModeBanner: false,
-      theme: base.copyWith(
-        textTheme: base.textTheme.apply(fontFamilyFallback: kChineseFontFallback),
-      ),
-      home: const AdventureIndexPage(),
+    final dark = base.copyWith(
+      colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.brown, brightness: Brightness.dark),
     );
+    return Obx(() => GetMaterialApp(
+          title: 'Adventure Crafter',
+          debugShowCheckedModeBanner: false,
+          translations: AppTranslations(),
+          fallbackLocale: const Locale('en', 'US'),
+          locale: settings.uiLanguage.value == 'en'
+              ? const Locale('en', 'US')
+              : const Locale('zh', 'CN'),
+          theme: base.copyWith(
+            textTheme:
+                base.textTheme.apply(fontFamilyFallback: kChineseFontFallback),
+          ),
+          darkTheme: dark.copyWith(
+            textTheme:
+                dark.textTheme.apply(fontFamilyFallback: kChineseFontFallback),
+          ),
+          themeMode:
+              settings.darkMode.value ? ThemeMode.dark : ThemeMode.light,
+          home: const AdventureIndexPage(),
+        ));
   }
 }

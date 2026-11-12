@@ -7,6 +7,7 @@ import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
 import '../../services/settings_service.dart';
 import '../adventure/adventure_page.dart';
+import '../tables/list_roll_lookup.dart';
 import '../widgets/common.dart';
 
 class PagedListController extends GetxController {
@@ -89,11 +90,11 @@ class PagedListController extends GetxController {
     final roll = roll100();
     final rowIdx = rowForRoll(roll);
     final entry = list.entryById(list.pages[pageIdx][rowIdx]);
-    final label = isPlotline ? '情节线列表掷骰' : '角色列表掷骰';
+    final label = isPlotline ? 'Plotline list'.tr : 'Character list'.tr;
     final detail = [
-      if (pageDie != null) '1d${list.pages.length}=$pageDie（第${pageIdx + 1}页）',
-      '1d100=$roll → 第${rowIdx + 1}行（${rowIdx * 4 + 1}~${rowIdx * 4 + 4}）',
-      entry != null ? '→ ${entry.name}' : '→ 空行',
+      if (pageDie != null) '1d${list.pages.length}=$pageDie',
+      '1d100=$roll → ${rowIdx * 4 + 1}~${rowIdx * 4 + 4}',
+      entry != null ? '→ ${entry.name}' : '→ ${'empty'.tr}',
     ].join('，');
     service.logRoll(label, detail);
     return (pageIdx: pageIdx, rowIdx: rowIdx);
@@ -122,12 +123,12 @@ class PagedListPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Row(
                 children: [
-                  Text(isPlotline ? '情节线列表' : '角色列表',
+                  Text(isPlotline ? 'Plotline list'.tr : 'Character list'.tr,
                       style: Theme.of(context).textTheme.titleMedium),
                   const Spacer(),
                   OutlinedButton.icon(
                     icon: const Icon(Icons.add),
-                    label: Text(isPlotline ? '新情节线' : '新角色'),
+                    label: Text(isPlotline ? 'New plotline'.tr : 'New character'.tr),
                     onPressed: () async {
                       final result = await _entryDialog(context, c, null);
                       if (result == null) return;
@@ -140,8 +141,18 @@ class PagedListPage extends StatelessWidget {
                   const SizedBox(width: 8),
                   FilledButton.icon(
                     icon: const Icon(Icons.casino),
-                    label: const Text('掷骰'),
+                    label: Text('Roll'.tr),
                     onPressed: () {
+                      final settings = Get.find<GlobalSettingsService>();
+                      if (settings.getPhysicalDiceModeEnabled) {
+                        showListRollLookup(
+                          context,
+                          title: isPlotline ? 'Plotline list'.tr : 'Character list'.tr,
+                          list: c.list,
+                          defaults: defaults,
+                        );
+                        return;
+                      }
                       final r = c.rollRow();
                       if (r == null) return;
                       final entry = c.list.entryById(
@@ -150,10 +161,11 @@ class PagedListPage extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (dialogContext) => AlertDialog(
-                          title: Text('掷骰结果：第${r.pageIdx + 1}页 第${r.rowIdx + 1}行'),
+                          title: Text('Roll result: page @page, row @row'
+                              .trParams({'page': '${r.pageIdx + 1}', 'row': '${r.rowIdx + 1}'})),
                           content: Text(entry != null
-                              ? '${entry.name}${c.list.weightOf(entry.id) > 1 ? '（当前权重 x${c.list.weightOf(entry.id)}）' : ''}\n\n如需提升权重，请手动对该条目 +1。'
-                              : '空行 → 默认提示：$hint'),
+                              ? '${entry.name}${c.list.weightOf(entry.id) > 1 ? '(current weight x@weight)'.trParams({'weight': '${c.list.weightOf(entry.id)}'}) : ''}${'To raise the weight, manually +1 the entry.'.tr}'
+                              : 'Empty row → default hint: @hint'.trParams({'hint': hint})),
                           actions: [
                             if (entry == null && hint == '新情节线')
                               TextButton(
@@ -164,7 +176,7 @@ class PagedListPage extends StatelessWidget {
                                   if (result == null) return;
                                   c.addEntry(result.$1, result.$2);
                                 },
-                                child: const Text('新建情节线'),
+                                child: Text('New plotline'.tr),
                               ),
                             if (entry == null && hint == '新角色')
                               TextButton(
@@ -172,11 +184,11 @@ class PagedListPage extends StatelessWidget {
                                   Navigator.pop(dialogContext);
                                   goToAdventureTab(4);
                                 },
-                                child: const Text('前往角色铸造'),
+                                child: Text('Go to character casting'.tr),
                               ),
                             TextButton(
                               onPressed: () => Navigator.pop(dialogContext),
-                              child: const Text('关闭'),
+                              child: Text('Close'.tr),
                             ),
                           ],
                         ),
@@ -193,7 +205,11 @@ class PagedListPage extends StatelessWidget {
                 children: [
                   for (var p = 0; p < list.pages.length; p++)
                     ChoiceChip(
-                      label: Text('第${p + 1}页 (${p * 25 + 1}-${p * 25 + 25})'),
+                      label: Text('Page @page (@from-@to)'.trParams({
+                        'page': '${p + 1}',
+                        'from': '${p * 25 + 1}',
+                        'to': '${p * 25 + 25}',
+                      })),
                       selected: p == pageIndex,
                       onSelected: (_) => c.page.value = p,
                     ),
@@ -220,7 +236,7 @@ class PagedListPage extends StatelessWidget {
                           ? Text(hint, style: const TextStyle(color: Colors.grey))
                           : Text(entry.name),
                       subtitle: entry != null && !isPlotline && entry.trait != null
-                          ? Text('特质：${entry.trait}',
+                          ? Text('${'Special trait'.tr}：${entry.trait}',
                               maxLines: 1, overflow: TextOverflow.ellipsis)
                           : (entry != null && entry.notes.isNotEmpty
                               ? Text(entry.notes,
@@ -243,21 +259,29 @@ class PagedListPage extends StatelessWidget {
                               children: [
                                 weightBadge(c.list.weightOf(entry.id)),
                                 IconButton(
-                                  tooltip: '权重 +1（占下一个空行）',
+                                  tooltip: 'Weight +1 (takes next empty row)'.tr,
                                   icon: const Icon(Icons.add_circle_outline, size: 20),
                                   onPressed: () {
                                     if (!c.incWeight(entry.id)) {
-                                      showSnack(context,
-                                          '已达权重上限（${c.settings.allowUnlimitedListCount.value ? '不限制' : '3'}）。可在设置中解除上限。');
+                                      showSnack(
+                                          context,
+                                          'Weight cap reached (@max). You can lift the cap in Settings.'
+                                              .trParams({
+                                            'max': c.settings
+                                                    .allowUnlimitedListCount.value
+                                                ? '∞'
+                                                : '3',
+                                          }));
                                     }
                                   },
                                 ),
                                 IconButton(
-                                  tooltip: '权重 -1',
+                                  tooltip: 'Weight -1'.tr,
                                   icon: const Icon(Icons.remove_circle_outline, size: 20),
                                   onPressed: () {
                                     if (!c.decWeight(entry.id)) {
-                                      showSnack(context, '该条目没有占用行。');
+                                      showSnack(context,
+                                          'This entry occupies no row.'.tr);
                                     }
                                   },
                                 ),
@@ -291,8 +315,8 @@ class PagedListPage extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(entry == null
-            ? (c.isPlotline ? '新情节线' : '新角色')
-            : '编辑条目'),
+            ? (c.isPlotline ? 'New plotline'.tr : 'New character'.tr)
+            : 'Edit entry'.tr),
         content: SizedBox(
           width: 420,
           child: SingleChildScrollView(
@@ -302,31 +326,34 @@ class PagedListPage extends StatelessWidget {
                 TextField(
                     controller: nameCtrl,
                     autofocus: true,
-                    decoration: const InputDecoration(
-                        labelText: '名称', border: OutlineInputBorder())),
+                    decoration: InputDecoration(
+                        labelText: 'Name'.tr,
+                        border: const OutlineInputBorder())),
                 const SizedBox(height: 8),
                 TextField(
                     controller: notesCtrl,
-                    decoration: const InputDecoration(
-                        labelText: '笔记', border: OutlineInputBorder())),
+                    decoration: InputDecoration(
+                        labelText: 'Notes'.tr,
+                        border: const OutlineInputBorder())),
                 if (!c.isPlotline) ...[
                   const SizedBox(height: 8),
                   TextField(
                       controller: traitCtrl,
-                      decoration: const InputDecoration(
-                          labelText: '特殊特质', border: OutlineInputBorder())),
+                      decoration: InputDecoration(
+                          labelText: 'Special trait'.tr,
+                          border: const OutlineInputBorder())),
                   const SizedBox(height: 8),
                   TextField(
                       controller: idCtrl,
-                      decoration: const InputDecoration(
-                          labelText: '身份（多个用「，」分隔）',
-                          border: OutlineInputBorder())),
+                      decoration: InputDecoration(
+                          labelText: 'Identities (separate with ，)'.tr,
+                          border: const OutlineInputBorder())),
                   const SizedBox(height: 8),
                   TextField(
                       controller: descCtrl,
-                      decoration: const InputDecoration(
-                          labelText: '描述词（多个用「，」分隔）',
-                          border: OutlineInputBorder())),
+                      decoration: InputDecoration(
+                          labelText: 'Descriptors (separate with ，)'.tr,
+                          border: const OutlineInputBorder())),
                 ],
               ],
             ),
@@ -337,16 +364,18 @@ class PagedListPage extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 final ok = await confirmDialog(
-                    context, '删除条目', '删除「${entry.name}」及其全部占用行（权重随之消失）。确定？');
+                    context,
+                    'Delete entry'.tr,
+                    'Delete "@name" and all its occupied rows (weight is lost). Are you sure?'
+                        .trParams({'name': entry.name}));
                 if (!ok) return;
                 c.deleteEntry(entry.id);
                 if (!context.mounted) return;
                 Navigator.pop(context);
               },
-              child: const Text('删除',
-                  style: TextStyle(color: Colors.red)),
+              child: Text('Delete'.tr, style: const TextStyle(color: Colors.red)),
             ),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel'.tr)),
           FilledButton(
             onPressed: () {
               if (nameCtrl.text.trim().isEmpty) return;
@@ -358,7 +387,7 @@ class PagedListPage extends StatelessWidget {
                 c.isPlotline ? null : split(descCtrl.text),
               ]);
             },
-            child: const Text('保存'),
+            child: Text('Save'.tr),
           ),
         ],
       ),

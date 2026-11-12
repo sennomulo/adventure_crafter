@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 Widget weightBadge(int count) {
   if (count <= 1) return const SizedBox.shrink();
@@ -20,8 +21,8 @@ Future<bool> confirmDialog(BuildContext context, String title, String content) a
       title: Text(title),
       content: Text(content),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('取消')),
-        FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('确定')),
+        TextButton(onPressed: () => Navigator.pop(context, false), child: Text('Cancel'.tr)),
+        FilledButton(onPressed: () => Navigator.pop(context, true), child: Text('OK'.tr)),
       ],
     ),
   );
@@ -42,8 +43,8 @@ Future<String?> textInputDialog(BuildContext context, String title,
         onSubmitted: (v) => Navigator.pop(context, v),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
-        FilledButton(onPressed: () => Navigator.pop(context, controller.text), child: const Text('确定')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel'.tr)),
+        FilledButton(onPressed: () => Navigator.pop(context, controller.text), child: Text('OK'.tr)),
       ],
     ),
   );

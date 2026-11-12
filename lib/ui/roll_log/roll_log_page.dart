@@ -22,19 +22,19 @@ class RollLogPage extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Row(
               children: [
-                Text('掷骰日志（本冒险）',
+                Text('Roll log (this adventure)'.tr,
                     style: Theme.of(context).textTheme.titleMedium),
                 const Spacer(),
                 TextButton(
                   onPressed: () => Get.find<RollLogService>().clear(),
-                  child: const Text('清空'),
+                  child: Text('Clear'.tr),
                 ),
               ],
             ),
           ),
           Expanded(
             child: records.isEmpty
-                ? const Center(child: Text('暂无掷骰记录'))
+                ? Center(child: Text('No roll records'.tr))
                 : ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: records.length,

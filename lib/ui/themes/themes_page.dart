@@ -5,12 +5,14 @@ import '../../data/rules.dart';
 import '../../helpers/engine.dart';
 import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
+import '../../services/settings_service.dart';
+import '../tables/lookup_dialogs.dart';
 import '../widgets/common.dart';
 
 class ThemesPage extends StatelessWidget {
   const ThemesPage({super.key});
 
-  static const _slotDieLabels = ['主题骰 1-4', '主题骰 5-7', '主题骰 8-9', '主题骰 10（交替）', '主题骰 10（交替）'];
+  static const _slotDieLabels = ['1-4', '5-7', '8-9', '10 (alt)', '10 (alt)'];
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +25,24 @@ class ThemesPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
             children: [
-              Text('冒险主题（按优先级 1-5）',
+              Text('Adventure themes (priority 1-5)'.tr,
                   style: Theme.of(context).textTheme.titleMedium),
               const Spacer(),
               Tooltip(
-                message: '每次点击掷 1d10 并装填一个优先位，未装填完可反复点击',
+                message:
+                    'Each click rolls 1d10 and fills one priority slot; click again for the next theme'
+                        .tr,
                 child: FilledButton.tonalIcon(
                   icon: const Icon(Icons.casino),
-                  label: const Text('掷骰装配'),
-                  onPressed: () => _assemble(context, service),
+                  label: Text('Roll assembly'.tr),
+                  onPressed: () {
+                    final settings = Get.find<GlobalSettingsService>();
+                    if (settings.getPhysicalDiceModeEnabled) {
+                      showRandomThemeTableLookup(context, rules);
+                    } else {
+                      _assemble(context, service);
+                    }
+                  },
                 ),
               ),
             ],
@@ -45,7 +56,11 @@ class ThemesPage extends StatelessWidget {
               child: Obx(() {
                 final alternator = service.current.value!.alternator;
                 return Text(
-                  '主题交替计数器：主题骰掷出 10 时，使用当前第 $alternator 优先的主题，随后与第 ${alternator == 4 ? 5 : 4} 优先位自动交替。',
+                  'Theme alternation counter: when the theme die rolls 10, the theme currently at priority @n is used, then it alternates with priority @m.'
+                      .trParams({
+                    'n': '$alternator',
+                    'm': alternator == 4 ? '5' : '4',
+                  }),
                   style: Theme.of(context).textTheme.bodySmall,
                 );
               }),
@@ -66,11 +81,12 @@ class ThemesPage extends StatelessWidget {
                 return Card(
                   child: ListTile(
                     leading: CircleAvatar(child: Text('${i + 1}')),
-                    title: Text(set ? rules.themeName(themeId!) : '未设置'),
-                    subtitle: Text(_slotDieLabels[i]),
+                    title: Text(set ? rules.themeName(themeId!) : 'Unset'.tr),
+                    subtitle: Text(_slotDieLabels[i].tr),
                     trailing: set
                         ? IconButton(
-                            tooltip: '移除（其后优先位一并移除）',
+                            tooltip:
+                                'Remove (later priorities removed too)'.tr,
                             icon: const Icon(Icons.close),
                             onPressed: () {
                               themes.removeRange(i, themes.length);
@@ -79,7 +95,7 @@ class ThemesPage extends StatelessWidget {
                           )
                         : (next
                             ? DropdownButton<String>(
-                                hint: const Text('选择主题'),
+                                hint: Text('Pick theme'.tr),
                                 items: RulesService.themeOrder
                                     .where((t) => !themes.contains(t))
                                     .map((t) => DropdownMenuItem(
@@ -92,8 +108,8 @@ class ThemesPage extends StatelessWidget {
                                   service.save();
                                 },
                               )
-                            : const Text('先设置更高优先位',
-                                style: TextStyle(color: Colors.grey))),
+                            : Text('Set a higher priority first'.tr,
+                                style: const TextStyle(color: Colors.grey))),
                   ),
                 );
               },
@@ -108,7 +124,7 @@ class ThemesPage extends StatelessWidget {
     final rules = Get.find<RulesService>();
     final adv = service.current.value!;
     if (adv.themes.length >= 5) {
-      showSnack(context, '5 个优先位已全部设置。');
+      showSnack(context, 'All 5 priority slots are set.'.tr);
       return;
     }
     final slotIndex = adv.themes.length;
@@ -118,31 +134,31 @@ class ThemesPage extends StatelessWidget {
         .theme;
     final theme = randomThemeForRoll(rules, die, adv.themes.toSet());
     if (theme == null) {
-      showSnack(context, '无法生成未占用的主题。');
+      showSnack(context, 'Cannot generate an unused theme.'.tr);
       return;
     }
     final shifted = theme != direct;
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: Text('第${slotIndex + 1}优先掷骰'),
+        title: Text('Priority @slot roll'.trParams({'slot': '${slotIndex + 1}'})),
         content: Text(
-            '1d10=$die → ${shifted ? '掷出「${rules.themeName(direct)}」已被占用，环形顺延至' : ''}「${rules.themeName(theme)}」\n\n'
-            '确定装填为第${slotIndex + 1}优先？后续主题需再次点击「掷骰装配」。'),
+            '${shifted ? '1d10=@die → rolled "@direct" which is taken, ring-shifted to "@theme"'.trParams({'die': '$die', 'direct': rules.themeName(direct), 'theme': rules.themeName(theme)}) : '1d10=@die → "@theme"'.trParams({'die': '$die', 'theme': rules.themeName(theme)})}\n\n${'Fill this as priority @slot? Click "Roll assembly" again for the next theme.'.trParams({'slot': '${slotIndex + 1}'})}'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('取消'),
+            child: Text('Cancel'.tr),
           ),
           FilledButton(
             onPressed: () {
               adv.themes.add(theme);
-              service.logRoll('随机主题装配',
-                  '第${slotIndex + 1}优先：1d10=$die → ${rules.themeName(theme)}${shifted ? '（顺延）' : ''}');
+              service.logRoll(
+                  'Random theme assembly'.tr,
+                  '${'Priority @slot roll'.trParams({'slot': '${slotIndex + 1}'})}: 1d10=$die → ${rules.themeName(theme)}${shifted ? '(shifted)'.tr : ''}');
               service.save();
               Navigator.pop(dialogContext);
             },
-            child: const Text('确定装填'),
+            child: Text('Fill in'.tr),
           ),
         ],
       ),
