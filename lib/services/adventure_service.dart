@@ -40,6 +40,7 @@ class AdventureService extends GetxService {
   Future<void> save() async {
     final adv = current.value;
     if (adv == null) return;
+    current.refresh();
     await storage.write(adv.id, adv.toJsonString());
   }
 

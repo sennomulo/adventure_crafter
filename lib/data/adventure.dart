@@ -184,7 +184,7 @@ class Slot {
 }
 
 class TurningPoint {
-  final int index;
+  int index;
   int? plotlineId;
   String status;
   final List<Slot> slots;

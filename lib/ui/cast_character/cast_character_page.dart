@@ -15,6 +15,9 @@ class CastController extends GetxController {
   final trait = Rxn<NumberedEntry>();
   final identity = Rxn<NumberedEntry>();
   final descriptor = Rxn<NumberedEntry>();
+  final relatedRollResult = ''.obs;
+  final identityNotesCtrl = TextEditingController();
+  final descriptorNotesCtrl = TextEditingController();
 
   RulesService get rules => Get.find<RulesService>();
   AdventureService get service => Get.find<AdventureService>();
@@ -24,16 +27,43 @@ class CastController extends GetxController {
     if (which == 0) {
       traitDie.value = roll;
       trait.value = rules.entryAt(rules.traits, roll);
+      relatedRollResult.value = '';
       service.logRoll('角色铸造·特殊特质', '1d100=$roll → ${trait.value!.text}');
     } else if (which == 1) {
       identityDie.value = roll;
       identity.value = rules.entryAt(rules.identities, roll);
+      identityNotesCtrl.clear();
       service.logRoll('角色铸造·身份', '1d100=$roll → ${identity.value!.text}');
     } else {
       descriptorDie.value = roll;
       descriptor.value = rules.entryAt(rules.descriptors, roll);
+      descriptorNotesCtrl.clear();
       service.logRoll('角色铸造·描述词', '1d100=$roll → ${descriptor.value!.text}');
     }
+  }
+
+  void rollRelatedCharacter() {
+    final adv = service.current.value!;
+    final list = adv.characters;
+    if (list.pages.isEmpty) {
+      relatedRollResult.value = '（角色列表为空）';
+      return;
+    }
+    int pageIdx = 0;
+    var pageDesc = '';
+    if (list.pages.length > 1) {
+      final die = rollDie(list.pages.length);
+      pageIdx = die - 1;
+      pageDesc = '1d${list.pages.length}=$die（第${pageIdx + 1}页），';
+    }
+    final roll = roll100();
+    final rowIdx = rowForRoll(roll);
+    final entry = list.entryById(list.pages[pageIdx][rowIdx]);
+    final hint = rules.characterRowDefaults[rowIdx];
+    service.logRoll('角色铸造·关联角色掷骰',
+        '$pageDesc 1d100=$roll → 第${rowIdx + 1}行${entry == null ? '（空行）' : '：${entry.name}'}');
+    relatedRollResult.value =
+        '第${pageIdx + 1}页 第${rowIdx + 1}行：${entry != null ? entry.name : '空行 → $hint'}';
   }
 
   void addToCharacters(String name) {
@@ -45,8 +75,7 @@ class CastController extends GetxController {
       name: name,
       trait: trait.value?.text,
       identities: identity.value == null ? [] : [identity.value!.text],
-      descriptors:
-          descriptor.value == null ? [] : [descriptor.value!.text],
+      descriptors: descriptor.value == null ? [] : [descriptor.value!.text],
     ));
     chars.assignNextEmpty(id);
     service.save();
@@ -61,6 +90,9 @@ class CastController extends GetxController {
     trait.value = null;
     identity.value = null;
     descriptor.value = null;
+    relatedRollResult.value = '';
+    identityNotesCtrl.clear();
+    descriptorNotesCtrl.clear();
   }
 }
 
@@ -83,7 +115,8 @@ class CastCharacterPage extends StatelessWidget {
           const SizedBox(height: 12),
           _rollCard(context, c, 0, '第一步：特殊特质', c.trait.value, c.traitDie.value),
           _rollCard(context, c, 1, '第二步：身份', c.identity.value, c.identityDie.value),
-          _rollCard(context, c, 2, '第三步：描述词', c.descriptor.value, c.descriptorDie.value),
+          _rollCard(
+              context, c, 2, '第三步：描述词', c.descriptor.value, c.descriptorDie.value),
           const SizedBox(height: 8),
           Card(
             child: Padding(
@@ -153,16 +186,56 @@ class CastCharacterPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall),
               if (result.desc != null && result.desc!.isNotEmpty) ...[
                 const SizedBox(height: 4),
-                Text(result.desc!, style: Theme.of(context).textTheme.bodySmall),
+                Text(result.desc!,
+                    style: Theme.of(context).textTheme.bodySmall),
               ],
+              if (result.id == 'trait08')
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      OutlinedButton.icon(
+                        icon: const Icon(Icons.casino, size: 18),
+                        label: const Text('掷角色列表查询关联角色'),
+                        onPressed: () => c.rollRelatedCharacter(),
+                      ),
+                      if (c.relatedRollResult.value.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(c.relatedRollResult.value,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                    ],
+                  ),
+                ),
               if (result.rollTwo)
                 Container(
                   margin: const EdgeInsets.only(top: 6),
                   padding: const EdgeInsets.all(8),
                   width: double.infinity,
                   color: Colors.amber.shade100,
-                  child: const Text('此结果要求掷两个：请再掷一次并自行取用两个结果（软件不自动处理）。',
-                      style: TextStyle(fontSize: 12)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('此结果要求掷两个：请自行再掷（软件不自动重骰），并在下方记录两次结果。',
+                          style: TextStyle(fontSize: 12)),
+                      const SizedBox(height: 6),
+                      TextField(
+                        controller: which == 1
+                            ? c.identityNotesCtrl
+                            : c.descriptorNotesCtrl,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          hintText: which == 1
+                              ? '记录两次身份掷骰结果…'
+                              : '记录两次描述词掷骰结果…',
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
             ],
           ],

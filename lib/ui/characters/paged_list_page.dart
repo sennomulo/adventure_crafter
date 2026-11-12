@@ -106,10 +106,11 @@ class PagedListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tag = isPlotline ? 'plotlines' : 'characters';
+    final c = Get.isRegistered<PagedListController>(tag: tag)
+        ? Get.find<PagedListController>(tag: tag)
+        : Get.put(PagedListController(isPlotline: isPlotline), tag: tag);
     final rules = Get.find<RulesService>();
-    return GetBuilder<PagedListController>(
-      tag: tag,
-      builder: (c) => Obx(() {
+    return Obx(() {
         final list = c.list;
         final pageIndex = c.page.value.clamp(0, list.pages.length - 1);
         final defaults =
@@ -249,8 +250,7 @@ class PagedListPage extends StatelessWidget {
             ),
           ],
         );
-      }),
-    );
+    });
   }
 
   Future<(String, String, String?, List<String>?, List<String>?)?> _entryDialog(

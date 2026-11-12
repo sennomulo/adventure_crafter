@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../services/adventure_service.dart';
-import '../../services/settings_service.dart';
 import '../adventure/adventure_page.dart';
 import '../global_settings/settings_page.dart';
 import '../roll_log/roll_log_page.dart';
@@ -21,14 +20,24 @@ class AdventureIndexPage extends StatelessWidget {
           IconButton(
             tooltip: '掷骰日志',
             icon: const Icon(Icons.history),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const RollLogPage())),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => Scaffold(
+                          appBar: AppBar(title: const Text('掷骰日志')),
+                          body: const RollLogPage(),
+                        ))),
           ),
           IconButton(
             tooltip: '设置',
             icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const SettingsPage())),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => Scaffold(
+                          appBar: AppBar(title: const Text('设置')),
+                          body: const SettingsPage(),
+                        ))),
           ),
           const SizedBox(width: 8),
         ],
@@ -97,7 +106,6 @@ class AdventureIndexPage extends StatelessWidget {
           if (name == null) return;
           final adv = await service.create(name.trim());
           await service.open(adv.id);
-          Get.find<GlobalSettingsService>();
           if (!context.mounted) return;
           Navigator.push(context,
               MaterialPageRoute(builder: (_) => const AdventurePage()));
