@@ -156,8 +156,8 @@ class AppTranslations extends Translations {
     'Not rolled yet': '（未掷）',
     'Change to "None"': '改为「无」',
     'Change to most likely': '改为最合理',
-    'Theme die @die (@theme)　plot point die @roll　→　':
-        '主题骰 @die（@theme）　情节点骰 @roll　→　',
+    'Theme die @die (@theme)': '主题骰 @die（@theme）',
+    'plot point die @roll': '情节点骰 @roll',
     'Roll for meta plot point': '为元情节点掷骰',
     'Meta plot point (1d100=@roll): @title': '元情节点（1d100=@roll）：@title',
     'View original text': '查看原文',
@@ -220,6 +220,11 @@ class AppTranslations extends Translations {
     // physical dice lookups
     'Physical dice: roll yourself and read the result from the table.':
         '实体骰：请自行掷骰并在下表查找结果。',
+    'Physical dice: pick the row matching your roll to confirm.':
+        '实体骰：点击与你的出目相符的行即可确认。',
+    'Physical pick': '实体骰选定',
+    'Physical pick p@p, r@r → @result': '实体骰选定 第@p页 第@r行 → @result',
+    'Alternator': '交替位',
     'Paged list: roll 1d@pages to pick a page, then 1d100 for the row (row n covers 4n-3 ~ 4n).':
         '多页列表：先掷 1d@pages 选页，再掷 1d100 定行（行n覆盖4n−3~4n）。',
     'Page @page': '第@page页',
@@ -229,7 +234,6 @@ class AppTranslations extends Translations {
     '5-7 → priority 2 (@theme)': '5-7 → 第2优先（@theme）',
     '8-9 → priority 3 (@theme)': '8-9 → 第3优先（@theme）',
     '10 → alternator (@theme)': '10 → 交替位（@theme）',
-    'Open plot point table': '打开情节点表',
     'Random theme table (1d10)': '随机主题表（1d10）',
     'Rolling plotline list (physical)': '情节线列表掷骰',
     'Rolling character list (physical)': '角色列表掷骰',
@@ -241,5 +245,6 @@ class AppTranslations extends Translations {
     'Casting · descriptor': '角色铸造·描述词',
     'Casting · related character roll': '角色铸造·关联角色掷骰',
     'Casting': '角色铸造',
+    'Choose the most fitting character': '选择最合理的角色',
   };
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/rules.dart';
+import '../../helpers/engine.dart';
 
 Future<PlotPoint?> showPlotPointLookup(
     BuildContext context, RulesService rules) async {
@@ -104,8 +105,10 @@ class _PlotPointLookupDialogState extends State<_PlotPointLookupDialog> {
   }
 }
 
+/// [onSelect] 非空时进入"实体骰确认"模式：条目后出现确认按钮，点击即确认出目。
 Future<NumberedEntry?> showNumberedLookup(BuildContext context,
-    List<NumberedEntry> list, String title) async {
+    List<NumberedEntry> list, String title,
+    {void Function(NumberedEntry e)? onSelect}) async {
   return showDialog<NumberedEntry>(
     context: context,
     builder: (context) => AlertDialog(
@@ -113,29 +116,58 @@ Future<NumberedEntry?> showNumberedLookup(BuildContext context,
       content: SizedBox(
         width: 480,
         height: 520,
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (context, i) {
-            final e = list[i];
-            return ExpansionTile(
-              dense: true,
-              title: Text('${e.min}-${e.max}　${e.text}'),
-              subtitle: e.desc == null
-                  ? null
-                  : Text('Tap to view original text'.tr,
-                      style: const TextStyle(fontSize: 11, color: Colors.grey)),
-              children: [
-                if (e.desc != null)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(e.desc!),
-                    ),
-                  ),
-              ],
-            );
-          },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (onSelect != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                    'Physical dice: pick the row matching your roll to confirm.'
+                        .tr,
+                    style: Theme.of(context).textTheme.bodySmall),
+              ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, i) {
+                  final e = list[i];
+                  return ExpansionTile(
+                    dense: true,
+                    title: Text('${e.min}-${e.max}　${e.text}'),
+                    subtitle: e.desc == null
+                        ? null
+                        : Text('Tap to view original text'.tr,
+                            style: TextStyle(
+                                fontSize: 11,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant)),
+                    trailing: onSelect == null
+                        ? null
+                        : IconButton(
+                            tooltip: 'Select'.tr,
+                            icon: const Icon(Icons.check_circle_outline),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              onSelect(e);
+                            },
+                          ),
+                    children: [
+                      if (e.desc != null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(e.desc!),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
       actions: [
@@ -145,7 +177,8 @@ Future<NumberedEntry?> showNumberedLookup(BuildContext context,
   );
 }
 
-void showMetaTable(BuildContext context, RulesService rules) {
+void showMetaTable(BuildContext context, RulesService rules,
+    {void Function(MetaPlotPoint meta)? onPick}) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -153,22 +186,48 @@ void showMetaTable(BuildContext context, RulesService rules) {
       content: SizedBox(
         width: 480,
         height: 420,
-        child: ListView(
-          children: rules.metaPlotPoints
-              .map((m) => ExpansionTile(
-                    dense: true,
-                    title: Text('${m.min}-${m.max}　${m.title}'),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(m.desc),
-                        ),
-                      ),
-                    ],
-                  ))
-              .toList(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (onPick != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                    'Physical dice: pick the row matching your roll to confirm.'
+                        .tr,
+                    style: Theme.of(context).textTheme.bodySmall),
+              ),
+            Expanded(
+              child: ListView(
+                children: rules.metaPlotPoints
+                    .map((m) => ExpansionTile(
+                          dense: true,
+                          title: Text('${m.min}-${m.max}　${m.title}'),
+                          trailing: onPick == null
+                              ? null
+                              : IconButton(
+                                  tooltip: 'Select'.tr,
+                                  icon: const Icon(Icons.check_circle_outline),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    onPick(m);
+                                  },
+                                ),
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(m.desc),
+                              ),
+                            ),
+                          ],
+                        ))
+                    .toList(),
+              ),
+            ),
+          ],
         ),
       ),
       actions: [
@@ -244,12 +303,23 @@ void showRandomThemeTableLookup(BuildContext context, RulesService rules) {
   );
 }
 
-void showPhysicalSlotLookup(
-    BuildContext context, RulesService rules, List<String> themes) {
-  final alternator = 4;
-  String themeAt(int idx) =>
-      idx < themes.length ? rules.themeName(themes[idx]) : 'Unset'.tr;
-  showDialog(
+/// 实体骰模式的主题骰映射表：玩家掷 1d10 后点选对应行即确认，
+/// 确认后由调用方打开情节点表选择情节点。
+/// [alternator] 为冒险当前的交替指针（1~4），用于"10 → 交替位"行。
+Future<void> showPhysicalSlotLookup(
+  BuildContext context,
+  RulesService rules,
+  List<String> themes,
+  int alternator, {
+  required void Function(int die, String themeId) onSelected,
+}) async {
+  final rows = [
+    ('1-4', 1, '1-4 → priority 1 (@theme)'),
+    ('5-7', 5, '5-7 → priority 2 (@theme)'),
+    ('8-9', 8, '8-9 → priority 3 (@theme)'),
+    ('10', 10, '10 → alternator (@theme)'),
+  ];
+  await showDialog(
     context: context,
     builder: (dialogContext) => AlertDialog(
       title: Text('Theme die (1d10)'.tr),
@@ -259,30 +329,27 @@ void showPhysicalSlotLookup(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Physical dice: roll yourself and read the result from the table.'
+            Text('Physical dice: pick the row matching your roll to confirm.'
                 .tr),
             const SizedBox(height: 8),
-            ListTile(
-                dense: true,
-                leading: const SizedBox(width: 56, child: Text('1-4')),
-                title: Text('1-4 → priority 1 (@theme)'
-                    .trParams({'theme': themeAt(0)}))),
-            ListTile(
-                dense: true,
-                leading: const SizedBox(width: 56, child: Text('5-7')),
-                title: Text('5-7 → priority 2 (@theme)'
-                    .trParams({'theme': themeAt(1)}))),
-            ListTile(
-                dense: true,
-                leading: const SizedBox(width: 56, child: Text('8-9')),
-                title: Text('8-9 → priority 3 (@theme)'
-                    .trParams({'theme': themeAt(2)}))),
-            ListTile(
-                dense: true,
-                leading: const SizedBox(width: 56, child: Text('10')),
-                title: Text('10 → alternator (@theme)'.trParams({
-                  'theme': themeAt(alternator - 1),
-                }))),
+            for (final (label, die, key) in rows)
+              Builder(builder: (context) {
+                final theme = themeForDieRoll(rules, themes, die, alternator);
+                final themeLabel =
+                    theme == null ? 'Unset'.tr : rules.themeName(theme);
+                return ListTile(
+                  dense: true,
+                  enabled: theme != null,
+                  leading: SizedBox(width: 56, child: Text(label)),
+                  title: Text(key.trParams({'theme': themeLabel})),
+                  onTap: theme == null
+                      ? null
+                      : () {
+                          Navigator.pop(dialogContext);
+                          onSelected(die, theme);
+                        },
+                );
+              }),
           ],
         ),
       ),
@@ -290,13 +357,6 @@ void showPhysicalSlotLookup(
         TextButton(
             onPressed: () => Navigator.pop(dialogContext),
             child: Text('Close'.tr)),
-        FilledButton(
-          onPressed: () {
-            Navigator.pop(dialogContext);
-            showPlotPointLookup(context, rules);
-          },
-          child: Text('Open plot point table'.tr),
-        ),
       ],
     ),
   );

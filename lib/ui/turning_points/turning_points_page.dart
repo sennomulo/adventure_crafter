@@ -71,6 +71,98 @@ class TurningPointsController extends GetxController {
     showMetaResult(context, meta, roll: roll);
   }
 
+  /// 实体骰模式：玩家在主题骰映射表中点选行确认主题，
+  /// 再在情节点表中选定情节点后写入槽位。
+  /// 联动：出目为交替位（10）时，交替指针翻转，记录本次使用的交替位主题。
+  void pickSlotPhysical(TurningPoint tp, int slotIdx, int die, String themeId,
+      PlotPoint pp, BuildContext context) {
+    final s = tp.slots[slotIdx];
+    s.themeId = themeId;
+    s.plotPointId = pp.id;
+    s.metaId = null;
+    s.metaRoll = null;
+    if (die == 10) {
+      adv.alternator = adv.alternator == 4 ? 5 : 4;
+      service.logRoll('Theme die (1d10)'.tr,
+          '${'Physical pick'.tr} → ${rules.themeName(themeId)}（${'Alternator'.tr}）');
+    } else {
+      service.logRoll('Theme die (1d10)'.tr,
+          '${'Physical pick'.tr} → ${rules.themeName(themeId)}');
+    }
+    service.logRoll(
+        'Plot point roll'.tr,
+        '${rules.themeName(themeId)} → ${pp.id == 'meta' ? 'Meta plot point triggered (not rolled)'.tr : pp.title}');
+    changed();
+    if (pp.id == 'meta' && context.mounted) {
+      showSnack(context,
+          'Meta plot point triggered: click "Roll for meta plot point" in this slot.'
+              .tr);
+    }
+  }
+
+  /// 实体骰模式：玩家在元情节点表中点选条目，确认该出目。
+  void pickMeta(
+      TurningPoint tp, int slotIdx, MetaPlotPoint meta, BuildContext context) {
+    final s = tp.slots[slotIdx];
+    s.metaId = meta.id;
+    s.metaRoll = null;
+    service.logRoll(
+        'Meta plot point'.tr, '${'Physical pick'.tr} → ${meta.title}');
+    changed();
+    showMetaResult(context, meta);
+  }
+
+  /// 实体骰模式：玩家在情节线列表查询表中点选行，确认聚焦情节线。
+  void pickFocusFromLookup(
+      TurningPoint tp, BuildContext context, ListEntry? entry, int rowIdx) {
+    if (entry != null) {
+      service.logRoll('Rolling focus plotline'.tr,
+          '${'Physical pick'.tr} → ${entry.name}');
+      tp.plotlineId = entry.id;
+      changed();
+      showSnack(
+          context,
+          'Focused plotline: @name. To raise its weight, manually +1 on the Plotlines page.'
+              .trParams({'name': entry.name}));
+      return;
+    }
+    // 空行：按默认提示处理（与随机掷骰的空行分支一致）
+    handleFocusEmptyRow(tp, context, rowIdx);
+  }
+
+  void handleFocusEmptyRow(TurningPoint tp, BuildContext context, int rowIdx) {
+    final hint = rowIdx < 0 ? '' : rules.rowDefault(true, rowIdx);
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title:
+            Text('Empty row rolled (row @row)'.trParams({'row': '${rowIdx + 1}'})),
+        content: Text('Default hint: @hint'.trParams({'hint': hint})),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text('Keep unfocused'.tr),
+          ),
+          if (hint == '新情节线')
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                goToAdventureTab(1);
+              },
+              child: Text('Go to plotline list'.tr),
+            ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              await _pickFocusManually(tp, context);
+            },
+            child: Text('Pick the most likely plotline'.tr),
+          ),
+        ],
+      ),
+    );
+  }
+
   void setNone(TurningPoint tp, int slotIdx) {
     final s = tp.slots[slotIdx];
     s.plotPointId = 'none';
@@ -114,36 +206,7 @@ class TurningPointsController extends GetxController {
               .trParams({'name': entry.name}));
       return;
     }
-    final hint = rules.rowDefault(true, rowIdx);
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title:
-            Text('Empty row rolled (row @row)'.trParams({'row': '${rowIdx + 1}'})),
-        content: Text('Default hint: @hint'.trParams({'hint': hint})),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: Text('Keep unfocused'.tr),
-          ),
-          if (hint == '新情节线')
-            TextButton(
-              onPressed: () {
-                Navigator.pop(dialogContext);
-                goToAdventureTab(1);
-              },
-              child: Text('Go to plotline list'.tr),
-            ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.pop(dialogContext);
-              await _pickFocusManually(tp, context);
-            },
-            child: Text('Pick the most likely plotline'.tr),
-          ),
-        ],
-      ),
-    );
+    handleFocusEmptyRow(tp, context, rowIdx);
   }
 
   Future<void> _pickFocusManually(TurningPoint tp, BuildContext context) async {
@@ -368,6 +431,9 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                                   title: 'Plotline list'.tr,
                                   list: c.adv.plotlines,
                                   defaults: c.rules.plotlineRowDefaults,
+                                  onSelect: (entry, pageIdx, rowIdx) => c
+                                      .pickFocusFromLookup(
+                                          widget.tp, context, entry, rowIdx),
                                 );
                               } else {
                                 c.rollFocus(widget.tp, context);
@@ -425,7 +491,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                         margin: const EdgeInsets.only(top: 4),
                         padding: const EdgeInsets.all(10),
                         width: double.infinity,
-                        color: Colors.deepOrange.shade50,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
                         child: Text(
                             '"Conclusion": include whatever is needed to end this plotline, and remove the plotline from the plotline list yourself.'
                                 .tr,
@@ -468,6 +534,13 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
     final meta = widget.c.rules.metaById(s.metaId);
     final themeLabel =
         s.themeId == null ? '' : widget.c.rules.themeName(s.themeId!);
+    final diceDesc = [
+      if (s.themeDie != null)
+        'Theme die @die (@theme)'
+            .trParams({'die': '${s.themeDie}', 'theme': themeLabel}),
+      if (s.roll != null)
+        'plot point die @roll'.trParams({'roll': '${s.roll}'}),
+    ].join('　');
     final settings = Get.find<GlobalSettingsService>();
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -487,7 +560,19 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                   onPressed: () {
                     if (settings.getPhysicalDiceModeEnabled) {
                       showPhysicalSlotLookup(
-                          context, widget.c.rules, widget.c.adv.themes);
+                        context,
+                        widget.c.rules,
+                        widget.c.adv.themes,
+                        widget.c.adv.alternator,
+                        onSelected: (die, themeId) async {
+                          final pp =
+                              await showPlotPointLookup(context, widget.c.rules);
+                          if (pp == null) return;
+                          if (!context.mounted) return;
+                          widget.c.pickSlotPhysical(
+                              widget.tp, i, die, themeId, pp, context);
+                        },
+                      );
                       return;
                     }
                     widget.c.rollSlot(widget.tp, i, context);
@@ -505,10 +590,12 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
               ],
             ),
             if (pp == null)
-              Text('Not rolled yet'.tr, style: const TextStyle(color: Colors.grey))
+              Text('Not rolled yet'.tr,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant))
             else ...[
               Text(
-                  '${s.themeDie == null ? '' : 'Theme die @die (@theme)　plot point die @roll　→　'.trParams({'die': '${s.themeDie}', 'theme': themeLabel, 'roll': '${s.roll}'})}${pp.title}',
+                  diceDesc.isEmpty ? pp.title : '$diceDesc　→　${pp.title}',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               if (s.plotPointId != 'meta' && pp.desc.isNotEmpty)
                 Padding(
@@ -525,7 +612,9 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                           label: Text('Roll for meta plot point'.tr),
                           onPressed: () {
                             if (settings.getPhysicalDiceModeEnabled) {
-                              showMetaTable(context, widget.c.rules);
+                              showMetaTable(context, widget.c.rules,
+                                  onPick: (meta) => widget.c
+                                      .pickMeta(widget.tp, i, meta, context));
                               return;
                             }
                             widget.c.rollMeta(widget.tp, i, context);
@@ -539,8 +628,10 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                                     'roll': '${s.metaRoll}',
                                     'title': meta.title,
                                   }),
-                                  style: const TextStyle(
-                                      color: Colors.deepOrange,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                       fontWeight: FontWeight.bold)),
                             ),
                             TextButton(

@@ -233,7 +233,11 @@ class PagedListPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodySmall),
                       ),
                       title: entry == null
-                          ? Text(hint, style: const TextStyle(color: Colors.grey))
+                          ? Text(hint,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant))
                           : Text(entry.name),
                       subtitle: entry != null && !isPlotline && entry.trait != null
                           ? Text('${'Special trait'.tr}：${entry.trait}',
@@ -257,7 +261,7 @@ class PagedListPage extends StatelessWidget {
                           : Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                weightBadge(c.list.weightOf(entry.id)),
+                                weightBadge(context, c.list.weightOf(entry.id)),
                                 IconButton(
                                   tooltip: 'Weight +1 (takes next empty row)'.tr,
                                   icon: const Icon(Icons.add_circle_outline, size: 20),
@@ -373,7 +377,8 @@ class PagedListPage extends StatelessWidget {
                 if (!context.mounted) return;
                 Navigator.pop(context);
               },
-              child: Text('Delete'.tr, style: const TextStyle(color: Colors.red)),
+              child: Text('Delete'.tr,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error)),
             ),
           TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel'.tr)),
           FilledButton(

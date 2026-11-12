@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Widget weightBadge(int count) {
+Widget weightBadge(BuildContext context, int count) {
   if (count <= 1) return const SizedBox.shrink();
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
     decoration: BoxDecoration(
-      color: Colors.deepOrange.shade100,
+      color: Theme.of(context).colorScheme.secondaryContainer,
       borderRadius: BorderRadius.circular(10),
     ),
     child: Text('x$count',

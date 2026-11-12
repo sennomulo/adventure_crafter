@@ -6,7 +6,6 @@ import '../../data/rules.dart';
 import '../../helpers/utils.dart';
 import '../../services/adventure_service.dart';
 import '../../services/settings_service.dart';
-import '../adventure/adventure_page.dart';
 import '../tables/list_roll_lookup.dart';
 import '../tables/lookup_dialogs.dart';
 import '../widgets/common.dart';
@@ -19,7 +18,6 @@ class CastController extends GetxController {
   final identity = Rxn<NumberedEntry>();
   final descriptor = Rxn<NumberedEntry>();
   final relatedRollResult = ''.obs;
-  final relatedRollIsNewCharacter = false.obs;
   final identityHistory = <String>[].obs;
   final descriptorHistory = <String>[].obs;
 
@@ -32,7 +30,6 @@ class CastController extends GetxController {
       traitDie.value = roll;
       trait.value = rules.entryAt(rules.traits, roll);
       relatedRollResult.value = '';
-      relatedRollIsNewCharacter.value = false;
       service.logRoll(
           'Casting · special trait'.tr, '1d100=$roll → ${trait.value!.text}');
     } else if (which == 1) {
@@ -48,6 +45,13 @@ class CastController extends GetxController {
       service.logRoll(
           'Casting · descriptor'.tr, '1d100=$roll → ${descriptor.value!.text}');
     }
+  }
+
+  /// 书中规则：关联角色查询得到"新角色"时，结果转换为"选择最合理的角色"。
+  String _relatedResultText(ListEntry? entry, String hint) {
+    if (entry != null) return entry.name;
+    if (hint == '新角色') return 'Choose the most fitting character'.tr;
+    return '${'empty'.tr} → $hint';
   }
 
   void rollRelatedCharacter() {
@@ -70,12 +74,48 @@ class CastController extends GetxController {
     final hint = rules.characterRowDefaults[rowIdx];
     service.logRoll('Casting · related character roll'.tr,
         '$pageDesc 1d100=$roll → ${rowIdx + 1}${entry == null ? '（${'empty'.tr}）' : '：${entry.name}'}');
-    relatedRollIsNewCharacter.value = entry == null && hint == '新角色';
     relatedRollResult.value = 'page @page, row @row: @result'.trParams({
       'page': '${pageIdx + 1}',
       'row': '${rowIdx + 1}',
-      'result': entry != null ? entry.name : '${'empty'.tr} → $hint',
+      'result': _relatedResultText(entry, hint),
     });
+  }
+
+  /// 实体骰模式：玩家在角色列表查询表中点选行，确认关联角色结果。
+  void pickRelatedCharacter(ListEntry? entry, int pageIdx, int rowIdx) {
+    final hint = rules.characterRowDefaults[rowIdx];
+    final result = _relatedResultText(entry, hint);
+    service.logRoll('Casting · related character roll'.tr,
+        'Physical pick p@p, r@r → @result'.trParams({
+          'p': '${pageIdx + 1}',
+          'r': '${rowIdx + 1}',
+          'result': result,
+        }));
+    relatedRollResult.value = 'page @page, row @row: @result'.trParams({
+      'page': '${pageIdx + 1}',
+      'row': '${rowIdx + 1}',
+      'result': result,
+    });
+  }
+
+  /// 实体骰模式：玩家在特质/身份/描述词表中点选条目，确认该出目。
+  void pickManual(int which, NumberedEntry e) {
+    final label = which == 0
+        ? 'Casting · special trait'.tr
+        : which == 1
+            ? 'Casting · identity'.tr
+            : 'Casting · descriptor'.tr;
+    if (which == 0) {
+      trait.value = e;
+      relatedRollResult.value = '';
+    } else if (which == 1) {
+      identity.value = e;
+      identityHistory.add(e.text);
+    } else {
+      descriptor.value = e;
+      descriptorHistory.add(e.text);
+    }
+    service.logRoll(label, '${'Physical pick'.tr} → ${e.text}');
   }
 
   void addToCharacters(String name) {
@@ -104,7 +144,6 @@ class CastController extends GetxController {
     identity.value = null;
     descriptor.value = null;
     relatedRollResult.value = '';
-    relatedRollIsNewCharacter.value = false;
     identityHistory.clear();
     descriptorHistory.clear();
   }
@@ -171,7 +210,7 @@ class CastCharacterPage extends StatelessWidget {
           if (c.relatedRollResult.value.isNotEmpty) ...[
             const SizedBox(height: 8),
             Card(
-              color: Colors.blueGrey.shade50,
+              color: Theme.of(context).colorScheme.secondaryContainer,
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -179,14 +218,6 @@ class CastCharacterPage extends StatelessWidget {
                   children: [
                     Text(c.relatedRollResult.value,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
-                    if (c.relatedRollIsNewCharacter.value)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6),
-                        child: FilledButton.tonal(
-                          onPressed: () => goToAdventureTab(4),
-                          child: Text('Go to character casting'.tr),
-                        ),
-                      ),
                   ],
                 ),
               ),
@@ -248,7 +279,8 @@ class CastCharacterPage extends StatelessWidget {
                               : which == 1
                                   ? c.rules.identities
                                   : c.rules.descriptors,
-                          title);
+                          title,
+                          onSelect: (e) => c.pickManual(which, e));
                       return;
                     }
                     c.roll(which);
@@ -258,7 +290,9 @@ class CastCharacterPage extends StatelessWidget {
             ),
             if (result != null) ...[
               const SizedBox(height: 6),
-              Text('1d100=$die → ${result.text}',
+              Text(die == 0
+                      ? result.text
+                      : '1d100=$die → ${result.text}',
                   style: Theme.of(context).textTheme.titleSmall),
               if (result.desc != null && result.desc!.isNotEmpty) ...[
                 const SizedBox(height: 4),
@@ -282,6 +316,9 @@ class CastCharacterPage extends StatelessWidget {
                               title: 'Character list'.tr,
                               list: c.service.current.value!.characters,
                               defaults: c.rules.characterRowDefaults,
+                              onSelect: (entry, pageIdx, rowIdx) =>
+                                  c.pickRelatedCharacter(
+                                      entry, pageIdx, rowIdx),
                             );
                             return;
                           }
@@ -302,7 +339,7 @@ class CastCharacterPage extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 6),
                   padding: const EdgeInsets.all(8),
                   width: double.infinity,
-                  color: Colors.amber.shade100,
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
                   child: Text(
                       'This result requires rolling two: roll again yourself (the software does not handle it); every roll result is recorded in the list below.'
                           .tr),

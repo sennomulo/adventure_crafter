@@ -109,7 +109,10 @@ class ThemesPage extends StatelessWidget {
                                 },
                               )
                             : Text('Set a higher priority first'.tr,
-                                style: const TextStyle(color: Colors.grey))),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant))),
                   ),
                 );
               },
