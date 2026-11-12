@@ -1,0 +1,562 @@
+[
+ {
+  "id": "desc01",
+  "text": "为两个描述词掷骰",
+  "min": 1,
+  "max": 21,
+  "rollTwo": true
+ },
+ {
+  "id": "desc02",
+  "text": "丑陋",
+  "min": 22,
+  "max": 22,
+  "rollTwo": false
+ },
+ {
+  "id": "desc03",
+  "text": "美丽",
+  "min": 23,
+  "max": 23,
+  "rollTwo": false
+ },
+ {
+  "id": "desc04",
+  "text": "卑劣",
+  "min": 24,
+  "max": 24,
+  "rollTwo": false
+ },
+ {
+  "id": "desc05",
+  "text": "甜美",
+  "min": 25,
+  "max": 25,
+  "rollTwo": false
+ },
+ {
+  "id": "desc06",
+  "text": "不寻常",
+  "min": 26,
+  "max": 26,
+  "rollTwo": false
+ },
+ {
+  "id": "desc07",
+  "text": "平凡",
+  "min": 27,
+  "max": 27,
+  "rollTwo": false
+ },
+ {
+  "id": "desc08",
+  "text": "聪慧",
+  "min": 28,
+  "max": 28,
+  "rollTwo": false
+ },
+ {
+  "id": "desc09",
+  "text": "无知",
+  "min": 29,
+  "max": 29,
+  "rollTwo": false
+ },
+ {
+  "id": "desc10",
+  "text": "受过教育",
+  "min": 30,
+  "max": 30,
+  "rollTwo": false
+ },
+ {
+  "id": "desc11",
+  "text": "熟练",
+  "min": 31,
+  "max": 31,
+  "rollTwo": false
+ },
+ {
+  "id": "desc12",
+  "text": "受过训练",
+  "min": 32,
+  "max": 32,
+  "rollTwo": false
+ },
+ {
+  "id": "desc13",
+  "text": "粗鲁",
+  "min": 33,
+  "max": 33,
+  "rollTwo": false
+ },
+ {
+  "id": "desc14",
+  "text": "礼貌",
+  "min": 34,
+  "max": 34,
+  "rollTwo": false
+ },
+ {
+  "id": "desc15",
+  "text": "华丽",
+  "min": 35,
+  "max": 35,
+  "rollTwo": false
+ },
+ {
+  "id": "desc16",
+  "text": "粗野",
+  "min": 36,
+  "max": 36,
+  "rollTwo": false
+ },
+ {
+  "id": "desc17",
+  "text": "肮脏",
+  "min": 37,
+  "max": 37,
+  "rollTwo": false
+ },
+ {
+  "id": "desc18",
+  "text": "洁净",
+  "min": 38,
+  "max": 38,
+  "rollTwo": false
+ },
+ {
+  "id": "desc19",
+  "text": "富有",
+  "min": 39,
+  "max": 39,
+  "rollTwo": false
+ },
+ {
+  "id": "desc20",
+  "text": "贫穷",
+  "min": 40,
+  "max": 40,
+  "rollTwo": false
+ },
+ {
+  "id": "desc21",
+  "text": "矮小",
+  "min": 41,
+  "max": 41,
+  "rollTwo": false
+ },
+ {
+  "id": "desc22",
+  "text": "魁梧",
+  "min": 42,
+  "max": 42,
+  "rollTwo": false
+ },
+ {
+  "id": "desc23",
+  "text": "安静",
+  "min": 43,
+  "max": 43,
+  "rollTwo": false
+ },
+ {
+  "id": "desc24",
+  "text": "喧闹",
+  "min": 44,
+  "max": 44,
+  "rollTwo": false
+ },
+ {
+  "id": "desc25",
+  "text": "迅捷",
+  "min": 45,
+  "max": 45,
+  "rollTwo": false
+ },
+ {
+  "id": "desc26",
+  "text": "迟缓",
+  "min": 46,
+  "max": 46,
+  "rollTwo": false
+ },
+ {
+  "id": "desc27",
+  "text": "异域",
+  "min": 47,
+  "max": 47,
+  "rollTwo": false
+ },
+ {
+  "id": "desc28",
+  "text": "穿制服",
+  "min": 48,
+  "max": 48,
+  "rollTwo": false
+ },
+ {
+  "id": "desc29",
+  "text": "有趣",
+  "min": 49,
+  "max": 49,
+  "rollTwo": false
+ },
+ {
+  "id": "desc30",
+  "text": "多彩",
+  "min": 50,
+  "max": 50,
+  "rollTwo": false
+ },
+ {
+  "id": "desc31",
+  "text": "消息灵通",
+  "min": 51,
+  "max": 51,
+  "rollTwo": false
+ },
+ {
+  "id": "desc32",
+  "text": "危险",
+  "min": 52,
+  "max": 52,
+  "rollTwo": false
+ },
+ {
+  "id": "desc33",
+  "text": "无能",
+  "min": 53,
+  "max": 53,
+  "rollTwo": false
+ },
+ {
+  "id": "desc34",
+  "text": "笨拙",
+  "min": 54,
+  "max": 54,
+  "rollTwo": false
+ },
+ {
+  "id": "desc35",
+  "text": "能干",
+  "min": 55,
+  "max": 55,
+  "rollTwo": false
+ },
+ {
+  "id": "desc36",
+  "text": "爱管闲事",
+  "min": 56,
+  "max": 56,
+  "rollTwo": false
+ },
+ {
+  "id": "desc37",
+  "text": "恭敬",
+  "min": 57,
+  "max": 57,
+  "rollTwo": false
+ },
+ {
+  "id": "desc38",
+  "text": "原始",
+  "min": 58,
+  "max": 58,
+  "rollTwo": false
+ },
+ {
+  "id": "desc39",
+  "text": "世故",
+  "min": 59,
+  "max": 59,
+  "rollTwo": false
+ },
+ {
+  "id": "desc40",
+  "text": "优雅",
+  "min": 60,
+  "max": 60,
+  "rollTwo": false
+ },
+ {
+  "id": "desc41",
+  "text": "持械",
+  "min": 61,
+  "max": 61,
+  "rollTwo": false
+ },
+ {
+  "id": "desc42",
+  "text": "异类",
+  "min": 62,
+  "max": 62,
+  "rollTwo": false
+ },
+ {
+  "id": "desc43",
+  "text": "年轻",
+  "min": 63,
+  "max": 63,
+  "rollTwo": false
+ },
+ {
+  "id": "desc44",
+  "text": "年老",
+  "min": 64,
+  "max": 64,
+  "rollTwo": false
+ },
+ {
+  "id": "desc45",
+  "text": "难缠",
+  "min": 65,
+  "max": 65,
+  "rollTwo": false
+ },
+ {
+  "id": "desc46",
+  "text": "乐于助人",
+  "min": 66,
+  "max": 66,
+  "rollTwo": false
+ },
+ {
+  "id": "desc47",
+  "text": "有害",
+  "min": 67,
+  "max": 67,
+  "rollTwo": false
+ },
+ {
+  "id": "desc48",
+  "text": "自律",
+  "min": 68,
+  "max": 68,
+  "rollTwo": false
+ },
+ {
+  "id": "desc49",
+  "text": "反复无常",
+  "min": 69,
+  "max": 69,
+  "rollTwo": false
+ },
+ {
+  "id": "desc50",
+  "text": "狂野",
+  "min": 70,
+  "max": 70,
+  "rollTwo": false
+ },
+ {
+  "id": "desc51",
+  "text": "疯狂",
+  "min": 71,
+  "max": 71,
+  "rollTwo": false
+ },
+ {
+  "id": "desc52",
+  "text": "威严",
+  "min": 72,
+  "max": 72,
+  "rollTwo": false
+ },
+ {
+  "id": "desc53",
+  "text": "温顺",
+  "min": 73,
+  "max": 73,
+  "rollTwo": false
+ },
+ {
+  "id": "desc54",
+  "text": "幽默",
+  "min": 74,
+  "max": 74,
+  "rollTwo": false
+ },
+ {
+  "id": "desc55",
+  "text": "惊恐",
+  "min": 75,
+  "max": 75,
+  "rollTwo": false
+ },
+ {
+  "id": "desc56",
+  "text": "勇敢",
+  "min": 76,
+  "max": 76,
+  "rollTwo": false
+ },
+ {
+  "id": "desc57",
+  "text": "强壮",
+  "min": 77,
+  "max": 77,
+  "rollTwo": false
+ },
+ {
+  "id": "desc58",
+  "text": "虚弱",
+  "min": 78,
+  "max": 78,
+  "rollTwo": false
+ },
+ {
+  "id": "desc59",
+  "text": "冲动",
+  "min": 79,
+  "max": 79,
+  "rollTwo": false
+ },
+ {
+  "id": "desc60",
+  "text": "讲策略",
+  "min": 80,
+  "max": 80,
+  "rollTwo": false
+ },
+ {
+  "id": "desc61",
+  "text": "天真",
+  "min": 81,
+  "max": 81,
+  "rollTwo": false
+ },
+ {
+  "id": "desc62",
+  "text": "自信",
+  "min": 82,
+  "max": 82,
+  "rollTwo": false
+ },
+ {
+  "id": "desc63",
+  "text": "出人意料",
+  "min": 83,
+  "max": 83,
+  "rollTwo": false
+ },
+ {
+  "id": "desc64",
+  "text": "被动",
+  "min": 84,
+  "max": 84,
+  "rollTwo": false
+ },
+ {
+  "id": "desc65",
+  "text": "大胆",
+  "min": 85,
+  "max": 85,
+  "rollTwo": false
+ },
+ {
+  "id": "desc66",
+  "text": "粗心",
+  "min": 86,
+  "max": 86,
+  "rollTwo": false
+ },
+ {
+  "id": "desc67",
+  "text": "谨慎",
+  "min": 87,
+  "max": 87,
+  "rollTwo": false
+ },
+ {
+  "id": "desc68",
+  "text": "鬼祟",
+  "min": 88,
+  "max": 88,
+  "rollTwo": false
+ },
+ {
+  "id": "desc69",
+  "text": "面相可畏",
+  "min": 89,
+  "max": 89,
+  "rollTwo": false
+ },
+ {
+  "id": "desc70",
+  "text": "强大",
+  "min": 90,
+  "max": 90,
+  "rollTwo": false
+ },
+ {
+  "id": "desc71",
+  "text": "无力",
+  "min": 91,
+  "max": 91,
+  "rollTwo": false
+ },
+ {
+  "id": "desc72",
+  "text": "受伤",
+  "min": 92,
+  "max": 92,
+  "rollTwo": false
+ },
+ {
+  "id": "desc73",
+  "text": "粗暴",
+  "min": 93,
+  "max": 93,
+  "rollTwo": false
+ },
+ {
+  "id": "desc74",
+  "text": "温柔",
+  "min": 94,
+  "max": 94,
+  "rollTwo": false
+ },
+ {
+  "id": "desc75",
+  "text": "关怀",
+  "min": 95,
+  "max": 95,
+  "rollTwo": false
+ },
+ {
+  "id": "desc76",
+  "text": "有原则",
+  "min": 96,
+  "max": 96,
+  "rollTwo": false
+ },
+ {
+  "id": "desc77",
+  "text": "傲慢",
+  "min": 97,
+  "max": 97,
+  "rollTwo": false
+ },
+ {
+  "id": "desc78",
+  "text": "好奇",
+  "min": 98,
+  "max": 98,
+  "rollTwo": false
+ },
+ {
+  "id": "desc79",
+  "text": "支持",
+  "min": 99,
+  "max": 99,
+  "rollTwo": false
+ },
+ {
+  "id": "desc80",
+  "text": "英勇",
+  "min": 100,
+  "max": 100,
+  "rollTwo": false
+ }
+]

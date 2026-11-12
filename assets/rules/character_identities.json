@@ -1,0 +1,471 @@
+[
+ {
+  "id": "ident01",
+  "text": "为两个身份掷骰",
+  "min": 1,
+  "max": 33,
+  "rollTwo": true
+ },
+ {
+  "id": "ident02",
+  "text": "战士",
+  "min": 34,
+  "max": 34,
+  "rollTwo": false
+ },
+ {
+  "id": "ident03",
+  "text": "医者",
+  "min": 35,
+  "max": 35,
+  "rollTwo": false
+ },
+ {
+  "id": "ident04",
+  "text": "保护者",
+  "min": 36,
+  "max": 36,
+  "rollTwo": false
+ },
+ {
+  "id": "ident05",
+  "text": "助手",
+  "min": 37,
+  "max": 37,
+  "rollTwo": false
+ },
+ {
+  "id": "ident06",
+  "text": "依附者",
+  "min": 38,
+  "max": 38,
+  "rollTwo": false
+ },
+ {
+  "id": "ident07",
+  "text": "统治者",
+  "min": 39,
+  "max": 39,
+  "rollTwo": false
+ },
+ {
+  "id": "ident08",
+  "text": "行政官",
+  "min": 40,
+  "max": 40,
+  "rollTwo": false
+ },
+ {
+  "id": "ident09",
+  "text": "受害者",
+  "min": 41,
+  "max": 41,
+  "rollTwo": false
+ },
+ {
+  "id": "ident10",
+  "text": "学者",
+  "min": 42,
+  "max": 42,
+  "rollTwo": false
+ },
+ {
+  "id": "ident11",
+  "text": "专家",
+  "min": 43,
+  "max": 43,
+  "rollTwo": false
+ },
+ {
+  "id": "ident12",
+  "text": "精英",
+  "min": 44,
+  "max": 44,
+  "rollTwo": false
+ },
+ {
+  "id": "ident13",
+  "text": "调查员",
+  "min": 45,
+  "max": 45,
+  "rollTwo": false
+ },
+ {
+  "id": "ident14",
+  "text": "罪犯",
+  "min": 46,
+  "max": 46,
+  "rollTwo": false
+ },
+ {
+  "id": "ident15",
+  "text": "支持者",
+  "min": 47,
+  "max": 47,
+  "rollTwo": false
+ },
+ {
+  "id": "ident16",
+  "text": "无助者",
+  "min": 48,
+  "max": 48,
+  "rollTwo": false
+ },
+ {
+  "id": "ident17",
+  "text": "局外人",
+  "min": 49,
+  "max": 49,
+  "rollTwo": false
+ },
+ {
+  "id": "ident18",
+  "text": "调解人",
+  "min": 50,
+  "max": 50,
+  "rollTwo": false
+ },
+ {
+  "id": "ident19",
+  "text": "表演者",
+  "min": 51,
+  "max": 51,
+  "rollTwo": false
+ },
+ {
+  "id": "ident20",
+  "text": "社交名流",
+  "min": 52,
+  "max": 52,
+  "rollTwo": false
+ },
+ {
+  "id": "ident21",
+  "text": "运动员",
+  "min": 53,
+  "max": 53,
+  "rollTwo": false
+ },
+ {
+  "id": "ident22",
+  "text": "演艺者",
+  "min": 54,
+  "max": 54,
+  "rollTwo": false
+ },
+ {
+  "id": "ident23",
+  "text": "代表",
+  "min": 55,
+  "max": 55,
+  "rollTwo": false
+ },
+ {
+  "id": "ident24",
+  "text": "商人",
+  "min": 56,
+  "max": 56,
+  "rollTwo": false
+ },
+ {
+  "id": "ident25",
+  "text": "贸易商",
+  "min": 57,
+  "max": 57,
+  "rollTwo": false
+ },
+ {
+  "id": "ident26",
+  "text": "创造者",
+  "min": 58,
+  "max": 58,
+  "rollTwo": false
+ },
+ {
+  "id": "ident27",
+  "text": "艺术家",
+  "min": 59,
+  "max": 59,
+  "rollTwo": false
+ },
+ {
+  "id": "ident28",
+  "text": "仆人",
+  "min": 60,
+  "max": 60,
+  "rollTwo": false
+ },
+ {
+  "id": "ident29",
+  "text": "劳工",
+  "min": 61,
+  "max": 61,
+  "rollTwo": false
+ },
+ {
+  "id": "ident30",
+  "text": "宗教人士",
+  "min": 62,
+  "max": 62,
+  "rollTwo": false
+ },
+ {
+  "id": "ident31",
+  "text": "猎人",
+  "min": 63,
+  "max": 63,
+  "rollTwo": false
+ },
+ {
+  "id": "ident32",
+  "text": "领袖",
+  "min": 64,
+  "max": 64,
+  "rollTwo": false
+ },
+ {
+  "id": "ident33",
+  "text": "斗士",
+  "min": 65,
+  "max": 65,
+  "rollTwo": false
+ },
+ {
+  "id": "ident34",
+  "text": "工匠",
+  "min": 66,
+  "max": 66,
+  "rollTwo": false
+ },
+ {
+  "id": "ident35",
+  "text": "窃贼",
+  "min": 67,
+  "max": 67,
+  "rollTwo": false
+ },
+ {
+  "id": "ident36",
+  "text": "激进分子",
+  "min": 68,
+  "max": 68,
+  "rollTwo": false
+ },
+ {
+  "id": "ident37",
+  "text": "主管",
+  "min": 69,
+  "max": 69,
+  "rollTwo": false
+ },
+ {
+  "id": "ident38",
+  "text": "暴徒",
+  "min": 70,
+  "max": 70,
+  "rollTwo": false
+ },
+ {
+  "id": "ident39",
+  "text": "卫兵",
+  "min": 71,
+  "max": 71,
+  "rollTwo": false
+ },
+ {
+  "id": "ident40",
+  "text": "监护人",
+  "min": 72,
+  "max": 72,
+  "rollTwo": false
+ },
+ {
+  "id": "ident41",
+  "text": "探索者",
+  "min": 73,
+  "max": 73,
+  "rollTwo": false
+ },
+ {
+  "id": "ident42",
+  "text": "英雄",
+  "min": 74,
+  "max": 74,
+  "rollTwo": false
+ },
+ {
+  "id": "ident43",
+  "text": "反派",
+  "min": 75,
+  "max": 75,
+  "rollTwo": false
+ },
+ {
+  "id": "ident44",
+  "text": "骗子",
+  "min": 76,
+  "max": 76,
+  "rollTwo": false
+ },
+ {
+  "id": "ident45",
+  "text": "工程师",
+  "min": 77,
+  "max": 77,
+  "rollTwo": false
+ },
+ {
+  "id": "ident46",
+  "text": "侦察兵",
+  "min": 78,
+  "max": 78,
+  "rollTwo": false
+ },
+ {
+  "id": "ident47",
+  "text": "掮客",
+  "min": 79,
+  "max": 79,
+  "rollTwo": false
+ },
+ {
+  "id": "ident48",
+  "text": "漂泊者",
+  "min": 80,
+  "max": 80,
+  "rollTwo": false
+ },
+ {
+  "id": "ident49",
+  "text": "颠覆者",
+  "min": 81,
+  "max": 81,
+  "rollTwo": false
+ },
+ {
+  "id": "ident50",
+  "text": "士兵",
+  "min": 82,
+  "max": 82,
+  "rollTwo": false
+ },
+ {
+  "id": "ident51",
+  "text": "执法者",
+  "min": 83,
+  "max": 83,
+  "rollTwo": false
+ },
+ {
+  "id": "ident52",
+  "text": "科学家",
+  "min": 84,
+  "max": 84,
+  "rollTwo": false
+ },
+ {
+  "id": "ident53",
+  "text": "采集者",
+  "min": 85,
+  "max": 85,
+  "rollTwo": false
+ },
+ {
+  "id": "ident54",
+  "text": "外乡人",
+  "min": 86,
+  "max": 86,
+  "rollTwo": false
+ },
+ {
+  "id": "ident55",
+  "text": "幸存者",
+  "min": 87,
+  "max": 87,
+  "rollTwo": false
+ },
+ {
+  "id": "ident56",
+  "text": "赌徒",
+  "min": 88,
+  "max": 88,
+  "rollTwo": false
+ },
+ {
+  "id": "ident57",
+  "text": "无赖",
+  "min": 89,
+  "max": 89,
+  "rollTwo": false
+ },
+ {
+  "id": "ident58",
+  "text": "农夫",
+  "min": 90,
+  "max": 90,
+  "rollTwo": false
+ },
+ {
+  "id": "ident59",
+  "text": "杀手",
+  "min": 91,
+  "max": 91,
+  "rollTwo": false
+ },
+ {
+  "id": "ident60",
+  "text": "专业人士",
+  "min": 92,
+  "max": 92,
+  "rollTwo": false
+ },
+ {
+  "id": "ident61",
+  "text": "司机/飞行员",
+  "min": 93,
+  "max": 93,
+  "rollTwo": false
+ },
+ {
+  "id": "ident62",
+  "text": "学生",
+  "min": 94,
+  "max": 94,
+  "rollTwo": false
+ },
+ {
+  "id": "ident63",
+  "text": "组织者",
+  "min": 95,
+  "max": 95,
+  "rollTwo": false
+ },
+ {
+  "id": "ident64",
+  "text": "送货人",
+  "min": 96,
+  "max": 96,
+  "rollTwo": false
+ },
+ {
+  "id": "ident65",
+  "text": "走狗",
+  "min": 97,
+  "max": 97,
+  "rollTwo": false
+ },
+ {
+  "id": "ident66",
+  "text": "教师",
+  "min": 98,
+  "max": 98,
+  "rollTwo": false
+ },
+ {
+  "id": "ident67",
+  "text": "奇异者",
+  "min": 99,
+  "max": 100,
+  "rollTwo": false
+ }
+]

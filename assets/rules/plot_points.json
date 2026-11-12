@@ -1,0 +1,2984 @@
+[
+ {
+  "id": "conclusion",
+  "title": "结束",
+  "desc": "若此转折点当前是情节线的发展（Development），则它变为情节线的结束。将结束这条情节线所需的一切纳入此转折点，并将其从情节线列表中移除。若此转折点是新情节线或已经是结束，则将此情节点视为「无」。",
+  "ranges": {
+   "action": [
+    1,
+    8
+   ],
+   "tension": [
+    1,
+    8
+   ],
+   "mystery": [
+    1,
+    8
+   ],
+   "social": [
+    1,
+    8
+   ],
+   "personal": [
+    1,
+    8
+   ]
+  }
+ },
+ {
+  "id": "none",
+  "title": "无",
+  "desc": "此情节点留空，继续下一个情节点；除非这样做会使此转折点中的情节点少于2个，若是如此则重掷。",
+  "ranges": {
+   "action": [
+    9,
+    24
+   ],
+   "tension": [
+    9,
+    24
+   ],
+   "mystery": [
+    9,
+    24
+   ],
+   "social": [
+    9,
+    24
+   ],
+   "personal": [
+    9,
+    24
+   ]
+  }
+ },
+ {
+  "id": "pp003",
+  "title": "进入未知",
+  "desc": "此转折点涉及角色进入充满未知因素的局面。要了解未知，你必须先投身其中。例如，一道魔法传送门，除了走进去之外无法得知另一侧有什么。又如，你发现一台威力强大的机器，但不知道它是做什么的，除非把它启动。发现未知的唯一办法就是与之接触，而等到你后悔时已经太迟了。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    25,
+    26
+   ],
+   "mystery": [
+    25,
+    26
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp004",
+  "title": "角色遭到非致命攻击",
+  "desc": "一个角色遭到袭击，但袭击者不会下杀手。",
+  "ranges": {
+   "action": [
+    25,
+    26
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp005",
+  "title": "所需资源耗尽",
+  "desc": "某个角色所需的资源耗尽了。这种匮乏会带来麻烦。例如，穿越满是恐龙的丛林时弹药耗尽。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    27,
+    27
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp006",
+  "title": "来自未知来源的有用信息",
+  "desc": "一个角色从匿名来源获得有用的信息。也许是在你家门口捡到一张字条，或是收件箱里出现一封附有照片的邮件，照片向角色揭示了某些事情。无论信息是什么，都应当对情节线产生影响。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    27,
+    28
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp007",
+  "title": "迫近的厄运",
+  "desc": "可怕的事情即将发生，而且正在逼近。例如，敌军正在推进入侵，一周内就会抵达边境。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    28,
+    28
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp008",
+  "title": "被排斥者",
+  "desc": "一个角色因某种原因被其他角色视为异类。也许该角色属于当地不受欢迎的族群，或者众人普遍相信该角色是一桩滔天罪行的元凶。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    25,
+    26
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp009",
+  "title": "劝说",
+  "desc": "一个角色试图说服另一个角色做某事。这种劝说可以有多种形式，比如哀求对方，或者威胁对方。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    25,
+    26
+   ]
+  }
+ },
+ {
+  "id": "pp010",
+  "title": "无动机犯罪",
+  "desc": "一桩罪行在本转折点中发生，或在本转折点中被得知，且找不到明确的作案动机。也许有人无缘无故被谋杀，或者一栋建筑被闯入却分文未失。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    29,
+    29
+   ],
+   "mystery": [
+    29,
+    30
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp011",
+  "title": "附带损害",
+  "desc": "无论此转折点中正在发生什么，这种活动都会从其焦点波及周围的事物。对破坏性事件而言尤其如此。例如，超级英雄在市中心的混战中击败了反派，但过程中对周围的建筑造成了严重破坏。附带损害不一定是物理上的，例如也可能是某项重大法院裁决带来的法律后果。",
+  "ranges": {
+   "action": [
+    27,
+    27
+   ],
+   "tension": [
+    30,
+    30
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp012",
+  "title": "阴暗场所",
+  "desc": "此转折点涉及一个不太合法的地点，例如常用于毒品交易的后巷，或酒吧里的秘密赌场。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    31,
+    32
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp013",
+  "title": "角色遭到致命攻击",
+  "desc": "袭击者正试图杀死一个角色。",
+  "ranges": {
+   "action": [
+    28,
+    29
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp014",
+  "title": "去做，否则……",
+  "desc": "一个角色被交予一项任务，并在威胁之下被迫完成任务。例如，间谍逼迫一名外交官交出技术机密，否则就揭发其违法行为并送他进监狱。当然，这种情节点最常见的形式大概是「照做，不然我就杀了你」。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    33,
+    33
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": [
+    27,
+    27
+   ]
+  }
+ },
+ {
+  "id": "pp015",
+  "title": "偏僻地点",
+  "desc": "此转折点涉及一个偏僻的地点，例如洞穴或林中小屋。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    34,
+    34
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp016",
+  "title": "伏击",
+  "desc": "此转折点中发生的事情包含在出人意料之时发起的突然行动。",
+  "ranges": {
+   "action": [
+    30,
+    31
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp017",
+  "title": "成交！",
+  "desc": "此转折点涉及某种交易。也许是在出售货物，或者是在收买情报。无论发生什么，货物和金钱正在易手。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    27,
+    28
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp018",
+  "title": "灾难",
+  "desc": "几乎是最坏的事情偏偏发生了，而且发生得惊天动地、动作十足。这可能是固若金汤的堡垒被攻陷，势不可挡的超级英雄被打败，永不沉没的巨轮开始下沉。",
+  "ranges": {
+   "action": [
+    32,
+    32
+   ],
+   "tension": [
+    35,
+    35
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp019",
+  "title": "可怖氛围",
+  "desc": "无论此转折点中正在发生什么，它的氛围是可怖的，令人恐惧或厌恶。例如，如果发现一张字条带有可怖的氛围，它可能沾满血迹，或者附带一只被切下的手。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    36,
+    36
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp020",
+  "title": "角色灵机一动",
+  "desc": "一个角色想出了一个对此转折点产生影响的主意。例如，那个骗子开了口，恰好知道一条穿过下水道进入城墙内的秘密通道。",
+  "ranges": {
+   "action": [
+    33,
+    33
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp021",
+  "title": "有东西即将逃脱",
+  "desc": "此转折点涉及一个时限，时限一过，某样东西就会逃脱。例如，一艘载有魔法神器的船即将离港，角色必须杀穿一群持枪打手，赶在船起航前登船。",
+  "ranges": {
+   "action": [
+    34,
+    34
+   ],
+   "tension": [
+    37,
+    37
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp022",
+  "title": "报复",
+  "desc": "无论此转折点中正在发生什么，其中包含报复或复仇的成分。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    38,
+    39
+   ],
+   "mystery": null,
+   "social": [
+    29,
+    30
+   ],
+   "personal": [
+    28,
+    28
+   ]
+  }
+ },
+ {
+  "id": "pp023",
+  "title": "角色失踪",
+  "desc": "一个角色下落不明。至于该角色遭遇了什么有没有留下线索，由你根据此转折点涉及的其他情节点来决定。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    40,
+    40
+   ],
+   "mystery": [
+    31,
+    32
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp024",
+  "title": "被追杀",
+  "desc": "一个角色正被某个不完全合法的人或物追猎。换言之，与「被法律通缉」相对，「被追杀」可能意味着杀手正为履行黑手党合同而追杀一个角色，也可能是鬼魂在纠缠某个角色。追猎者不一定非要置人于死地。",
+  "ranges": {
+   "action": [
+    35,
+    36
+   ],
+   "tension": [
+    41,
+    41
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp025",
+  "title": "高能量聚会",
+  "desc": "此转折点涉及一场充满活力或活动的社交聚会。例如，这可以是人声鼎沸的夜店、喧闹的派对或一场体育赛事。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    31,
+    31
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp026",
+  "title": "罕见或独特的社交聚会",
+  "desc": "这是一场为特定而罕见的目的举办的社交聚会。例如葬礼或婚礼。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    32,
+    32
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp027",
+  "title": "错误决定",
+  "desc": "某个角色做出的一个决定被证明是非常糟糕的。这可以是冒险中早些时候做出的决定，也可以是冒险开始之前的某件事。这个早先的决定当时也许看起来并不坏，但事实证明它是糟糕的，无论对该角色本人、对他人，还是对两者都是如此。例如，也许一艘船的船长决定去调查深空中一个遇险信标，结果发现那是海盗设下的陷阱。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    42,
+    42
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": [
+    29,
+    29
+   ]
+  }
+ },
+ {
+  "id": "pp028",
+  "title": "这不管用",
+  "desc": "本应奏效的东西因某种原因失灵了，造成麻烦。例如，束缚咒无法再困住恶魔；或者黑帮老大通过一个理应戒备森严、实际却到处是警察的货运港口运送赃物。失灵的东西是原本以为行得通的东西。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    33,
+    33
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp029",
+  "title": "分心",
+  "desc": "一个角色在此转折点中以某种影响事件进程的方式被分散了注意力。例如，反派在挥出致命一击之前被亡爱之人的身影分了神，让英雄得以逃脱。",
+  "ranges": {
+   "action": [
+    37,
+    37
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp030",
+  "title": "恶意",
+  "desc": "一个角色因某种原因对另一个角色怀有恶意。这种敌意应当根深蒂固，并影响该角色面对那个讨厌角色时的反应。这种厌恶可能得到回应，也可能没有。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    30,
+    31
+   ]
+  }
+ },
+ {
+  "id": "pp031",
+  "title": "某个组织",
+  "desc": "此转折点涉及某种组织。它可以已在角色列表中，也可以不在。无论此转折点中正在发生什么，该组织都以某种方式正式牵涉其中。例如，一桩罪案已经发生，而当地某个行会知情并为了自身利益将其掩盖。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    33,
+    34
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp032",
+  "title": "被法律通缉",
+  "desc": "一个角色因罪行被通缉。至于他们是否真的犯了罪并不重要，无论如何，法律都把他们当作头号嫌疑人追缉。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    43,
+    43
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": [
+    32,
+    33
+   ]
+  }
+ },
+ {
+  "id": "pp033",
+  "title": "资源失踪",
+  "desc": "一件重要的物品或资源被身份不明的窃贼偷走。该资源应当是对某个角色有用的东西，或者与所涉情节线相关。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    34,
+    35
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp034",
+  "title": "这是你的职责",
+  "desc": "一个角色被指派执行一项职责。这件事应当是该角色几乎无从选择的，无论他们想不想做。无论职责来自谁，那个来源都对角色拥有权威。例如，一名士兵想参加决定性的战役，但他的指挥官却交给他守卫要塞大门的职责。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    34,
+    35
+   ]
+  }
+ },
+ {
+  "id": "pp035",
+  "title": "意外收获",
+  "desc": "一个角色偶然遇到了对解决情节线非常有用的东西。这可能是一条信息、一件好用的工具、一种所需的资源、一个能帮忙的人等等。无论是什么，它都是恰逢其时的正确之物，而且自己送上门来。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    36,
+    36
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp036",
+  "title": "角色关系断绝",
+  "desc": "与另一个角色有关系的某个角色切断了这种关系。原因可以有很多种，从该角色淡出故事，到该角色因某事对另一个角色生气。被切断的关系不一定永久。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    36,
+    37
+   ]
+  }
+ },
+ {
+  "id": "pp037",
+  "title": "真相大白！",
+  "desc": "此转折点中的某个来源透露了关于某事的大量细节。例如，一名卫兵被俘后供出了国王把圣典藏在哪里。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    37,
+    37
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp038",
+  "title": "羞辱",
+  "desc": "此转折点涉及一个角色受到羞辱或面临羞辱。无论发生什么，都应当是对该角色来说极其难堪的事情。例如，一个不受欢迎社区的成员遭到欺凌和嘲弄，或者一位公众人物的私事被公开曝光。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    38,
+    38
+   ]
+  }
+ },
+ {
+  "id": "pp039",
+  "title": "行为不端",
+  "desc": "此转折点涉及有人做出社交上不可接受的行为。例如，一群醉鬼乱扔酒瓶，或者人群中有人朝演讲者大声起哄。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    35,
+    35
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp040",
+  "title": "来自已知来源的有用信息",
+  "desc": "一个角色从已知来源获得有用的信息。例如，正在调查凶杀案的侦探从她时常打交道的线人那里得到一条线索。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    38,
+    39
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp041",
+  "title": "来自已知来源的隐晦信息",
+  "desc": "一个角色从已知来源获得并非立即有用的信息。信息晦涩难解，角色不知道它是什么意思。例如，一名船员留下一张等着被人发现的字条，上面只写着「克拉托」，而收到字条的角色完全不知道「克拉托」是什么。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    40,
+    40
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp042",
+  "title": "谎言败露",
+  "desc": "此转折点涉及一个谎言的败露。谎言可能就发生在这个转折点里，也可能发生在冒险中更早的时候，甚至发生在冒险开始之前。例如，角色们可能得知那位侦探并没有像他所说的那样毁掉邪教神器，而是把它带回家，试图召唤「彼岸之兽」。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    41,
+    42
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp043",
+  "title": "角色遭袭击绑架",
+  "desc": "袭击者正试图绑架一个角色。",
+  "ranges": {
+   "action": [
+    38,
+    39
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp044",
+  "title": "奇异之事",
+  "desc": "无论此转折点中正在发生什么，其中都包含不寻常或奇异的元素。例如，如果转折点是有人被刺客袭击，那么这名刺客可能有着极不寻常的身份或攻击方式（也许他扮成小丑，用会爆炸的气球发动攻击，或者他是一名招式奇绝的武术家）。",
+  "ranges": {
+   "action": [
+    40,
+    40
+   ],
+   "tension": [
+    44,
+    44
+   ],
+   "mystery": [
+    43,
+    43
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp045",
+  "title": "刻不容缓",
+  "desc": "无论正在发生什么，此转折点都需要立即采取行动。例如，如果此转折点涉及星舰引擎故障，角色没有几天时间解决问题，可能只有一个小时。无论发生什么，都需要立即行动。",
+  "ranges": {
+   "action": [
+    41,
+    42
+   ],
+   "tension": [
+    45,
+    45
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp046",
+  "title": "名望",
+  "desc": "无论此转折点中正在发生什么，都涉及某种程度上有名望的人物。这不一定意味着有名望的角色被征引，只是转折点与名望有某种关联。例如，如果此转折点涉及探知另一个角色的秘密，你可能会得知他们几十年前曾是某支著名超级英雄团队的成员。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    36,
+    36
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp047",
+  "title": "追逐",
+  "desc": "此转折点涉及一场追逐，一个角色正在追捕另一个角色。",
+  "ranges": {
+   "action": [
+    43,
+    44
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp048",
+  "title": "背叛！",
+  "desc": "一个原被认为是盟友或无害的角色对另一个角色倒戈相向。这可以是根本性的背叛，比如他们其实分属敌对阵营；也可以是一时的背叛，比如一时气头上动手打了人。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    46,
+    46
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": [
+    39,
+    40
+   ]
+  }
+ },
+ {
+  "id": "pp049",
+  "title": "犯罪发生",
+  "desc": "一桩罪行在本转折点中发生，或在本转折点中被得知。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    44,
+    45
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp050",
+  "title": "角色失去行动能力",
+  "desc": "一个角色因某种原因无法再行动。也许他们身负重伤，失去了能力，被困在某处，等等。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    47,
+    47
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": [
+    41,
+    42
+   ]
+  }
+ },
+ {
+  "id": "pp051",
+  "title": "这是秘密",
+  "desc": "此转折点涉及暗中从事的活动，例如走私或挪用公款。这种活动不一定违法，但无论是什么，它都是隐藏的，或者借着一个看似正当的门面在背后进行。例如，一家快餐连锁店用自家的送货卡车跨境走私毒品。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    46,
+    47
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp052",
+  "title": "失物寻回",
+  "desc": "某件失落的东西在此转折点中重现。这件东西可能是在这次冒险中丢失的，也可能是更早以前丢失的。它可以是一件物品、一个人或任何东西。例如，一枚力量之戒突然出现在溪床里，或者一个在冒险初期消失的角色突然重新露面。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    48,
+    48
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp053",
+  "title": "替罪羊",
+  "desc": "此转折点涉及一个无辜角色被指控犯下恶行，以转移人们对真正元凶的怀疑。例如，拿走所有弹药的女人把责任推给丧尸求生小组的新人；或者新英格兰小镇的镇长把怪事归咎于某个宗教的信徒，而其实过错在他自己。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    37,
+    37
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp054",
+  "title": "无处可逃",
+  "desc": "一个角色面临的危局没有任何逃脱手段。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    48,
+    48
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp055",
+  "title": "夜晚",
+  "desc": "此转折点发生在夜里。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    49,
+    50
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp056",
+  "title": "暗中窥视者",
+  "desc": "此转折点中发生的事情虽然被某个人认为是私密的，实际上却有人正在目睹或观察。被观察者并不知道这位观察者的存在。例如，两位敌国将领正在秘密会晤以结成同盟、背叛各自的国王，而这场会晤正被一位公主看在眼里，她完全明白这意味着什么。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    49,
+    49
+   ],
+   "social": [
+    38,
+    38
+   ],
+   "personal": [
+    43,
+    43
+   ]
+  }
+ },
+ {
+  "id": "pp057",
+  "title": "逃脱",
+  "desc": "此转折点涉及某种逃脱。例如，一个在早先转折点中被土匪抓获的角色设法摆脱看守，逃进了森林。",
+  "ranges": {
+   "action": [
+    45,
+    46
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp058",
+  "title": "秘密武器",
+  "desc": "此转折点涉及揭露某个角色掌握的一件秘密武器。这件武器应当重要到足以左右力量平衡，或需要专门想办法来化解。例如，那群杂七杂八的兽人出人意料地得到了他们请来的大型食人魔助阵。又或者，银河帝国亮相了一艘足以毁灭行星的新型战舰，改变了一切。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    51,
+    51
+   ],
+   "mystery": [
+    50,
+    50
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp059",
+  "title": "重兵把守",
+  "desc": "此转折点涉及闯入一个守卫森严且危险的地点。例如，这可能意味着潜入一座高科技安保设施窃取情报，或者是攻入满是护卫丧尸的死灵法师巢穴，去摧毁他的魔法水晶。",
+  "ranges": {
+   "action": [
+    47,
+    48
+   ],
+   "tension": [
+    52,
+    52
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp060",
+  "title": "营救",
+  "desc": "此转折点中有一个角色需要被营救。",
+  "ranges": {
+   "action": [
+    49,
+    50
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp061",
+  "title": "说谎！",
+  "desc": "此转折点涉及一个正在进行的谎言。谎言就在此转折点中发生。某人说过或声称的事情是假的。例如，一位吸血鬼领主声称自己对一本魔法书一无所知，而实际上他正在自己寻找它。谎言在此转折点中可能被发现，也可能没有。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    51,
+    52
+   ],
+   "social": [
+    39,
+    39
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp062",
+  "title": "温馨的家",
+  "desc": "此转折点发生在某个角色的私人住所。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    44,
+    45
+   ]
+  }
+ },
+ {
+  "id": "pp063",
+  "title": "角色行为反常",
+  "desc": "一个角色做出了与该角色表面上的目标或性格相悖的事情。这种行为可能与他们一贯的表现相左（比如团队中受信任的成员破坏了关键资源），也可能是没有明确目的的模糊行为（比如某个角色私下与一个陌生之人会面）。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    53,
+    53
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp064",
+  "title": "总部",
+  "desc": "此转折点中的某个场所是一个角色的主要总部。例如，它可能是黑帮老大用来经营其帝国的豪华酒吧，也可能是荒野中法师的高塔。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    40,
+    41
+   ],
+   "personal": [
+    46,
+    46
+   ]
+  }
+ },
+ {
+  "id": "pp065",
+  "title": "体能技艺较量",
+  "desc": "此转折点涉及角色们在体能技艺的较量中正面对决。这可以是任何事情，比如战斗、体育赛事、决斗、掰手腕比赛等等。",
+  "ranges": {
+   "action": [
+    51,
+    52
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp066",
+  "title": "死亡",
+  "desc": "一个角色死了。这可以是意料之中，也可以是意料之外，但无论情况如何，此转折点涉及一个角色的死亡。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    53,
+    53
+   ],
+   "mystery": [
+    54,
+    54
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp067",
+  "title": "普通社交聚会",
+  "desc": "此转折点涉及一场社交聚会。这可以是任何人群的聚会，通常为了某个共同目的，比如在家中或餐馆聚餐，或者在商场逛一下午。这场社交聚会本身应被视为平凡性质，尽管聚会上另外发生的事情不一定平凡。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    42,
+    43
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp068",
+  "title": "轻度城市场景",
+  "desc": "此转折点发生在轻度城市场景中，例如小镇或村庄。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    44,
+    45
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp069",
+  "title": "谜团解开",
+  "desc": "一个谜团被解开了。它可以不是冒险中的某个重大未解之谜，也可以是小事，但除非此转折点同时也是情节线的结束，否则它不算一条情节线得到解决。谜团解开可以是很多事情，从终于弄清某个装置是做什么的，到找到失踪的大臣。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    55,
+    56
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp070",
+  "title": "工作相关聚会",
+  "desc": "这是一场涉及专业人士或劳动者的社交聚会。聚会本身可以涉及也可以不涉及他们的实际工作。例如，警察们聚在一家「警察酒吧」，或者一支超级英雄团队在自己的总部集会，都算数。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    46,
+    47
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp071",
+  "title": "家事",
+  "desc": "此转折点涉及某个角色的一名或多名家庭成员。例如，一位超自然调查员正要出发执行任务，他的姐姐却突然出现在门口；或者某个角色有一位身为封建领主的叔叔，召唤他们去帮忙守卫领地，因为再没有别人愿意站在他一边。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    47,
+    48
+   ]
+  }
+ },
+ {
+  "id": "pp072",
+  "title": "机密泄露",
+  "desc": "本不该落入错误之手的情报落入了错误之手。例如，法外之徒似乎总能知道运送铁路工资款的驿马车什么时候经过门户谷。他们是怎么得到消息的？又或者，敌方间谍得知了王国的秘密军事计划。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    57,
+    57
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp073",
+  "title": "猜疑",
+  "desc": "此转折点涉及一个角色因某种原因对另一个角色起了疑心。例如，空间站上一位深受爱戴的领袖被谋杀，船上每个新来的人突然都遭到怀疑。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    54,
+    54
+   ],
+   "mystery": [
+    58,
+    59
+   ],
+   "social": [
+    48,
+    48
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp074",
+  "title": "两败俱伤",
+  "desc": "此转折点涉及一种抉择，其中两个或全部选项在某些方面都很糟糕。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    55,
+    55
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp075",
+  "title": "过去的人物",
+  "desc": "一个新角色加入冒险，此人来自某个角色的过去。此情节点要求将一个新角色加入角色列表并被征引。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    49,
+    49
+   ]
+  }
+ },
+ {
+  "id": "pp076",
+  "title": "大规模战斗",
+  "desc": "此转折点涉及众多战斗者之间的战斗。例如，这可以是两支队伍之间的火并，也可以是战争中的一场战役。",
+  "ranges": {
+   "action": [
+    53,
+    54
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp077",
+  "title": "光天化日",
+  "desc": "无论此转折点中正在发生什么，它都是在众目睽睽的公开场合发生的。例如，一个角色在白天的公共节庆中遇袭；或者某个角色以为自己正在私下做的事情，实际上正被人拍摄并被他人观看。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    56,
+    56
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp078",
+  "title": "证据",
+  "desc": "一个角色发现了有助于解答既有疑问的东西。例如，杀死受害者的那把枪被发现藏在某名嫌疑人的床下。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    60,
+    61
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp079",
+  "title": "角色被削弱",
+  "desc": "一个角色在某种程度上被削弱，变得不那么有效。也许他们受了伤，精力低落，或者失去了一些权力，等等。该角色并非完全失去能力，但损失了相当一部分力量或效用。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    57,
+    58
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": [
+    50,
+    51
+   ]
+  }
+ },
+ {
+  "id": "pp080",
+  "title": "情节愈发复杂",
+  "desc": "解开未解问题的一条有希望的线索或证据原来是一条死路。例如，角色们循着线报前往一处仓库寻找被绑架的女继承人，结果没有发现坏分子的老巢，只找到一栋空楼。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    62,
+    63
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp081",
+  "title": "敌人",
+  "desc": "此转折点涉及某个角色的敌人。无论此转折点中正在进行什么活动，这些敌人都扮演着重要角色。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    59,
+    59
+   ],
+   "mystery": null,
+   "social": [
+    49,
+    49
+   ],
+   "personal": [
+    52,
+    53
+   ]
+  }
+ },
+ {
+  "id": "pp082",
+  "title": "动机存疑",
+  "desc": "一个角色做了符合其性格的事，但这行动为也可能出自另一个原因，且不清楚角色究竟是为何而动。例如，那位总裁在深夜走进自己的办公室，他平时偶尔也这样，而就在同一晚，另一位高管被谋杀了。这个行动本身应当显得无可指摘，只是其他事件或情报让人对它起了疑。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    64,
+    64
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp083",
+  "title": "威胁氛围",
+  "desc": "此转折点涉及某种威胁性的氛围。例如，一个角色可能正在威胁另一个角色，或者反派正在对着被俘的对手洋洋得意。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    60,
+    60
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp084",
+  "title": "关键生命维持系统开始失效",
+  "desc": "这可以是一套真正的生命维持系统，比如星舰的氧气通风装置；也可以是一套安全系统，比如汽车的刹车。这种失效对所涉角色而言将构成紧急状况。",
+  "ranges": {
+   "action": [
+    55,
+    55
+   ],
+   "tension": [
+    61,
+    61
+   ],
+   "mystery": [
+    65,
+    65
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp085",
+  "title": "密集城市场景",
+  "desc": "此转折点发生在高度城市化的地区，例如大城市。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    50,
+    51
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp086",
+  "title": "做正确的事",
+  "desc": "一个以某种方式行事不端的角色幡然悔悟，决定去做正确的事。例如，一个正从疫病流行的社区偷药的骗子，决定不能丢下这些人任其死去。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    54,
+    54
+   ]
+  }
+ },
+ {
+  "id": "pp087",
+  "title": "胜利！",
+  "desc": "此转折点中，一个角色战胜了另一个角色。例如，一伙劫掠者成功截击了国王的信使，或者一名黑客一路渗透进一家公司的计算机系统。",
+  "ranges": {
+   "action": [
+    56,
+    57
+   ],
+   "tension": [
+    62,
+    62
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp088",
+  "title": "冒险行事",
+  "desc": "一个角色以非常冒险的方式行事。例如，一个角色可能突然将生死置之度外，走上山谷上方狭窄的横梁去救朋友。又或者，你正在对付的反派服用了一种让他陷入战斗狂热、全然不顾危险的药物。",
+  "ranges": {
+   "action": [
+    58,
+    59
+   ],
+   "tension": [
+    63,
+    63
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp089",
+  "title": "团体陷入麻烦",
+  "desc": "此情节点中，某个团体（例如一个社区）陷入了麻烦。该团体或社区正面临困境。例如，也许一个村庄正遭到怪物的袭扰，或者一家公司正面临一场足以将其摧毁的诉讼。无论麻烦是什么，它都应当是能够解决的问题，而且很可能构成某个角色的难题。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    52,
+    53
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp090",
+  "title": "唯一幸存者",
+  "desc": "此转折点涉及某种淘汰过程，最后只剩下一个人。这可以是一场战斗，但不一定是。例如，也许一艘沉船只有一名幸存者被冲上海岸，或者一群星舰船员在与外星智慧下棋的过程中只剩下最后一人，此人如今被选中接受外星智慧的终极挑战。",
+  "ranges": {
+   "action": [
+    60,
+    61
+   ],
+   "tension": [
+    64,
+    64
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp091",
+  "title": "象征性回应",
+  "desc": "在此转折点中行动的角色或组织，只以最低限度去处理某个问题，或者只做出象征性的努力，而非真正有效的行动。例如，一个恶名昭彰的太空海盗被捕获了，但他并没有被判长期监禁，联邦政府对他极为宽大，一周内就把他从监狱里放了出来。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    54,
+    54
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp092",
+  "title": "来自未知来源的隐晦信息",
+  "desc": "含义不明的信息来自一个匿名来源。也许在镜子上发现了潦草涂写的一个怪词，或者发现一个陌生人的日记，其中谈到了与情节线相似的事件。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    66,
+    67
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp093",
+  "title": "共同线索",
+  "desc": "人们得知，一些看似互不相关的事件其实有共通之处。例如，一连串罪行困扰着这座城市，从劫车到入室行窃。结果发现，作案者全都在同一栋楼里当保安。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    68,
+    69
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp094",
+  "title": "问题重现",
+  "desc": "一个本认为已经解决的问题以某种方式卷土重来。它可以是这次冒险中的问题、此前冒险中的问题，或是从过去推知的事情。例如，某个王国在打败黑暗领主后享受了十年和平，如今却发现他没有死，而且正在归来。问题的规模可以自行解释，可大可小，比如船上先前封堵的漏洞又裂开了。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    65,
+    66
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp095",
+  "title": "受困",
+  "desc": "此转折点中，一个角色被卡住而无法行动，只能眼看转折点中的事件发生。困住他们的东西不一定永久，但此刻使他们失去力量或几乎失去力量。例如，也许角色被捆住，或者被困在牢房里。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    67,
+    68
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp096",
+  "title": "任凭摆布",
+  "desc": "一个角色因某种原因无助而绝望，只能仰仗另一个有权处理其问题的角色的仁慈。例如，一个角色身中魔法诅咒，只有一位术士能够治愈。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    55,
+    56
+   ]
+  }
+ },
+ {
+  "id": "pp097",
+  "title": "阻止那件事",
+  "desc": "一个角色采取行动，阻止此转折点中某件事的发生。这种行动可以是意料之中的，比如英雄在刽子手落斧之前一箭穿心。也可以是意料之外的，比如某个角色在被俘的反派即将吐露关键细节之前，突然一枪把他打死了。",
+  "ranges": {
+   "action": [
+    62,
+    63
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp098",
+  "title": "并非其主",
+  "desc": "此转折点中，一个被认为为某一势力效力的角色，原来是在为另一势力效力。例如，那个一直试图杀死某角色的杀手并不像你想的那样为黑手党工作，而是为一家对该角色有利可图的公司工作。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    70,
+    70
+   ],
+   "social": [
+    55,
+    55
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp099",
+  "title": "失势",
+  "desc": "一个角色在此转折点中失去了权力。例如，一位国王被他的兄弟揭穿是冒牌货，后者宣称自己才是王位继承人并夺取了王位。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    57,
+    58
+   ]
+  }
+ },
+ {
+  "id": "pp100",
+  "title": "有偿援手",
+  "desc": "一个角色提出帮助另一个角色，以换取某些东西。所求可以是任何东西，从互相扶助到一笔报酬。无论代价是什么，它都应当足够高昂，对支付者而言意义实在。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    59,
+    60
+   ]
+  }
+ },
+ {
+  "id": "pp101",
+  "title": "公共场所",
+  "desc": "此转折点涉及一个公共场所，例如城镇广场，或白天的公园。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    56,
+    57
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp102",
+  "title": "领袖",
+  "desc": "此转折点涉及某个人物或某个组织的领袖。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    58,
+    59
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp103",
+  "title": "珍贵之物",
+  "desc": "无论此转折点中正在发生什么，它都涉及某个角色的一件重要所有物。例如，如果转折点是关于某样东西被偷，也许被偷走的是一位术士的魔法杖。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    61,
+    62
+   ]
+  }
+ },
+ {
+  "id": "pp104",
+  "title": "救星",
+  "desc": "此转折点涉及一个愿意挺身而出拯救局面的角色。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    60,
+    61
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp105",
+  "title": "缴械",
+  "desc": "一个角色失去了主要的自卫手段。这可能意味着失去一件武器，也可能是一位权势官僚在别人的王国里丧失了权柄，等等。这种缴械在此转折点内应是暂时的，但它剥夺了角色的关键防御。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    69,
+    70
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": [
+    63,
+    63
+   ]
+  }
+ },
+ {
+  "id": "pp106",
+  "title": "力量的秘密",
+  "desc": "存在一种力量，而它有一个秘密来源。例如，一个邪恶巫师的能力也许来自他的上古法杖；或者那艘在太空中疾驰的战舰，其运作依赖内部一个简单的动力核心，一旦受损就会瘫痪全舰。这个秘密给了角色一个止住原本难以招架的强大问题的办法。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    71,
+    72
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp107",
+  "title": "隐藏的意图",
+  "desc": "一个角色要么暴露、要么被发现藏着先前未曾披露的动机。例如，也许那位侦探追查凶案并不是出于对工作的热忱，而是因为死者曾是他的恋人。经典桥段中，这也可能是那个原来是敌人的盟友。隐藏的意图不一定卑劣，虽然也可以是。无论哪种情况，这个意图如今已为他人所知。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    73,
+    74
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp108",
+  "title": "防守还是不防守",
+  "desc": "此转折点涉及两个角色之间的对抗，而另一个角色目睹了这一幕，可以选择是否介入。旁观的角色并不直接属于这场对抗，但一旦介入就会成为其中一方。此情节点要求征引三个角色。",
+  "ranges": {
+   "action": [
+    64,
+    65
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp109",
+  "title": "坠毁",
+  "desc": "此转折点涉及一个载有角色的载具坠毁或濒临坠毁。所涉角色必须减轻坠毁的损害、从一开始阻止坠毁，并且/或者在坠毁中幸存。载具可以是任何东西，从飞机到汽车到雪橇——任何能运送角色的东西，其坠毁都将是危险的。",
+  "ranges": {
+   "action": [
+    66,
+    67
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp110",
+  "title": "增援",
+  "desc": "某个资源捉襟见肘的角色得到了增援。例如，伦纳德国王的战局每况愈下，但在他败北之前，斐迪南国王率军出现在山丘上，准备力挽狂澜。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    62,
+    63
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp111",
+  "title": "政府",
+  "desc": "此转折点在某种程度上涉及政府。也许一个角色必须应付边境检查站，或者一艘星舰需要取得正式许可才能离港。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    64,
+    65
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp112",
+  "title": "需要克服的物理障碍",
+  "desc": "一个角色面临某种必须克服的物理障碍。它可以是需要攀爬的悬崖、需要跨越的摇摇欲坠的桥、需要撞开的门，等等。无论障碍是什么，都需要用身体力行的方式越过它。",
+  "ranges": {
+   "action": [
+    68,
+    69
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp113",
+  "title": "不公",
+  "desc": "此转折点涉及某种社会不公。例如，一个腐败的政客利用市政条例，收回一处公寓楼，而楼里住着某位得罪了这个政客的英雄的朋友。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    66,
+    67
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp114",
+  "title": "无声灾难",
+  "desc": "几乎是最坏的事情偏偏发生了。这与动作情节点「灾难」类似，只是伴随的动作较少。例如，一艘殖民飞船在四十年航程的中途停下，把所有人从冷冻休眠中唤醒。又或者，调查员发现他早已消灭的远古吸血鬼不知怎么又回来了。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    71,
+    71
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp115",
+  "title": "发现用途不明之物",
+  "desc": "一个角色发现了自以为有用的东西，但不知道用途何在。这可能是一根他们不知道怎么用的魔杖、一把不知道开哪把锁的钥匙、一个用途不明但眼下没有动力的装置，等等。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    75,
+    75
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp116",
+  "title": "一切围绕你",
+  "desc": "无论此转折点的主要行动是什么，它都主要聚焦于一个角色。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    64,
+    65
+   ]
+  }
+ },
+ {
+  "id": "pp117",
+  "title": "庆典",
+  "desc": "此情节点涉及某种庆典，比如生日聚会或高中毕业派对。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    68,
+    69
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp118",
+  "title": "僵持",
+  "desc": "此转折点涉及两个或更多角色陷入紧张的僵局。例如，一队雇佣兵用火力把角色们压制在瓦砾堆后，而角色们开枪还击。任何一方都无法消灭对方，但任何一方也无法不解决冲突就脱身。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    72,
+    72
+   ],
+   "mystery": null,
+   "social": [
+    70,
+    70
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp119",
+  "title": "加码",
+  "desc": "无论此转折点中正在发生什么，这些事态都将进一步激化。例如，如果一艘船在暴风雨中的大海上漏水，也许狂风又撕碎了船帆。",
+  "ranges": {
+   "action": [
+    70,
+    71
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp120",
+  "title": "潜藏威胁",
+  "desc": "此转折点中存在一种威胁，它在此次转折点之前的冒险中就已存在，但未被察觉。它可以是任何东西，从潜伏在古瓶中的邪灵，到某人体内的病毒，再到原来是个坏人的好人，等等。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    73,
+    73
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp121",
+  "title": "角色关系",
+  "desc": "一个角色与另一个角色建立了关系。这种关系可以是任何东西，从对该角色表现出个人兴趣，到请他们成为生意伙伴，等等。无论这种关系是什么，它都会产生超出此转折点的持久影响。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    66,
+    67
+   ]
+  }
+ },
+ {
+  "id": "pp122",
+  "title": "宗教",
+  "desc": "此转折点涉及宗教或宗教信仰的某个方面。例如，也许某场活动正在教堂里举行，或者角色们偶然撞见一个邪教正在为他们异世界的神祇准备魔法仪式。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    71,
+    71
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp123",
+  "title": "无辜",
+  "desc": "此转折点涉及无辜的元素，通常是一个身处本不太平之境的无辜之人。例如，一名普通市民发现自己身陷两个吸血鬼的恶战正中。这也可以被视为「误入奇境」式的情节点，即一个不属于某个局面的人发现自己身处该局面之中。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    72,
+    72
+   ],
+   "personal": [
+    68,
+    68
+   ]
+  }
+ },
+ {
+  "id": "pp124",
+  "title": "洗清记录",
+  "desc": "一个角色被赋予任务，要为某人或某事洗清不实指控。例如，朋友声称自己被冤枉定罪，而证据就在外面等着被找到。这个任务可以是正式交付的，由另一个角色给出；也可以是自己送上门来的，比如自己发现了真相，而只有自己知道。例如，某个外国势力制造了一场灾难以挑起战争，但少数几个角色知道真相……只要他们能在战舰启航前赶到总部把真相说出来。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    76,
+    76
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp125",
+  "title": "愿意开口",
+  "desc": "一个角色正处在愿意交谈的状态。无论他们要说什么，都对推进情节线很重要。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    69,
+    70
+   ]
+  }
+ },
+ {
+  "id": "pp126",
+  "title": "盗窃",
+  "desc": "此转折点涉及一次盗窃，无论未遂还是得手。被偷的东西可以是某件物品、情报，或任何拿得走的东西。此转折点涉及盗窃或盗窃未遂的实际活动与行动。例如，角色正在博物馆里闲逛，一伙人闯进来要抢一件仪式面具。",
+  "ranges": {
+   "action": [
+    72,
+    73
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp127",
+  "title": "角色伤害",
+  "desc": "一个角色以某种个人的方式伤害了另一个角色。例如，反派伤害了巫师的魔宠，或者一个角色对另一个角色抛出人身侮辱。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    71,
+    72
+   ]
+  }
+ },
+ {
+  "id": "pp128",
+  "title": "需要藏匿",
+  "desc": "此转折点中，一个角色必须躲避某人或某物。例如，角色也许刚从赏金猎人手中逃脱，但必须躲藏足够长的时间来养伤。又或者，一场可怕的风暴来袭，角色必须寻找庇护所，躲避风暴。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    74,
+    75
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp129",
+  "title": "被跟踪",
+  "desc": "一个角色正被另一个角色跟踪。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    76,
+    77
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp130",
+  "title": "栽赃",
+  "desc": "一个角色被另一个角色不公平地构陷。例如，黑帮老大布置伪证，让人看上去像是某位警探犯了罪。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    77,
+    77
+   ],
+   "social": null,
+   "personal": [
+    73,
+    73
+   ]
+  }
+ },
+ {
+  "id": "pp131",
+  "title": "准备",
+  "desc": "此转折点涉及一个角色需要为某事做准备。例如，法师必须在反派到来之前研习如何驱魔；或者一座由淘金者和商人组成的小镇，必须赶在匪帮前来为被绞死的同伙复仇之前学会如何战斗。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    73,
+    74
+   ],
+   "personal": [
+    74,
+    75
+   ]
+  }
+ },
+ {
+  "id": "pp132",
+  "title": "不可能的犯罪",
+  "desc": "此转折点涉及一桩看似不可能发生或极难发生的罪行，比如有人被发现在一间戒备森严的房间里被谋杀，或者一件艺术品从博物馆被盗却看不到任何闯入痕迹。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    78,
+    78
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp133",
+  "title": "朋友焦点",
+  "desc": "无论此转折点的主要行动是什么，它都聚焦于某个角色的朋友或亲近之人。这个朋友可以是冒险中已存在的角色，也可以是角色列表上没有的人。无论朋友属于谁，被征引的是那个角色，而不是朋友本身。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    76,
+    76
+   ]
+  }
+ },
+ {
+  "id": "pp134",
+  "title": "不可触碰",
+  "desc": "此转折点中，一个角色在某种意义上是他人无法触碰的。例如，身为世界领袖的反派，若直接攻击就会引发国际事件；或者近乎刀枪不入的超级英雄。这种不可触碰应当服务于情节目的，迫使角色们采取其他行动来推进情节线。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    77,
+    77
+   ]
+  }
+ },
+ {
+  "id": "pp135",
+  "title": "贿赂",
+  "desc": "一个角色被另一个角色收买，去做不正当的事。例如，反派也许会向一个角色许诺金钱，只要他们从谋杀现场走开。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    78,
+    78
+   ]
+  }
+ },
+ {
+  "id": "pp136",
+  "title": "应对灾难",
+  "desc": "此转折点涉及一个角色必须与某种灾难「搏斗」。例如，也许角色正在奋力扑救大火，或者他必须在一座古老石殿轰然坍塌的同时奋力穿行其中。",
+  "ranges": {
+   "action": [
+    74,
+    75
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp137",
+  "title": "戛然而止",
+  "desc": "无论此转折点中正在发生什么，它都会突然停止。这可能在任何时候发生，原因也许不明。例如，如果角色们正被一伙人攻击，这伙人可能突然抽身跑掉。",
+  "ranges": {
+   "action": [
+    76,
+    77
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp138",
+  "title": "这是陷阱！",
+  "desc": "此转折点涉及某种陷阱。它可以是物理陷阱，比如冒险者落入走廊中的陷坑；也可以是其他类型的陷阱，比如参加和谈的邀请其实只是把领袖送进刺客瞄准镜的诡计。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    78,
+    79
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp139",
+  "title": "智者会谈",
+  "desc": "此转折点涉及两个角色为一场重要的讨论走到一起。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    75,
+    75
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp140",
+  "title": "时限",
+  "desc": "一项任务必须在一定时间内完成，否则角色将承受后果。时限不必在此转折点内到期，可以延伸到冒险更深处，但它应当在本次冒险内截止，以给角色完成任务的理由。任务失败的后果应当重大。例如，如果一天之内找不到毒素的解药，王子就会死去。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    80,
+    81
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp141",
+  "title": "幕后黑手",
+  "desc": "无论此转折点中正在发生什么，显然它是被某个身份不明的人蓄意制造的。例如，如果一个角色遭到土匪伏击，匪首也许会神秘兮兮地提到他们的「恩主」出资发动了这次袭击。又或者，船只的引擎故障被发现有明显的动手脚痕迹。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    79,
+    80
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp142",
+  "title": "所需资源告急",
+  "desc": "某个角色所需的资源即将耗尽，需要补充。这会给角色带来麻烦。例如，一艘星舰的曲速引擎依赖的水晶正在用尽。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    82,
+    83
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp143",
+  "title": "组织冲突",
+  "desc": "此转折点涉及彼此不和的两个或更多组织。例如，两个敌对的黑手党组织也许都想抓住一位造假大师为自己所用。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    76,
+    76
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp144",
+  "title": "坏消息",
+  "desc": "此转折点中发生的负面事情并非直接发生在转折点里，而是以情报的形式送达。事件发生在远方，而一个角色正在得知它。例如，角色们可能得知他们的盟友在别处输掉了一场关键战役。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    84,
+    85
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp145",
+  "title": "角色相助",
+  "desc": "一个角色以某种方式帮助另一个角色。这种帮助可以是任何东西，从在战斗中出手相救，到给他们一个可以依靠哭泣的肩膀。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    79,
+    80
+   ]
+  }
+ },
+ {
+  "id": "pp146",
+  "title": "求助",
+  "desc": "一个角色找到另一个角色请求帮助。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    81,
+    82
+   ]
+  }
+ },
+ {
+  "id": "pp147",
+  "title": "固守据点",
+  "desc": "此转折点涉及一个角色需要加固一处避难之地。例如，男爵必须加强城堡的防御以抵御即将到来的进攻，或者在流星风暴降落到行星表面之前，必须给发电机加满燃料以提升力场的功率。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    86,
+    86
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp148",
+  "title": "遗弃",
+  "desc": "此转折点中，某样东西需要被放弃，或者已经被放弃。例如，一艘严重受损的星舰将在两小时后爆炸，必须疏散。又或者，一个角色在森林中来到一座空无一人的村庄。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    87,
+    88
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp149",
+  "title": "找到它，否则……",
+  "desc": "此转折点中，某样东西需要被找到，以帮助解决情节线。找到东西的行动可以就发生在此转折点中，也可以是角色得知了寻找它的必要。要找的东西几乎可以是任何东西，从用来开启传送门的魔法戒指这样的物品，到能证明被告清白的罪案唯一目击者这样的特殊人物。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    81,
+    82
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp150",
+  "title": "反被利用",
+  "desc": "一个角色所拥有或结盟的某种资源在此转折点中被以某种方式反过来对付他们自己。例如，一艘小型星舰正被三艘巨型战列巡洋舰追击。小舰凭借高超的驾驶技术使大舰互相碰撞，以其体型反制其身。又或者，一位法师也许支配着一个强大的傀儡魔像，而另一个法师施咒让魔像转而攻击自己的主人。",
+  "ranges": {
+   "action": [
+    78,
+    78
+   ],
+   "tension": [
+    89,
+    89
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp151",
+  "title": "强权人物",
+  "desc": "此转折点涉及一个有权势的人物。该角色的权势可以是任何性质，从膂力过人的武士到极有影响力的政界人物。征引一个角色。如果该角色本身有权势，那么他就是那个强权人物；如果不是，那么强权人物就是与该角色有某种关联的某人。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    77,
+    77
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp152",
+  "title": "阴森氛围",
+  "desc": "此转折点涉及阴森的氛围，比如一个黑暗而令人生畏的地方，或者一个以令人不安的方式极度危险的角色。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    90,
+    91
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp153",
+  "title": "欢迎卷入情节",
+  "desc": "一个角色得知自己与这条情节线有某种私人的关联。也许涉及他们过去的事情，或者他们生活中的某个人。例如，一位侦探也许发现，他正试图扳倒的那个犯罪集团，其头目正是他失散多年的兄弟。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    83,
+    83
+   ]
+  }
+ },
+ {
+  "id": "pp154",
+  "title": "旅途场景",
+  "desc": "此转折点发生在一辆行驶中的载具上。例如，海上的船、火车、在太空中疾驰的飞船，等等。",
+  "ranges": {
+   "action": [
+    79,
+    79
+   ],
+   "tension": [
+    92,
+    92
+   ],
+   "mystery": [
+    83,
+    83
+   ],
+   "social": [
+    78,
+    78
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp155",
+  "title": "护送任务",
+  "desc": "一个角色必须护送另一个角色前往某处。例如，这可以是一名保镖押送一位高层主管前往偏僻地点，或者一队武士要护送公主穿过满是怪兽的山谷。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    79,
+    79
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp156",
+  "title": "旧日交易",
+  "desc": "此转折点涉及一份很久以前达成的协议，很可能早在本次冒险开始之前。例如，超自然调查员在研究一桩离奇死亡时发现，死者十年前把自己的灵魂卖给了恶魔，他们怀疑这场死亡正是恶魔前来收账。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    84,
+    84
+   ],
+   "social": [
+    80,
+    80
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp157",
+  "title": "新的敌人",
+  "desc": "此转折点给一个角色带来了新的威胁。这一威胁也许与任何情节线直接相关，也许无关，但无论如何都必须应对。例如，深入地底的探险家们正在古老遗迹中穿行寻找失踪的同伴，却遭到在这一带筑巢的恐龙的袭击。这自动产生一个新角色。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    93,
+    93
+   ],
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp158",
+  "title": "结盟",
+  "desc": "一方提出与另一方结盟。这可以是令人意外的联盟，比如一个敌人想与另一个敌人联手对付共同的敌人；也可以不那么戏剧化，比如联邦调查局提出协助地方执法部门侦破罪案。这里所说的「一方」可以是正式组织，也可以是较松散的个人群体。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    81,
+    82
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp159",
+  "title": "支配他人",
+  "desc": "此转折点中，一个角色以某种方式对其他角色拥有支配力。这种支配力使该角色对他人处于号令地位。例如，领主要求所有农民缴纳重税，否则他的人就会欺压他们。又或者，某种疫病解药的制造者要求全村人满足他的任何要求才能领到药。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    83,
+    84
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp160",
+  "title": "神秘新人物",
+  "desc": "此转折点自动征引一个新角色，将其加入列表，其身份或目的尚未完全明朗。也许他们是会议上一个影影绰绰的访客，或者一个似乎对另一个人握有权威的人。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    85,
+    85
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp161",
+  "title": "狂乱行动",
+  "desc": "此转折点涉及以疾风骤雨之势砸向角色的行动。它应当是一连串快节奏的行动，比如一波接一波的袭击者、一艘顺激流狂冲而下险象环生的失控小船，或是穿越一连串陷阱的夺命闯关，等等。",
+  "ranges": {
+   "action": [
+    80,
+    81
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp162",
+  "title": "乡村场景",
+  "desc": "此转折点涉及乡村场景，比如郊外或农场。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    94,
+    94
+   ],
+   "mystery": [
+    86,
+    86
+   ],
+   "social": [
+    85,
+    85
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp163",
+  "title": "惹人喜爱",
+  "desc": "此转折点涉及一个对另一个角色而言非常讨人喜欢的角色。无论这个人是谁，他应当是一个能引起同情的人。该角色的可爱程度应当足以左右另一个角色的行动。例如，一个饱经世故的警察自以为什么都见过了，但一个被绑架的女孩点燃了他救她并救赎自己的渴望。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    84,
+    84
+   ]
+  }
+ },
+ {
+  "id": "pp164",
+  "title": "有人出现在不该出现的地方",
+  "desc": "一个角色身处一个他们通常不该在的地点。例如，盟友被人看见出现在敌人的总部，一位富有名流被人撞见在餐厅与黑帮老大密会，等等。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    87,
+    88
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp165",
+  "title": "需要潜行的障碍",
+  "desc": "一道需要靠潜行或灵巧来克服的障碍。例如，一只怪兽栖身的洞穴只有攀上一面高耸险峻的崖壁才能进入。又或者，守卫反派的忍者太多，硬拼是打不过去的，但只要技艺足够高超，就可以神不知鬼不觉地溜过去。",
+  "ranges": {
+   "action": [
+    82,
+    83
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp166",
+  "title": "腐败",
+  "desc": "此转折点涉及某种社会体制的腐败。例如，一个收黑帮好处的警察；或者本次冒险的反派原来是当地一名官僚，利用职务之便让走私犯在夜里进出码头。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    86,
+    87
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp167",
+  "title": "弱点被利用",
+  "desc": "此转折点涉及某个弱点被某个角色利用。例如，有人得知他人的罪行并以此要挟，或者角色们得知某个星垒的秘密弱点并借此将其摧毁，等等。此转折点既可以涉及得知这个弱点，也可以涉及主动利用它。",
+  "ranges": {
+   "action": null,
+   "tension": [
+    95,
+    95
+   ],
+   "mystery": [
+    89,
+    89
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp168",
+  "title": "报酬的承诺",
+  "desc": "此转折点涉及一个角色面对参与其中所能获得的丰厚报酬。例如，也许一个村庄愿意把所有家当都给一队冒险者，只要他们赶走一伙四处劫掠的哥布林。报酬所换取的事情应当被认为是正当或良善的。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    85,
+    86
+   ]
+  }
+ },
+ {
+  "id": "pp169",
+  "title": "伪装",
+  "desc": "一个角色是冒牌货。无论他们把自己装扮成什么，或者讲过关于自己的什么故事，都是假的。这一结果与「隐藏的意图」不同：在「隐藏的意图」中，角色也许确实同时怀着两种动机；而在「伪装」中，他们呈现出的形象或故事是彻头彻尾的假货。例如，那个声称自己是王国合法统治者的王子，其实是一个顶替其身份的变形怪。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    90,
+    91
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp170",
+  "title": "谈生意",
+  "desc": "此转折点在某种程度上涉及商业。它可以是一笔商业交易，也可以是某个商家卷入了转折点。例如，一家公司雇用一位超级英雄保护一批重要货品，或者一部记载着所需咒语的古籍必须从拍卖行购得。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    88,
+    89
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp171",
+  "title": "正义事业走上歧途",
+  "desc": "此转折点涉及一桩起初正义、后来逐渐偏离正轨的事情。例如，一位英雄打垮了一伙恐吓小镇的兽人，拯救了镇民，但如今这位英雄自立为小镇的霸主，开始索要贡赋。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    90,
+    90
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp172",
+  "title": "专业知识",
+  "desc": "此转折点涉及一个拥有非常具体而专业化的知识或技能的角色，并在转折点中派上用场。例如，只有雷德博士的天才才能弄明白那个外星装置的复杂构造；或者人们发现，一名凶手正凭着他对罕见毒物的知识杀人。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    87,
+    87
+   ]
+  }
+ },
+ {
+  "id": "pp173",
+  "title": "片刻安宁",
+  "desc": "无论此转折点中还发生着什么，对一个角色而言，总体上应当是一段和平的时光。例如，战事出现间歇，交战双方有机会一起喝上一杯、放松片刻，然后才不得不再度开战。",
+  "ranges": {
+   "action": [
+    84,
+    85
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp174",
+  "title": "聚焦平凡",
+  "desc": "此转折点涉及对某件平凡而日常之事的聚焦，比如一个人的客厅，或者一顿饭。这件平凡之事也许与转折点中的非凡之事交织在一起。例如，一个角色在自己的晚餐被下毒后身亡，或者一幅全家福被查出是受诅咒的物品。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    88,
+    89
+   ]
+  }
+ },
+ {
+  "id": "pp175",
+  "title": "快跑！",
+  "desc": "一个角色正在逃跑或已经逃跑。逃跑本身可以发生在此转折点中，也可以是被得知的。例如，一个可怕怪物出现时，某个角色尖叫着逃走；又或者，冒险早些时候失踪的一个角色被得知因害怕丢命而逃出了城。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    90,
+    91
+   ]
+  }
+ },
+ {
+  "id": "pp176",
+  "title": "被人抢先",
+  "desc": "无论此转折点中正在发生什么，只要它涉及为某种目的前往某地，一个角色就会发现别人已经先到了。例如，一个角色去停尸房核对一条线索，却得知另一名调查员已经来过并把尸体带走了。",
+  "ranges": {
+   "action": [
+    86,
+    87
+   ],
+   "tension": null,
+   "mystery": [
+    92,
+    93
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp177",
+  "title": "对峙",
+  "desc": "此转折点涉及角色们的一场对峙，一旦谈崩就可能转为肢体冲突。例如，一个角色去见街头帮派的老大想打探消息，而这个帮派出了名的神经紧张、动辄动武。",
+  "ranges": {
+   "action": [
+    88,
+    89
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": [
+    91,
+    91
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp178",
+  "title": "争执",
+  "desc": "两个角色之间的分歧在此转折点中演变为冲突。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    92,
+    93
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp179",
+  "title": "社交张力达到沸点",
+  "desc": "一种极端的社会张力正处在爆发的边缘。此转折点涉及其中的某个方面，比如一个使张力进一步升级的事件，或是这种张力导致的结果。例如，两个濒临战争边缘的国家在士兵们的压力不断升高之际发生了边境冲突。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    94,
+    94
+   ],
+   "personal": null
+  }
+ },
+ {
+  "id": "pp180",
+  "title": "保护者",
+  "desc": "此转折点中，一个角色必须保护某人或某物。如果这是一个动作情节点，角色必须在此转折点中积极抵御威胁进行保护；如果这是个人情节点，则角色在此转折点中接下了保护之责。",
+  "ranges": {
+   "action": [
+    90,
+    91
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": [
+    92,
+    93
+   ]
+  }
+ },
+ {
+  "id": "pp181",
+  "title": "高潮迭起",
+  "desc": "冒险中发生的一系列事件在此转折点中达到顶点。如果此时还处在冒险或这条情节线的早期，那么冒险或情节线将有一个轰轰烈烈的开场。例如，循着线索追踪一个邪教的角色们终于发现了它的老巢，引发一场大规模战斗。又或者，一条夺回被盗宝石的情节线，以一场极其周密的盗窃拉开帷幕。",
+  "ranges": {
+   "action": [
+    92,
+    93
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp182",
+  "title": "摧毁目标",
+  "desc": "此转折点中，一个角色必须摧毁一样东西或尝试摧毁它。也许一支地城探险队抵达了洞穴深处，必须在那里打破一道神秘的封印。",
+  "ranges": {
+   "action": [
+    94,
+    95
+   ],
+   "tension": null,
+   "mystery": null,
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp183",
+  "title": "阴谋论",
+  "desc": "一个角色相信某种能解释本次冒险中问题的说法。这个角色可能是对的，也可能是错的，但这种理论会促使角色采取行动。例如，一群人躲在商场里躲避丧尸末日。其中一个角色相信这只是一场疾病，于是劝其他人不要朝丧尸开枪。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    94,
+    94
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "pp184",
+  "title": "仆从",
+  "desc": "此转折点涉及另一个角色的仆从或代理人。征引一个角色来作为仆从所代表的人物。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": null,
+   "social": [
+    95,
+    95
+   ],
+   "personal": [
+    94,
+    95
+   ]
+  }
+ },
+ {
+  "id": "pp185",
+  "title": "另一种说法",
+  "desc": "一个角色得知了关于冒险中已知之事的另一个版本的说法。例如，在调查一艘被外星人截击的星舰时，角色们发现一名船员声称袭击者是敌对公会的人，而非外星人。",
+  "ranges": {
+   "action": null,
+   "tension": null,
+   "mystery": [
+    95,
+    95
+   ],
+   "social": null,
+   "personal": null
+  }
+ },
+ {
+  "id": "meta",
+  "title": "元情节点",
+  "desc": "这是一个特殊的情节点类别，其中的情节点会改变角色列表或合并情节线。前往元情节点表，在上面掷1d100得出你的情节点。",
+  "ranges": {
+   "action": [
+    96,
+    100
+   ],
+   "tension": [
+    96,
+    100
+   ],
+   "mystery": [
+    96,
+    100
+   ],
+   "social": [
+    96,
+    100
+   ],
+   "personal": [
+    96,
+    100
+   ]
+  }
+ }
+]
