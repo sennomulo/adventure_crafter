@@ -26,17 +26,13 @@ class ThemesPage extends StatelessWidget {
               Text('冒险主题（按优先级 1-5）',
                   style: Theme.of(context).textTheme.titleMedium),
               const Spacer(),
-              FilledButton.tonalIcon(
-                icon: const Icon(Icons.casino),
-                label: const Text('掷骰装配'),
-                onPressed: () {
-                  final themes = service.current.value!.themes;
-                  if (themes.isNotEmpty) {
-                    _confirmAssemble(context, service);
-                  } else {
-                    _assemble(context, service);
-                  }
-                },
+              Tooltip(
+                message: '仅为未设置的优先位依次掷骰，手动设置过的保持不变',
+                child: FilledButton.tonalIcon(
+                  icon: const Icon(Icons.casino),
+                  label: const Text('掷骰装配'),
+                  onPressed: () => _assemble(context, service),
+                ),
               ),
             ],
           ),
@@ -108,43 +104,26 @@ class ThemesPage extends StatelessWidget {
     );
   }
 
-  void _confirmAssemble(BuildContext context, AdventureService service) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('重新装配主题'),
-        content: const Text('将掷骰重新填充全部 5 个优先位，覆盖现有主题。确定？'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
-          FilledButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _assemble(context, service);
-            },
-            child: const Text('确定'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _assemble(BuildContext context, AdventureService service) {
     final rules = Get.find<RulesService>();
     final adv = service.current.value!;
-    final used = <String>{};
-    final result = <String>[];
-    for (var i = 0; i < 5; i++) {
+    final used = adv.themes.toSet();
+    final start = adv.themes.length;
+    if (start >= 5) {
+      showSnack(context, '5 个优先位已全部设置。');
+      return;
+    }
+    var rolled = 0;
+    for (var i = start; i < 5; i++) {
       final die = rollDie(10);
       final theme = randomThemeForRoll(rules, die, used);
       if (theme == null) break;
       used.add(theme);
-      result.add(theme);
+      adv.themes.add(theme);
+      rolled++;
       service.logRoll('随机主题装配', '第${i + 1}优先：1d10=$die → ${rules.themeName(theme)}');
     }
-    adv.themes
-      ..clear()
-      ..addAll(result);
     service.save();
-    showSnack(context, '已装配 ${result.length} 个主题');
+    showSnack(context, '已为 $rolled 个未设置优先位掷出主题');
   }
 }

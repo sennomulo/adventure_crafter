@@ -13,6 +13,12 @@ class AdventurePageController extends GetxController {
   final index = 0.obs;
 }
 
+void goToAdventureTab(int index) {
+  if (Get.isRegistered<AdventurePageController>()) {
+    Get.find<AdventurePageController>().index.value = index;
+  }
+}
+
 class AdventurePage extends StatelessWidget {
   const AdventurePage({super.key});
 

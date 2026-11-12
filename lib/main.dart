@@ -11,6 +11,14 @@ import 'ui/adventure_index/adventure_index_page.dart';
 
 const kChineseFontFallback = ['Noto Sans SC'];
 
+String _elapsedFromNow(DateTime t) {
+  final d = DateTime.now().difference(t);
+  if (d.inMinutes < 1) return '刚刚';
+  if (d.inMinutes < 60) return '${d.inMinutes}分钟前';
+  if (d.inHours < 24) return '${d.inHours}小时前';
+  return '${d.inDays}天前';
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final rules = RulesService();
@@ -50,10 +58,15 @@ class _ExitGuardState extends State<ExitGuard> {
   }
 
   Future<AppExitResponse> _onExitRequested() async {
+    final last = Get.find<AdventureService>().lastSavedAt.value;
+    final savedText = last == null
+        ? '尚无保存记录。'
+        : '数据上次保存于 '
+            '${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}:${last.second.toString().padLeft(2, '0')}（${_elapsedFromNow(last)}）。';
     final result = await Get.dialog<bool>(
       AlertDialog(
         title: const Text('退出 Adventure Crafter？'),
-        content: const Text('冒险进度已自动保存。确定退出吗？'),
+        content: Text('$savedText\n\n所有未保存的进度将会丢失。'),
         actions: [
           TextButton(
             onPressed: () => Get.back(result: false),

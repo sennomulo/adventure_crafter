@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../services/adventure_service.dart';
 import '../adventure/adventure_page.dart';
 import '../global_settings/settings_page.dart';
-import '../roll_log/roll_log_page.dart';
 import '../widgets/common.dart';
 
 class AdventureIndexPage extends StatelessWidget {
@@ -17,17 +16,6 @@ class AdventureIndexPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Adventure Crafter'),
         actions: [
-          IconButton(
-            tooltip: '掷骰日志',
-            icon: const Icon(Icons.history),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => Scaffold(
-                          appBar: AppBar(title: const Text('掷骰日志')),
-                          body: const RollLogPage(),
-                        ))),
-          ),
           IconButton(
             tooltip: '设置',
             icon: const Icon(Icons.settings),

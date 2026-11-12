@@ -11,6 +11,7 @@ class AdventureService extends GetxService {
   final storage = createStorage();
   final adventures = <AdventureMeta>[].obs;
   final current = Rx<Adventure?>(null);
+  final lastSavedAt = Rxn<DateTime>();
 
   Future<void> refreshList() async {
     adventures.assignAll(await storage.listAll());
@@ -41,6 +42,7 @@ class AdventureService extends GetxService {
     final adv = current.value;
     if (adv == null) return;
     current.refresh();
+    lastSavedAt.value = DateTime.now();
     await storage.write(adv.id, adv.toJsonString());
   }
 
