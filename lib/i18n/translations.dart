@@ -19,18 +19,6 @@ class AppTranslations extends Translations {
     'Chinese': '中文',
     'English': 'English',
 
-    // main / exit guard
-    'Quit Adventure Crafter?': '退出 Adventure Crafter？',
-    'Data was last saved at': '数据上次保存于',
-    'No save record yet.': '尚无保存记录。',
-    'All unsaved progress will be lost.':
-        '所有未保存的进度将会丢失。',
-    'Quit': '退出',
-    'just now': '刚刚',
-    'minutes ago': '分钟前',
-    'hours ago': '小时前',
-    'days ago': '天前',
-
     // adventure index
     'No adventures yet. Tap "New adventure" at the bottom right to start.':
         '还没有冒险。点击右下角「新建冒险」开始。',

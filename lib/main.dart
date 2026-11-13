@@ -1,5 +1,3 @@
-import 'dart:ui' show AppExitResponse;
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
@@ -13,14 +11,6 @@ import 'services/settings_service.dart';
 import 'ui/adventure_index/adventure_index_page.dart';
 
 const kChineseFontFallback = ['Noto Sans SC'];
-
-String _elapsedFromNow(DateTime t) {
-  final d = DateTime.now().difference(t);
-  if (d.inMinutes < 1) return 'just now'.tr;
-  if (d.inMinutes < 60) return '${d.inMinutes}${'minutes ago'.tr}';
-  if (d.inHours < 24) return '${d.inHours}${'hours ago'.tr}';
-  return '${d.inDays}${'days ago'.tr}';
-}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,90 +42,20 @@ Future<void> main() async {
   Get.put(BackupService());
   final adventureService = Get.put(AdventureService());
   await adventureService.refreshList();
-  runApp(const ExitGuard(child: AdventureCrafterApp()));
+  runApp(const AdventureCrafterApp());
 }
 
-String _exitSavedText() {
-  final last = Get.find<AdventureService>().lastSavedAt.value;
-  return last == null
-      ? 'No save record yet.'.tr
-      : '${'Data was last saved at'.tr} '
-          '${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}:${last.second.toString().padLeft(2, '0')}（${_elapsedFromNow(last)}）。';
-}
-
-/// 所有退出入口（系统退出请求、桌面窗口关闭按钮）统一走此确认弹窗。
-/// _pending 去重并发触发；_exiting 保证确认退出后的任何再入直接放行。
-bool _exiting = false;
-Future<bool>? _pendingExit;
-
-Future<bool> confirmExit() async {
-  if (_exiting) return true;
-  final pending = _pendingExit;
-  if (pending != null) return pending;
-  final savedText = _exitSavedText();
-  final future = Get.dialog<bool>(
-    AlertDialog(
-      title: Text('Quit Adventure Crafter?'.tr),
-      content: Text('$savedText\n\n${'All unsaved progress will be lost.'.tr}'),
-      actions: [
-        TextButton(
-          onPressed: () => Get.back(result: false),
-          child: Text('Cancel'.tr),
-        ),
-        FilledButton(
-          onPressed: () => Get.back(result: true),
-          child: Text('Quit'.tr),
-        ),
-      ],
-    ),
-  );
-  _pendingExit = future.then((v) => v ?? false);
-  final result = await future;
-  _pendingExit = null;
-  return result ?? false;
-}
-
+/// 退出流程（无拦截弹窗）：数据随每次改动即时自动保存，
+/// 关闭窗口时再做一次静默保存兜底，随后立即销毁窗口退出。
 class AppWindowListener with WindowListener {
   @override
   void onWindowClose() async {
-    final ok = await confirmExit();
-    if (!ok) return;
-    _exiting = true;
+    try {
+      await Get.find<AdventureService>().save();
+    } catch (_) {}
     await windowManager.setPreventClose(false);
     await windowManager.destroy();
   }
-}
-
-class ExitGuard extends StatefulWidget {
-  final Widget child;
-
-  const ExitGuard({super.key, required this.child});
-
-  @override
-  State<ExitGuard> createState() => _ExitGuardState();
-}
-
-class _ExitGuardState extends State<ExitGuard> {
-  late final AppLifecycleListener _listener;
-
-  @override
-  void initState() {
-    super.initState();
-    _listener = AppLifecycleListener(onExitRequested: () async {
-      final ok = await confirmExit();
-      if (ok) _exiting = true;
-      return ok ? AppExitResponse.exit : AppExitResponse.cancel;
-    });
-  }
-
-  @override
-  void dispose() {
-    _listener.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => widget.child;
 }
 
 class AdventureCrafterApp extends StatelessWidget {

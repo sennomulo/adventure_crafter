@@ -13,7 +13,13 @@ class AdventurePageController extends GetxController {
   final index = 0.obs;
 }
 
+/// 跳转到冒险内的目标页。跳转前关闭所有打开的对话框路由
+/// （如转折点编辑器、掷骰结果弹窗），避免源窗口滞留。
 void goToAdventureTab(int index) {
+  final nav = Get.key.currentState;
+  if (nav != null) {
+    nav.popUntil((route) => route is! PopupRoute);
+  }
   if (Get.isRegistered<AdventurePageController>()) {
     Get.find<AdventurePageController>().index.value = index;
   }
