@@ -211,8 +211,14 @@ class AppTranslations extends Translations {
     'Got it': '知道了',
     'Adventure Crafter (assistant)':
         'Adventure Crafter（冒险工匠助手）',
-    'Unofficial fan tool. Rule data comes from the Chinese translation of "The Adventure Crafter" (by Tana Pigeon, Word Mill Games); all rights belong to the original authors.':
-        '非官方粉丝工具。规则表数据来自《The Adventure Crafter》（Tana Pigeon 著，Word Mill Games）中文译本，版权归原作者所有。',
+    'Unofficial fan tool based on "The Adventure Crafter" by Tana Pigeon, published by Word Mill Games. Rule text and tables from the book are used under the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license, pursuant to the Word Mill Games CC-BY-NC policy (www.wordmillgames.com/license.html); the license covers text only. Find out more at www.wordmillgames.com.':
+        '非官方粉丝工具，基于 Tana Pigeon 著、Word Mill Games 出版的《The Adventure Crafter》。书中规则文本与表格依据 Word Mill Games 官方 CC-BY-NC 政策（www.wordmillgames.com/license.html），按 Creative Commons 署名-非商业性使用 4.0 国际许可协议（CC BY-NC 4.0）使用；该许可仅覆盖文本。详情见 www.wordmillgames.com。',
+    'Modifications: selected rule tables and texts were translated into Chinese and integrated into this software (including the data files under assets/rules/, also provided under CC BY-NC 4.0). The full Chinese translation of the book was produced by the maintainer with AI assistance for personal use only and is not distributed with this software.':
+        '修改说明：本软件将书中部分规则表格与文本翻译为中文并整合进软件（含 assets/rules/ 数据文件，同样按 CC BY-NC 4.0 提供）。全书中文译文由维护者个人借助 AI 完成，仅供自用，不随本软件发布。',
+    'Disclaimer: unofficial fan project, not affiliated with or endorsed by Word Mill Games or Tana Pigeon. All third-party trademarks belong to their respective owners.':
+        '非官方声明：本软件为爱好者制作的非官方项目，与 Word Mill Games 或 Tana Pigeon 无隶属关系，亦未获得其官方认可。各第三方商标归其各自所有者所有。',
+    'Software code: PolyForm Noncommercial License 1.0.0. Rule content from The Adventure Crafter (including the assets/rules/ data files): CC BY-NC 4.0.':
+        '软件代码：PolyForm Noncommercial License 1.0.0；《The Adventure Crafter》规则内容（含 assets/rules/ 数据文件）：CC BY-NC 4.0。',
 
     // physical dice lookups
     'Physical dice: roll yourself and read the result from the table.':

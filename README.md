@@ -2,11 +2,27 @@
 
 基于《The Adventure Crafter》（Tana Pigeon 著，Word Mill Games 出版）的桌面跑团辅助软件。
 
-> 非官方粉丝工具。规则表数据来自该书中文译本，原著及规则版权归 Word Mill Games 所有。
+> 非官方粉丝工具。版权与许可详见下文「[版权与许可](#版权与许可--copyright--license)」一节。
 
-## 使用条款
+## 版权与许可 / Copyright & License
 
-- 本软件免费，**不可用于任何商业盈利目的**，详见 [LICENSE](LICENSE)（PolyForm Noncommercial 1.0.0）。
+本软件（非官方粉丝工具）基于 **《The Adventure Crafter》**（**Tana Pigeon** 著，**Word Mill Games** 出版）。来自该书的规则文本与表格内容的使用，依据 Word Mill Games 官方 [CC-BY-NC 政策](https://www.wordmillgames.com/license.html)，按 [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/) 许可进行；该许可仅覆盖文本，不含美术与装帧设计。了解详情请访问 [www.wordmillgames.com](https://www.wordmillgames.com/)。
+
+**修改说明**：本软件将原书中的**部分规则表格与文本**翻译为中文并整合进软件（含随软件一并分发的 `assets/rules/` 数据文件，同样按 CC BY-NC 4.0 提供）。原书全书中文译文由本仓库维护者个人借助 AI 工具完成，仅供译者自用，**不随本软件发布**，亦不对外提供。
+
+**非官方声明**：本软件为爱好者制作的非官方项目，与 Word Mill Games 或 Tana Pigeon 无隶属关系，亦未获得其官方认可。各第三方商标归其各自所有者所有。
+
+本仓库的软件代码以 [PolyForm Noncommercial License 1.0.0](LICENSE) 发布；其中来自《The Adventure Crafter》的规则文本与表格内容（含 `assets/rules/` 数据文件）的使用与再分发，依据上述 CC BY-NC 4.0 许可进行。
+
+---
+
+This software (an unofficial fan tool) is based on **The Adventure Crafter** by **Tana Pigeon**, published by **Word Mill Games**. Rule text and table content from the book are used under the [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/) license, pursuant to Word Mill Games' official [CC-BY-NC policy](https://www.wordmillgames.com/license.html); the license covers text only, not art or trade dress. Find out more at [www.wordmillgames.com](https://www.wordmillgames.com/).
+
+**Modification notice**: Selected rule tables and texts from the book were translated into Chinese and integrated into this software (including the data files under `assets/rules/`, which are distributed under CC BY-NC 4.0 as well). The full Chinese translation of the book was produced by the repository maintainer with AI assistance for personal use only; it is **not distributed** with this software.
+
+**Disclaimer**: This is an unofficial fan project, not affiliated with or endorsed by Word Mill Games or Tana Pigeon. All third-party trademarks belong to their respective owners.
+
+The software code in this repository is released under the [PolyForm Noncommercial License 1.0.0](LICENSE); the rule text and table content from The Adventure Crafter (including the `assets/rules/` data files) are used and redistributed under the CC BY-NC 4.0 license above.
 
 ## 开发说明
 

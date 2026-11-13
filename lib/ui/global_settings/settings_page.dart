@@ -110,12 +110,43 @@ class SettingsPage extends StatelessWidget {
           onTap: () => showNumberedLookup(context, rules.descriptors, 'Descriptor table'.tr),
         ),
         const Divider(height: 32),
-        ListTile(
-          leading: const Icon(Icons.info_outline),
-          title: Text('Adventure Crafter (assistant)'.tr),
-          subtitle: Text(
-              'Unofficial fan tool. Rule data comes from the Chinese translation of "The Adventure Crafter" (by Tana Pigeon, Word Mill Games); all rights belong to the original authors.'
-                  .tr),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.info_outline, size: 20),
+                    const SizedBox(width: 8),
+                    Text('Adventure Crafter (assistant)'.tr,
+                        style: Theme.of(context).textTheme.titleMedium),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                    'Unofficial fan tool based on "The Adventure Crafter" by Tana Pigeon, published by Word Mill Games. Rule text and tables from the book are used under the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license, pursuant to the Word Mill Games CC-BY-NC policy (www.wordmillgames.com/license.html); the license covers text only. Find out more at www.wordmillgames.com.'
+                        .tr,
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 8),
+                Text(
+                    'Modifications: selected rule tables and texts were translated into Chinese and integrated into this software (including the data files under assets/rules/, also provided under CC BY-NC 4.0). The full Chinese translation of the book was produced by the maintainer with AI assistance for personal use only and is not distributed with this software.'
+                        .tr,
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 8),
+                Text(
+                    'Disclaimer: unofficial fan project, not affiliated with or endorsed by Word Mill Games or Tana Pigeon. All third-party trademarks belong to their respective owners.'
+                        .tr,
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 8),
+                Text(
+                    'Software code: PolyForm Noncommercial License 1.0.0. Rule content from The Adventure Crafter (including the assets/rules/ data files): CC BY-NC 4.0.'
+                        .tr,
+                    style: Theme.of(context).textTheme.bodySmall),
+              ],
+            ),
+          ),
         ),
       ],
     );
