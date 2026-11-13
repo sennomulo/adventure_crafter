@@ -220,6 +220,39 @@ class AppTranslations extends Translations {
     'Software code: PolyForm Noncommercial License 1.0.0. Rule content from The Adventure Crafter (including the assets/rules/ data files): CC BY-NC 4.0.':
         '软件代码：PolyForm Noncommercial License 1.0.0；《The Adventure Crafter》规则内容（含 assets/rules/ 数据文件）：CC BY-NC 4.0。',
 
+    // M2: carry-over, help, data management
+    'Carry over lists from a previous adventure': '从上一冒险誊入列表',
+    'Copies the plotline and character lists, including weights.':
+        '将复制情节线与角色列表（含权重）。',
+    'Start fresh': '不誊入（全新开始）',
+    'How to use the Adventure Crafter': '冒险工匠的用法',
+    'Adventure outline': '冒险大纲',
+    'Assemble themes, then generate turning points one by one ahead of play to build the outline of a full adventure; expand the results into scene outlines yourself.':
+        '先装配主题，再在开跑前逐个生成转折点，构建完整冒险的大纲；由玩家自行把结果扩写为场景大纲。',
+    'Adventure seed': '冒险种子',
+    'Generate a single turning point when starting a new adventure and use it as the seed you grow into an adventure.':
+        '新冒险开局时生成一个转折点，把它作为种子自行发展成完整冒险。',
+    'Opening scene': '开场场景',
+    'Use a generated turning point as an alternative way to create the first scene of a Mythic adventure.':
+        '把生成的转折点作为 Mythic 冒险第一场景的另一种生成方式。',
+    'Inspiration': '灵感',
+    'When stuck, roll a single plot point or a list entry to get ideas; interpret the results yourself.':
+        '卡壳时单掷一个情节点或列表条目寻找灵感；结果由玩家自行解读。',
+    'The software only rolls dice and looks up tables; all creative decisions are made by the player.':
+        '软件只负责掷骰与查表；所有创造性决定由玩家做出。',
+    'Data management': '数据管理',
+    'Export current adventure': '导出当前冒险',
+    'Save the adventure as a .json file.': '把当前冒险保存为 .json 文件。',
+    'Export full backup (zip)': '导出全量备份（zip）',
+    'Packs all adventures into a zip archive.': '把所有冒险打包为一个 zip 压缩包。',
+    'Import from file (json/zip)': '从文件导入（json/zip）',
+    'Import a single adventure (.json) or a backup archive (.zip).':
+        '导入单个冒险（.json）或备份压缩包（.zip）。',
+    'Imported @count adventure(s).': '已导入 @count 个冒险。',
+    'Import failed: invalid file': '导入失败：文件无效',
+    'Nothing to back up': '没有可备份的冒险',
+    'Export adventure': '导出冒险',
+
     // physical dice lookups
     'Physical dice: roll yourself and read the result from the table.':
         '实体骰：请自行掷骰并在下表查找结果。',

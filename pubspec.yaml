@@ -2,18 +2,23 @@ name: adventure_crafter
 description: "Adventure Crafter desktop assistant (冒险工匠助手)."
 publish_to: 'none'
 
-version: 0.1.0+1
+version: 1.0.0+1
 
 environment:
   sdk: ^3.10.9
 
 dependencies:
+  archive: ^4.0.2
   cupertino_icons: ^1.0.8
+  file_picker: ^11.0.2
   flutter:
     sdk: flutter
+  flutter_file_dialog: ^3.0.2
   get: ^4.6.6
   path_provider: ^2.1.1
   shared_preferences: ^2.2.2
+  web: ^1.1.0
+  window_manager: ^0.5.1
 
 dev_dependencies:
   flutter_test:

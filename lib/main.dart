@@ -2,10 +2,12 @@ import 'dart:ui' show AppExitResponse;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'data/rules.dart';
 import 'i18n/translations.dart';
 import 'services/adventure_service.dart';
+import 'services/backup_service.dart';
 import 'services/roll_log_service.dart';
 import 'services/settings_service.dart';
 import 'ui/adventure_index/adventure_index_page.dart';
@@ -22,6 +24,18 @@ String _elapsedFromNow(DateTime t) {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (GetPlatform.isDesktop) {
+    await windowManager.ensureInitialized();
+    const options = WindowOptions(
+      title: 'Adventure Crafter',
+      size: Size(1280, 800),
+      minimumSize: Size(400, 600),
+    );
+    await windowManager.waitUntilReadyToShow(options, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
   final rules = RulesService();
   await rules.load();
   final settings = GlobalSettingsService();
@@ -33,6 +47,7 @@ Future<void> main() async {
           ? const Locale('en', 'US')
           : const Locale('zh', 'CN'));
   Get.put(RollLogService());
+  Get.put(BackupService());
   final adventureService = Get.put(AdventureService());
   await adventureService.refreshList();
   runApp(const ExitGuard(child: AdventureCrafterApp()));

@@ -71,4 +71,22 @@ void main() {
     expect(restored.turningPoints.first.slots[0].plotPointId, 'none');
     expect(restored.turningPoints.first.slots[0].invoked, [2]);
     expect(Adventure.schemaVersion, 1);  });
+
+  test('F14 seedListsFrom：深拷贝列表且互不影响', () {
+    final src = Adventure(id: 'a1', title: 'src', date: '');
+    src.plotlines.entries.add(ListEntry(id: 1, name: 'L1'));
+    src.plotlines.assignNextEmpty(1);
+    src.plotlines.assignNextEmpty(1);
+    src.characters.entries.add(ListEntry(id: 1, name: 'C1'));
+
+    final dst = Adventure(id: 'a2', title: 'dst', date: '');
+    dst.seedListsFrom(src);
+    expect(dst.plotlines.weightOf(1), 2);
+    expect(dst.characters.entries.first.name, 'C1');
+
+    src.plotlines.assignNextEmpty(1);
+    src.plotlines.entries.add(ListEntry(id: 2, name: 'L2'));
+    expect(dst.plotlines.weightOf(1), 2);
+    expect(dst.plotlines.entries.length, 1);
+  });
 }

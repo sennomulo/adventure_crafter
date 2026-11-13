@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/rules.dart';
+import '../../services/adventure_service.dart';
+import '../../services/backup_service.dart';
 import '../../services/settings_service.dart';
+import '../help/help_dialog.dart';
 import '../tables/lookup_dialogs.dart';
+import '../widgets/common.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -108,6 +112,59 @@ class SettingsPage extends StatelessWidget {
           leading: const Icon(Icons.table_chart_outlined),
           title: Text('Descriptor table'.tr),
           onTap: () => showNumberedLookup(context, rules.descriptors, 'Descriptor table'.tr),
+        ),
+        const Divider(height: 32),
+        ListTile(
+          leading: const Icon(Icons.help_outline),
+          title: Text('How to use the Adventure Crafter'.tr),
+          onTap: () => showHelpDialog(context),
+        ),
+        const Divider(height: 32),
+        Text('Data management'.tr,
+            style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 8),
+        ListTile(
+          leading: const Icon(Icons.ios_share),
+          title: Text('Export current adventure'.tr),
+          subtitle: Text('Save the adventure as a .json file.'.tr),
+          onTap: () async {
+            final adv = Get.find<AdventureService>().current.value;
+            if (adv == null) {
+              if (context.mounted) {
+                showSnack(context, 'No adventure opened'.tr);
+              }
+              return;
+            }
+            await Get.find<BackupService>().exportAdventure(adv, context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.folder_zip_outlined),
+          title: Text('Export full backup (zip)'.tr),
+          subtitle: Text('Packs all adventures into a zip archive.'.tr),
+          onTap: () async {
+            await Get.find<BackupService>().exportBackup(context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.download),
+          title: Text('Import from file (json/zip)'.tr),
+          subtitle:
+              Text('Import a single adventure (.json) or a backup archive (.zip).'
+                  .tr),
+          onTap: () async {
+            try {
+              final count = await Get.find<BackupService>().importFromFile();
+              if (count > 0 && context.mounted) {
+                showSnack(context,
+                    'Imported @count adventure(s).'.trParams({'count': '$count'}));
+              }
+            } catch (_) {
+              if (context.mounted) {
+                showSnack(context, 'Import failed: invalid file'.tr);
+              }
+            }
+          },
         ),
         const Divider(height: 32),
         Card(

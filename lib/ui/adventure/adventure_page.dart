@@ -26,16 +26,23 @@ class AdventurePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final service = Get.find<AdventureService>();
     final controller = Get.put(AdventurePageController());
-    final destinations = [
-      NavigationRailDestination(icon: const Icon(Icons.palette_outlined), selectedIcon: const Icon(Icons.palette), label: Text('Themes'.tr)),
-      NavigationRailDestination(icon: const Icon(Icons.account_tree_outlined), selectedIcon: const Icon(Icons.account_tree), label: Text('Plotlines'.tr)),
-      NavigationRailDestination(icon: const Icon(Icons.groups_outlined), selectedIcon: const Icon(Icons.groups), label: Text('Characters'.tr)),
-      NavigationRailDestination(icon: const Icon(Icons.bolt_outlined), selectedIcon: const Icon(Icons.bolt), label: Text('Turning points'.tr)),
-      NavigationRailDestination(icon: const Icon(Icons.casino_outlined), selectedIcon: const Icon(Icons.casino), label: Text('Cast character'.tr)),
-      NavigationRailDestination(icon: const Icon(Icons.history), selectedIcon: const Icon(Icons.history), label: Text('Roll log'.tr)),
-      NavigationRailDestination(icon: const Icon(Icons.settings_outlined), selectedIcon: const Icon(Icons.settings), label: Text('Settings'.tr)),
+    final tabs = <(IconData, IconData, String)>[
+      (Icons.palette_outlined, Icons.palette, 'Themes'),
+      (Icons.account_tree_outlined, Icons.account_tree, 'Plotlines'),
+      (Icons.groups_outlined, Icons.groups, 'Characters'),
+      (Icons.bolt_outlined, Icons.bolt, 'Turning points'),
+      (Icons.casino_outlined, Icons.casino, 'Cast character'),
+      (Icons.history, Icons.history, 'Roll log'),
+      (Icons.settings_outlined, Icons.settings, 'Settings'),
     ];
-    final pages = const [
+    final destinations = [
+      for (final (icon, selected, label) in tabs)
+        NavigationRailDestination(
+            icon: Icon(icon),
+            selectedIcon: Icon(selected),
+            label: Text(label.tr)),
+    ];
+    final pagesList = const [
       ThemesPage(),
       PagedListPage(isPlotline: true),
       PagedListPage(isPlotline: false),
@@ -67,19 +74,46 @@ class AdventurePage extends StatelessWidget {
             ),
           ],
         ),
-        body: Row(
-          children: [
-            Obx(() => NavigationRail(
-                  selectedIndex: controller.index.value,
-                  onDestinationSelected: (i) => controller.index.value = i,
-                  labelType: NavigationRailLabelType.all,
-                  destinations: destinations,
-                )),
-            const VerticalDivider(width: 1),
-            Expanded(
-              child: IndexedStack(index: controller.index.value, children: pages),
-            ),
-          ],
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final pagesView = IndexedStack(
+                index: controller.index.value, children: pagesList);
+            if (width < 600) {
+              return Column(
+                children: [
+                  Expanded(child: pagesView),
+                  Obx(() => NavigationBar(
+                        selectedIndex: controller.index.value,
+                        onDestinationSelected: (i) =>
+                            controller.index.value = i,
+                        destinations: [
+                          for (final (icon, selected, label) in tabs)
+                            NavigationDestination(
+                                icon: Icon(icon),
+                                selectedIcon: Icon(selected),
+                                label: label.tr),
+                        ],
+                      )),
+                ],
+              );
+            }
+            return Row(
+              children: [
+                Obx(() => NavigationRail(
+                      selectedIndex: controller.index.value,
+                      onDestinationSelected: (i) => controller.index.value = i,
+                      extended: width > 1100,
+                      labelType: width > 1100
+                          ? NavigationRailLabelType.none
+                          : NavigationRailLabelType.all,
+                      destinations: destinations,
+                    )),
+                const VerticalDivider(width: 1),
+                Expanded(child: pagesView),
+              ],
+            );
+          },
         ),
       );
     });

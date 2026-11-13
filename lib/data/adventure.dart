@@ -312,4 +312,25 @@ class Adventure {
 
   static Adventure fromJsonString(String s) =>
       Adventure.fromJson(jsonDecode(s) as Map<String, dynamic>);
+
+  /// F14 延续冒险预填（冒险工匠之路·你的起点）：
+  /// 把上一冒险的情节线与角色列表（含权重，即网格占行）深拷贝到本冒险。
+  void seedListsFrom(Adventure src) {
+    final pl = PagedList.fromJson(
+        jsonDecode(jsonEncode(src.plotlines.toJson())) as Map<String, dynamic>);
+    plotlines.entries
+      ..clear()
+      ..addAll(pl.entries);
+    plotlines.pages
+      ..clear()
+      ..addAll(pl.pages);
+    final ch = PagedList.fromJson(
+        jsonDecode(jsonEncode(src.characters.toJson())) as Map<String, dynamic>);
+    characters.entries
+      ..clear()
+      ..addAll(ch.entries);
+    characters.pages
+      ..clear()
+      ..addAll(ch.pages);
+  }
 }
