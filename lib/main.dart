@@ -102,9 +102,14 @@ class AdventureCrafterApp extends StatelessWidget {
       useMaterial3: true,
       visualDensity: VisualDensity.comfortable,
     );
-    final dark = base.copyWith(
-      colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.brown, brightness: Brightness.dark),
+    // 深色主题必须独立构造：copyWith(colorScheme:) 不会重算
+    // scaffoldBackgroundColor/dialogBackgroundColor/textTheme 等派生字段，
+    // 会残留亮色值导致深色模式错乱。
+    final dark = ThemeData(
+      colorSchemeSeed: Colors.brown,
+      brightness: Brightness.dark,
+      useMaterial3: true,
+      visualDensity: VisualDensity.comfortable,
     );
     return Obx(() => GetMaterialApp(
           title: 'Adventure Crafter',

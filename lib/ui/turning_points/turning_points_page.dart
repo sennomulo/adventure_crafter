@@ -171,7 +171,8 @@ class TurningPointsController extends GetxController {
   }
 
   void setMostLikely(TurningPoint tp, int slotIdx, BuildContext context) async {
-    final pp = await showPlotPointLookup(context, rules);
+    final pp = await showPlotPointLookup(context, rules,
+        initialTheme: tp.slots[slotIdx].themeId);
     if (pp == null) return;
     final s = tp.slots[slotIdx];
     s.plotPointId = pp.id;
@@ -565,8 +566,9 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                         widget.c.adv.themes,
                         widget.c.adv.alternator,
                         onSelected: (die, themeId) async {
-                          final pp =
-                              await showPlotPointLookup(context, widget.c.rules);
+                          final pp = await showPlotPointLookup(
+                              context, widget.c.rules,
+                              initialTheme: themeId);
                           if (pp == null) return;
                           if (!context.mounted) return;
                           widget.c.pickSlotPhysical(

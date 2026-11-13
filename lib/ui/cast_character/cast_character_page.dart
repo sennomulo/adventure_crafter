@@ -20,6 +20,9 @@ class CastController extends GetxController {
   final relatedRollResult = ''.obs;
   final identityHistory = <String>[].obs;
   final descriptorHistory = <String>[].obs;
+  // "为两个身份/描述词掷骰"触发标记：该条目本身不进历史，但提示常驻
+  final identityRollTwo = false.obs;
+  final descriptorRollTwo = false.obs;
 
   RulesService get rules => Get.find<RulesService>();
   AdventureService get service => Get.find<AdventureService>();
@@ -35,15 +38,32 @@ class CastController extends GetxController {
     } else if (which == 1) {
       identityDie.value = roll;
       identity.value = rules.entryAt(rules.identities, roll);
-      identityHistory.add(identity.value!.text);
+      _recordIdentity(identity.value!);
       service.logRoll(
           'Casting · identity'.tr, '1d100=$roll → ${identity.value!.text}');
     } else {
       descriptorDie.value = roll;
       descriptor.value = rules.entryAt(rules.descriptors, roll);
-      descriptorHistory.add(descriptor.value!.text);
+      _recordDescriptor(descriptor.value!);
       service.logRoll(
           'Casting · descriptor'.tr, '1d100=$roll → ${descriptor.value!.text}');
+    }
+  }
+
+  /// "为两个身份掷骰"条目本身不追加进历史，只置常驻提示标记。
+  void _recordIdentity(NumberedEntry e) {
+    if (e.rollTwo) {
+      identityRollTwo.value = true;
+    } else {
+      identityHistory.add(e.text);
+    }
+  }
+
+  void _recordDescriptor(NumberedEntry e) {
+    if (e.rollTwo) {
+      descriptorRollTwo.value = true;
+    } else {
+      descriptorHistory.add(e.text);
     }
   }
 
@@ -99,6 +119,7 @@ class CastController extends GetxController {
   }
 
   /// 实体骰模式：玩家在特质/身份/描述词表中点选条目，确认该出目。
+  /// 出目标注（1d100=…）随新模式清除，避免旧出目滞留（B2）。
   void pickManual(int which, NumberedEntry e) {
     final label = which == 0
         ? 'Casting · special trait'.tr
@@ -106,14 +127,17 @@ class CastController extends GetxController {
             ? 'Casting · identity'.tr
             : 'Casting · descriptor'.tr;
     if (which == 0) {
+      traitDie.value = 0;
       trait.value = e;
       relatedRollResult.value = '';
     } else if (which == 1) {
+      identityDie.value = 0;
       identity.value = e;
-      identityHistory.add(e.text);
+      _recordIdentity(e);
     } else {
+      descriptorDie.value = 0;
       descriptor.value = e;
-      descriptorHistory.add(e.text);
+      _recordDescriptor(e);
     }
     service.logRoll(label, '${'Physical pick'.tr} → ${e.text}');
   }
@@ -146,6 +170,8 @@ class CastController extends GetxController {
     relatedRollResult.value = '';
     identityHistory.clear();
     descriptorHistory.clear();
+    identityRollTwo.value = false;
+    descriptorRollTwo.value = false;
   }
 }
 
@@ -334,7 +360,9 @@ class CastCharacterPage extends StatelessWidget {
                     ],
                   ),
                 ),
-              if (result.rollTwo)
+              if (result.rollTwo ||
+                  (which == 1 && c.identityRollTwo.value) ||
+                  (which == 2 && c.descriptorRollTwo.value))
                 Container(
                   margin: const EdgeInsets.only(top: 6),
                   padding: const EdgeInsets.all(8),

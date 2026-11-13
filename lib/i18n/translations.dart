@@ -185,9 +185,6 @@ class AppTranslations extends Translations {
 
     // lookup dialogs
     'Plot point table': '情节点表',
-    'Search title or description': '搜索标题或描述',
-    'View details': '返回',
-    'Pick': '选用',
     'Tap to view original text': '点开查看原文说明',
     'Meta plot point table': '元情节点表',
     'The above is the original rule text; side effects are not executed automatically and are handled by the player.':
@@ -225,6 +222,9 @@ class AppTranslations extends Translations {
     'Physical pick': '实体骰选定',
     'Physical pick p@p, r@r → @result': '实体骰选定 第@p页 第@r行 → @result',
     'Alternator': '交替位',
+    'Select a theme to view its plot points.': '请先选择要查询的主题。',
+    'Index 1-100': '索引 1-100',
+    'Locate': '定位',
     'Paged list: roll 1d@pages to pick a page, then 1d100 for the row (row n covers 4n-3 ~ 4n).':
         '多页列表：先掷 1d@pages 选页，再掷 1d100 定行（行n覆盖4n−3~4n）。',
     'Page @page': '第@page页',

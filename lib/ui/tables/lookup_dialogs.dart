@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,101 +7,204 @@ import '../../data/rules.dart';
 import '../../helpers/engine.dart';
 
 Future<PlotPoint?> showPlotPointLookup(
-    BuildContext context, RulesService rules) async {
+    BuildContext context, RulesService rules,
+    {String? initialTheme}) async {
   return showDialog<PlotPoint>(
     context: context,
-    builder: (context) => _PlotPointLookupDialog(rules: rules),
+    builder: (context) =>
+        _PlotPointLookupDialog(rules: rules, initialTheme: initialTheme),
   );
 }
 
+/// 情节点表查询：先选主题，再显示该主题下的情节点；支持输入 1-100 索引定位。
 class _PlotPointLookupDialog extends StatefulWidget {
   final RulesService rules;
-  const _PlotPointLookupDialog({required this.rules});
+  final String? initialTheme;
+  const _PlotPointLookupDialog({required this.rules, this.initialTheme});
 
   @override
   State<_PlotPointLookupDialog> createState() => _PlotPointLookupDialogState();
 }
 
 class _PlotPointLookupDialogState extends State<_PlotPointLookupDialog> {
-  String query = '';
+  String? selectedTheme;
+  String? highlightId;
+  Timer? _highlightTimer;
+  final _scroll = ScrollController();
+  final _indexCtrl = TextEditingController();
+  static const _itemExtent = 64.0;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedTheme = widget.initialTheme;
+  }
+
+  @override
+  void dispose() {
+    _highlightTimer?.cancel();
+    _scroll.dispose();
+    _indexCtrl.dispose();
+    super.dispose();
+  }
+
+  List<PlotPoint> get themed {
+    final t = selectedTheme;
+    if (t == null) return const [];
+    final list = widget.rules.plotPoints
+        .where((p) => p.ranges[t] != null)
+        .toList()
+      ..sort((a, b) =>
+          a.ranges[t]!.min.compareTo(b.ranges[t]!.min));
+    return list;
+  }
+
+  void _selectTheme(String t) {
+    _highlightTimer?.cancel();
+    setState(() {
+      selectedTheme = t;
+      highlightId = null;
+    });
+  }
+
+  void _jumpToIndex() {
+    final t = selectedTheme;
+    if (t == null) return;
+    final v = int.tryParse(_indexCtrl.text.trim());
+    if (v == null || v < 1 || v > 100) return;
+    final list = themed;
+    final idx = list.indexWhere((p) => p.ranges[t]!.contains(v));
+    if (idx < 0) return;
+    final target =
+        (idx * _itemExtent).clamp(0.0, _scroll.position.maxScrollExtent);
+    _scroll.animateTo(target,
+        duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+    _highlightTimer?.cancel();
+    setState(() => highlightId = list[idx].id);
+    _highlightTimer = Timer(const Duration(milliseconds: 1600), () {
+      if (mounted) setState(() => highlightId = null);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final matches = widget.rules.plotPoints.where((p) {
-      if (query.isEmpty) return true;
-      return p.title.contains(query) || p.desc.contains(query);
-    }).toList();
+    final t = selectedTheme;
+    final list = themed;
     return AlertDialog(
       title: Text('Plot point table'.tr),
       content: SizedBox(
         width: 560,
         height: 560,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              autofocus: true,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search title or description'.tr,
-                  border: const OutlineInputBorder()),
-              onChanged: (v) => setState(() => query = v.trim()),
+            Wrap(
+              spacing: 6,
+              runSpacing: 4,
+              children: [
+                for (final theme in RulesService.themeOrder)
+                  ChoiceChip(
+                    label: Text(widget.rules.themeName(theme)),
+                    selected: t == theme,
+                    onSelected: (_) => _selectTheme(theme),
+                  ),
+              ],
             ),
+            if (t != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      controller: _indexCtrl,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          hintText: 'Index 1-100'.tr,
+                          border: const OutlineInputBorder()),
+                      onSubmitted: (_) => _jumpToIndex(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    onPressed: _jumpToIndex,
+                    child: Text('Locate'.tr),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 8),
             Expanded(
-              child: ListView.builder(
-                itemCount: matches.length,
-                itemBuilder: (context, i) {
-                  final pp = matches[i];
-                  return ListTile(
-                    dense: true,
-                    title: Text(pp.title),
-                    subtitle: Text(pp.rangesLabel(),
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
-                    onTap: () async {
-                      final detail = await showDialog<PlotPoint>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text(pp.title),
-                          content: SizedBox(
-                            width: 420,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(pp.rangesLabel(),
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall),
-                                  const SizedBox(height: 8),
-                                  Text(pp.desc),
-                                ],
-                              ),
-                            ),
+              child: t == null
+                  ? Center(child: Text('Select a theme to view its plot points.'.tr))
+                  : ListView.builder(
+                      controller: _scroll,
+                      itemExtent: _itemExtent,
+                      itemCount: list.length,
+                      itemBuilder: (context, i) {
+                        final pp = list[i];
+                        final range = pp.ranges[t]!;
+                        final highlighted = highlightId == pp.id;
+                        return Container(
+                          color: highlighted
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer
+                              : Colors.transparent,
+                          child: ListTile(
+                            dense: true,
+                            title: Text('${range.min}-${range.max}　${pp.title}'),
+                            onTap: () async {
+                              final detail = await showDialog<PlotPoint>(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(pp.title),
+                                  content: SizedBox(
+                                    width: 420,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(pp.rangesLabel(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall),
+                                          const SizedBox(height: 8),
+                                          Text(pp.desc),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('Back'.tr),
+                                    ),
+                                    FilledButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, pp),
+                                      child: Text('Select'.tr),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              if (detail != null && context.mounted) {
+                                Navigator.pop(context, detail);
+                              }
+                            },
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('Back'.tr),
-                            ),
-                            FilledButton(
-                              onPressed: () => Navigator.pop(context, pp),
-                              child: Text('Select'.tr),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (detail != null && context.mounted) {
-                        Navigator.pop(context, detail);
-                      }
-                    },
-                  );
-                },
-              ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text('Close'.tr)),
+        TextButton(
+            onPressed: () => Navigator.pop(context), child: Text('Close'.tr)),
       ],
     );
   }
