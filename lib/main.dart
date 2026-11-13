@@ -64,9 +64,16 @@ String _exitSavedText() {
 }
 
 /// 所有退出入口（系统退出请求、桌面窗口关闭按钮）统一走此确认弹窗。
+/// _pending 去重并发触发；_exiting 保证确认退出后的任何再入直接放行。
+bool _exiting = false;
+Future<bool>? _pendingExit;
+
 Future<bool> confirmExit() async {
+  if (_exiting) return true;
+  final pending = _pendingExit;
+  if (pending != null) return pending;
   final savedText = _exitSavedText();
-  final result = await Get.dialog<bool>(
+  final future = Get.dialog<bool>(
     AlertDialog(
       title: Text('Quit Adventure Crafter?'.tr),
       content: Text('$savedText\n\n${'All unsaved progress will be lost.'.tr}'),
@@ -82,15 +89,20 @@ Future<bool> confirmExit() async {
       ],
     ),
   );
+  _pendingExit = future.then((v) => v ?? false);
+  final result = await future;
+  _pendingExit = null;
   return result ?? false;
 }
 
 class AppWindowListener with WindowListener {
   @override
   void onWindowClose() async {
-    if (await confirmExit()) {
-      await windowManager.destroy();
-    }
+    final ok = await confirmExit();
+    if (!ok) return;
+    _exiting = true;
+    await windowManager.setPreventClose(false);
+    await windowManager.destroy();
   }
 }
 
@@ -109,8 +121,11 @@ class _ExitGuardState extends State<ExitGuard> {
   @override
   void initState() {
     super.initState();
-    _listener = AppLifecycleListener(onExitRequested: () async =>
-        (await confirmExit()) ? AppExitResponse.exit : AppExitResponse.cancel);
+    _listener = AppLifecycleListener(onExitRequested: () async {
+      final ok = await confirmExit();
+      if (ok) _exiting = true;
+      return ok ? AppExitResponse.exit : AppExitResponse.cancel;
+    });
   }
 
   @override

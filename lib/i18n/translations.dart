@@ -134,7 +134,7 @@ class AppTranslations extends Translations {
     'No turning points yet. Click "New turning point" to start.':
         '还没有转折点。点击「新转折点」开始。',
     'Turning point @index　Focus: @focus': '转折点 @index　聚焦：@focus',
-    'Status: @status　Plot points: @filled/5': '状态：@status　情节点：@filled/5',
+    'Plotline status: @status　Plot points: @filled/5': '情节线状态：@status　情节点：@filled/5',
     'Delete turning point': '删除转折点',
     'Delete turning point @index?': '删除转折点 @index？',
     'Save & close': '保存并关闭',
@@ -144,7 +144,7 @@ class AppTranslations extends Translations {
     'Roll plotline list': '掷情节线列表',
     'New plotline and focus': '新情节线并聚焦',
     'Clear focus': '清除聚焦',
-    'Turning point status (set by the player)': '转折点状态（由玩家手动设置）',
+    'Plotline status (set by the player)': '情节线状态（由玩家手动设置）',
     'Undecided': '未定',
     'Development': '发展',
     'Conclusion': '结束',
@@ -252,6 +252,13 @@ class AppTranslations extends Translations {
     'Import failed: invalid file': '导入失败：文件无效',
     'Nothing to back up': '没有可备份的冒险',
     'Export adventure': '导出冒险',
+
+    // F1: invoked character roll
+    'Roll character list to invoke': '掷角色列表征引角色',
+    'Invoked character roll': '征引角色掷骰',
+    'Invoked character: @name': '征引角色：@name',
+    'Keep uninvoked': '不征引',
+    'The character list is empty.': '角色列表为空。',
 
     // physical dice lookups
     'Physical dice: roll yourself and read the result from the table.':

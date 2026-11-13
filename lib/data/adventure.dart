@@ -221,7 +221,7 @@ class TurningPoint {
   TurningPoint({
     required this.index,
     this.plotlineId,
-    this.status = 'undecided',
+    this.status = 'new',
     required this.slots,
     this.notes = '',
   });
@@ -234,15 +234,18 @@ class TurningPoint {
         'notes': notes,
       };
 
-  factory TurningPoint.fromJson(Map<String, dynamic> json) => TurningPoint(
+  factory TurningPoint.fromJson(Map<String, dynamic> json) {
+    final stored = (json['status'] ?? 'new') as String;
+    return TurningPoint(
         index: json['index'] as int,
         plotlineId: json['plotlineId'] as int?,
-        status: (json['status'] ?? 'undecided') as String,
+        status: stored == 'undecided' ? 'new' : stored,
         slots: ((json['slots'] ?? []) as List)
             .map((s) => Slot.fromJson(s as Map<String, dynamic>))
             .toList(),
         notes: (json['notes'] ?? '') as String,
       );
+  }
 }
 
 class Adventure {

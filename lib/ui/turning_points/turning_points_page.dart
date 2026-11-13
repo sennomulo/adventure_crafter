@@ -234,6 +234,114 @@ class TurningPointsController extends GetxController {
     changed();
   }
 
+  /// F1：为情节点"征引角色"掷角色列表，确定征引哪个既有角色。
+  Future<void> rollInvokedCharacter(
+      TurningPoint tp, int slotIdx, BuildContext context) async {
+    final list = adv.characters;
+    if (list.pages.isEmpty) {
+      showSnack(context, 'The character list is empty.'.tr);
+      return;
+    }
+    int pageIdx = 0;
+    var pageDesc = '';
+    if (list.pages.length > 1) {
+      final die = rollDie(list.pages.length);
+      pageIdx = die - 1;
+      pageDesc = '1d${list.pages.length}=$die，';
+    }
+    final roll = roll100();
+    final rowIdx = rowForRoll(roll);
+    final entry = list.entryById(list.pages[pageIdx][rowIdx]);
+    service.logRoll('Invoked character roll'.tr,
+        '$pageDesc 1d100=$roll → ${rowIdx * 4 + 1}~${rowIdx * 4 + 4}${entry == null ? '（${'empty'.tr}）' : '：${entry.name}'}');
+    await _applyInvokedRoll(tp, slotIdx, entry, rowIdx, context);
+  }
+
+  /// 实体骰模式：玩家在角色列表查询表中点选行确认征引结果。
+  Future<void> pickInvokedFromLookup(TurningPoint tp, int slotIdx,
+      ListEntry? entry, int pageIdx, int rowIdx, BuildContext context) async {
+    if (entry != null) {
+      service.logRoll(
+          'Invoked character roll'.tr,
+          'Physical pick p@p, r@r → @result'.trParams({
+            'p': '${pageIdx + 1}',
+            'r': '${rowIdx + 1}',
+            'result': entry.name,
+          }));
+    }
+    await _applyInvokedRoll(tp, slotIdx, entry, rowIdx, context);
+  }
+
+  Future<void> _applyInvokedRoll(TurningPoint tp, int slotIdx,
+      ListEntry? entry, int rowIdx, BuildContext context) async {
+    if (entry != null) {
+      final s = tp.slots[slotIdx];
+      if (!s.invoked.contains(entry.id)) s.invoked.add(entry.id);
+      changed();
+      if (context.mounted) {
+        showSnack(context,
+            'Invoked character: @name'.trParams({'name': entry.name}));
+      }
+      return;
+    }
+    final hint = rules.characterRowDefaults[rowIdx];
+    if (!context.mounted) return;
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title:
+            Text('Empty row rolled (row @row)'.trParams({'row': '${rowIdx + 1}'})),
+        content: Text('Default hint: @hint'.trParams({'hint': hint})),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text('Keep uninvoked'.tr),
+          ),
+          if (hint == '新角色')
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                goToAdventureTab(4);
+              },
+              child: Text('Go to character casting'.tr),
+            ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              await _pickInvokedManually(tp, slotIdx, context);
+            },
+            child: Text('Choose the most fitting character'.tr),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _pickInvokedManually(
+      TurningPoint tp, int slotIdx, BuildContext context) async {
+    final entries = adv.characters.entries;
+    if (entries.isEmpty) {
+      showSnack(context, 'The character list is empty.'.tr);
+      return;
+    }
+    final picked = await showDialog<int>(
+      context: context,
+      builder: (dialogContext) => SimpleDialog(
+        title: Text('Choose the most fitting character'.tr),
+        children: entries
+            .map((e) => SimpleDialogOption(
+                  onPressed: () => Navigator.pop(dialogContext, e.id),
+                  child: Text(e.name),
+                ))
+            .toList(),
+      ),
+    );
+    if (picked == null) return;
+    final s = tp.slots[slotIdx];
+    if (!s.invoked.contains(picked)) s.invoked.add(picked);
+    changed();
+  }
+
   void setFocusManually(TurningPoint tp, int? entryId) {
     tp.plotlineId = entryId;
     changed();
@@ -247,7 +355,7 @@ String turningPointStatusLabel(String status) {
     case 'conclusion':
       return 'Conclusion'.tr;
     default:
-      return 'Undecided'.tr;
+      return 'New plotline'.tr;
   }
 }
 
@@ -304,7 +412,7 @@ class TurningPointsPage extends StatelessWidget {
                             'index': '${tp.index}',
                             'focus': focus?.name ?? '—',
                           })),
-                          subtitle: Text('Status: @status　Plot points: @filled/5'
+                          subtitle: Text('Plotline status: @status　Plot points: @filled/5'
                               .trParams({
                             'status': turningPointStatusLabel(tp.status),
                             'filled': '${tp.slots.where((s) => !s.isEmpty).length}',
@@ -458,12 +566,12 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Turning point status (set by the player)'.tr),
+                            Text('Plotline status (set by the player)'.tr),
                             SegmentedButton<String>(
                               segments: [
                                 ButtonSegment(
-                                    value: 'undecided',
-                                    label: Text('Undecided'.tr)),
+                                    value: 'new',
+                                    label: Text('New plotline'.tr)),
                                 ButtonSegment(
                                     value: 'development',
                                     label: Text('Development'.tr)),
@@ -645,7 +753,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                 ),
             ],
             const SizedBox(height: 6),
-            _invokedChips(context, s),
+            _invokedChips(context, s, i),
             TextField(
               controller: slotNotesCtrls[i],
               onChanged: (v) => s.notes = v,
@@ -660,7 +768,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
     );
   }
 
-  Widget _invokedChips(BuildContext context, Slot s) {
+  Widget _invokedChips(BuildContext context, Slot s, int slotIdx) {
     final adv = widget.c.adv;
     final invoked = s.invoked
         .map((id) => adv.characters.entryById(id))
@@ -683,6 +791,29 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
         ActionChip(
           label: Text('Select'.tr, style: const TextStyle(fontSize: 12)),
           onPressed: () => _pickInvoked(context, s),
+        ),
+        Tooltip(
+          message: 'Roll character list to invoke'.tr,
+          child: ActionChip(
+            avatar: const Icon(Icons.casino, size: 16),
+            label: Text('Roll'.tr, style: const TextStyle(fontSize: 12)),
+            onPressed: () {
+              final settings = Get.find<GlobalSettingsService>();
+              if (settings.getPhysicalDiceModeEnabled) {
+                showListRollLookup(
+                  context,
+                  title: 'Character list'.tr,
+                  list: adv.characters,
+                  defaults: widget.c.rules.characterRowDefaults,
+                  onSelect: (entry, pageIdx, rowIdx) => widget.c
+                      .pickInvokedFromLookup(
+                          widget.tp, slotIdx, entry, pageIdx, rowIdx, context),
+                );
+                return;
+              }
+              widget.c.rollInvokedCharacter(widget.tp, slotIdx, context);
+            },
+          ),
         ),
       ],
     );
