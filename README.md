@@ -2,6 +2,8 @@
 
 基于《The Adventure Crafter》（Tana Pigeon 著，Word Mill Games 出版）的桌面跑团辅助软件。
 
+> 交接文档（面向开发者/AI 助手）：[docs/HANDOFF.md](docs/HANDOFF.md)；AI 编程工具约定：[AGENTS.md](AGENTS.md)。
+
 > 非官方粉丝工具。版权与许可详见下文「[版权与许可](#版权与许可--copyright--license)」一节。
 
 ## 版权与许可 / Copyright & License
