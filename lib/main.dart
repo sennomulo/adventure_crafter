@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'data/rules.dart';
+import 'helpers/app_exit.dart';
 import 'i18n/translations.dart';
 import 'services/adventure_service.dart';
 import 'services/backup_service.dart';
@@ -46,15 +47,16 @@ Future<void> main() async {
 }
 
 /// 退出流程（无拦截弹窗）：数据随每次改动即时自动保存，
-/// 关闭窗口时再做一次静默保存兜底，随后立即销毁窗口退出。
+/// 关闭窗口时补一次静默保存兜底，保存完成后立即终止进程。
+/// 不用 windowManager.destroy()：实测其通道调用拖慢退出（约 6s）；
+/// 不用 SystemNavigator.pop()：Windows 桌面端无法退出进程。
 class AppWindowListener with WindowListener {
   @override
   void onWindowClose() async {
     try {
       await Get.find<AdventureService>().save();
     } catch (_) {}
-    await windowManager.setPreventClose(false);
-    await windowManager.destroy();
+    forceExit();
   }
 }
 
