@@ -123,21 +123,27 @@ class SettingsPage extends StatelessWidget {
         Text('Data management'.tr,
             style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
-        ListTile(
-          leading: const Icon(Icons.ios_share),
-          title: Text('Export current adventure'.tr),
-          subtitle: Text('Save the adventure as a .json file.'.tr),
-          onTap: () async {
-            final adv = Get.find<AdventureService>().current.value;
-            if (adv == null) {
-              if (context.mounted) {
-                showSnack(context, 'No adventure opened'.tr);
+        // "导出当前冒险"依赖当前冒险上下文，仅在冒险内打开设置时显示（B3）
+        Obx(() {
+          final hasCurrent =
+              Get.find<AdventureService>().current.value != null;
+          if (!hasCurrent) return const SizedBox.shrink();
+          return ListTile(
+            leading: const Icon(Icons.ios_share),
+            title: Text('Export current adventure'.tr),
+            subtitle: Text('Save the adventure as a .json file.'.tr),
+            onTap: () async {
+              final adv = Get.find<AdventureService>().current.value;
+              if (adv == null) {
+                if (context.mounted) {
+                  showSnack(context, 'No adventure opened'.tr);
+                }
+                return;
               }
-              return;
-            }
-            await Get.find<BackupService>().exportAdventure(adv, context);
-          },
-        ),
+              await Get.find<BackupService>().exportAdventure(adv, context);
+            },
+          );
+        }),
         ListTile(
           leading: const Icon(Icons.folder_zip_outlined),
           title: Text('Export full backup (zip)'.tr),

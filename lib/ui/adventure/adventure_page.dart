@@ -59,6 +59,7 @@ class AdventurePage extends StatelessWidget {
           body: Center(child: Text('No adventure opened'.tr)),
         );
       }
+      final tabIndex = controller.index.value;
       return Scaffold(
         appBar: AppBar(
           title: Obx(() {
@@ -78,37 +79,36 @@ class AdventurePage extends StatelessWidget {
           builder: (context, constraints) {
             final width = constraints.maxWidth;
             final pagesView = IndexedStack(
-                index: controller.index.value, children: pagesList);
+                index: tabIndex, children: pagesList);
             if (width < 600) {
               return Column(
                 children: [
                   Expanded(child: pagesView),
-                  Obx(() => NavigationBar(
-                        selectedIndex: controller.index.value,
-                        onDestinationSelected: (i) =>
-                            controller.index.value = i,
-                        destinations: [
-                          for (final (icon, selected, label) in tabs)
-                            NavigationDestination(
-                                icon: Icon(icon),
-                                selectedIcon: Icon(selected),
-                                label: label.tr),
-                        ],
-                      )),
+                  NavigationBar(
+                    selectedIndex: tabIndex,
+                    onDestinationSelected: (i) => controller.index.value = i,
+                    destinations: [
+                      for (final (icon, selected, label) in tabs)
+                        NavigationDestination(
+                            icon: Icon(icon),
+                            selectedIcon: Icon(selected),
+                            label: label.tr),
+                    ],
+                  ),
                 ],
               );
             }
             return Row(
               children: [
-                Obx(() => NavigationRail(
-                      selectedIndex: controller.index.value,
-                      onDestinationSelected: (i) => controller.index.value = i,
-                      extended: width > 1100,
-                      labelType: width > 1100
-                          ? NavigationRailLabelType.none
-                          : NavigationRailLabelType.all,
-                      destinations: destinations,
-                    )),
+                NavigationRail(
+                  selectedIndex: tabIndex,
+                  onDestinationSelected: (i) => controller.index.value = i,
+                  extended: width > 1100,
+                  labelType: width > 1100
+                      ? NavigationRailLabelType.none
+                      : NavigationRailLabelType.all,
+                  destinations: destinations,
+                ),
                 const VerticalDivider(width: 1),
                 Expanded(child: pagesView),
               ],

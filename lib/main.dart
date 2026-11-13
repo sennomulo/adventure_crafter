@@ -32,6 +32,8 @@ Future<void> main() async {
       minimumSize: Size(400, 600),
     );
     await windowManager.waitUntilReadyToShow(options, () async {
+      await windowManager.setPreventClose(true);
+      windowManager.addListener(AppWindowListener());
       await windowManager.show();
       await windowManager.focus();
     });
@@ -53,6 +55,45 @@ Future<void> main() async {
   runApp(const ExitGuard(child: AdventureCrafterApp()));
 }
 
+String _exitSavedText() {
+  final last = Get.find<AdventureService>().lastSavedAt.value;
+  return last == null
+      ? 'No save record yet.'.tr
+      : '${'Data was last saved at'.tr} '
+          '${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}:${last.second.toString().padLeft(2, '0')}（${_elapsedFromNow(last)}）。';
+}
+
+/// 所有退出入口（系统退出请求、桌面窗口关闭按钮）统一走此确认弹窗。
+Future<bool> confirmExit() async {
+  final savedText = _exitSavedText();
+  final result = await Get.dialog<bool>(
+    AlertDialog(
+      title: Text('Quit Adventure Crafter?'.tr),
+      content: Text('$savedText\n\n${'All unsaved progress will be lost.'.tr}'),
+      actions: [
+        TextButton(
+          onPressed: () => Get.back(result: false),
+          child: Text('Cancel'.tr),
+        ),
+        FilledButton(
+          onPressed: () => Get.back(result: true),
+          child: Text('Quit'.tr),
+        ),
+      ],
+    ),
+  );
+  return result ?? false;
+}
+
+class AppWindowListener with WindowListener {
+  @override
+  void onWindowClose() async {
+    if (await confirmExit()) {
+      await windowManager.destroy();
+    }
+  }
+}
+
 class ExitGuard extends StatefulWidget {
   final Widget child;
 
@@ -68,38 +109,14 @@ class _ExitGuardState extends State<ExitGuard> {
   @override
   void initState() {
     super.initState();
-    _listener = AppLifecycleListener(onExitRequested: _onExitRequested);
+    _listener = AppLifecycleListener(onExitRequested: () async =>
+        (await confirmExit()) ? AppExitResponse.exit : AppExitResponse.cancel);
   }
 
   @override
   void dispose() {
     _listener.dispose();
     super.dispose();
-  }
-
-  Future<AppExitResponse> _onExitRequested() async {
-    final last = Get.find<AdventureService>().lastSavedAt.value;
-    final savedText = last == null
-        ? 'No save record yet.'.tr
-        : '${'Data was last saved at'.tr} '
-            '${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}:${last.second.toString().padLeft(2, '0')}（${_elapsedFromNow(last)}）。';
-    final result = await Get.dialog<bool>(
-      AlertDialog(
-        title: Text('Quit Adventure Crafter?'.tr),
-        content: Text('$savedText\n\n${'All unsaved progress will be lost.'.tr}'),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(result: false),
-            child: Text('Cancel'.tr),
-          ),
-          FilledButton(
-            onPressed: () => Get.back(result: true),
-            child: Text('Quit'.tr),
-          ),
-        ],
-      ),
-    );
-    return (result ?? false) ? AppExitResponse.exit : AppExitResponse.cancel;
   }
 
   @override
