@@ -123,9 +123,13 @@ class PagedListPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Row(
                 children: [
-                  Text(isPlotline ? 'Plotline list'.tr : 'Character list'.tr,
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const Spacer(),
+                  // N6：标题过长时截断，保证右侧"新建/掷骰"按钮始终可点。
+                  Expanded(
+                    child: Text(
+                        isPlotline ? 'Plotline list'.tr : 'Character list'.tr,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        overflow: TextOverflow.ellipsis),
+                  ),
                   OutlinedButton.icon(
                     icon: const Icon(Icons.add),
                     label: Text(isPlotline ? 'New plotline'.tr : 'New character'.tr),

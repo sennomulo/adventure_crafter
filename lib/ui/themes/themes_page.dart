@@ -25,9 +25,12 @@ class ThemesPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
             children: [
-              Text('Adventure themes (priority 1-5)'.tr,
-                  style: Theme.of(context).textTheme.titleMedium),
-              const Spacer(),
+              // N5：标题过长时截断，保证右侧"掷骰装配"按钮始终可点。
+              Expanded(
+                child: Text('Adventure themes (priority 1-5)'.tr,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    overflow: TextOverflow.ellipsis),
+              ),
               Tooltip(
                 message:
                     'Each click rolls 1d10 and fills one priority slot; click again for the next theme'

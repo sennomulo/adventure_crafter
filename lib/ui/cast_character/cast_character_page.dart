@@ -203,34 +203,48 @@ class CastCharacterPage extends StatelessWidget {
           Card(
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: nameCtrl,
-                      decoration: InputDecoration(
-                          labelText:
-                              'Character name (interpret the three tables, then name)'
-                                  .tr,
-                          border: const OutlineInputBorder()),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  FilledButton(
-                    onPressed: () {
-                      final name = nameCtrl.text.trim();
-                      if (name.isEmpty) return;
-                      c.addToCharacters(name);
-                      nameCtrl.clear();
-                      showSnack(
-                          context,
-                          '"@name" added to the character list.'
-                              .trParams({'name': name}));
-                    },
-                    child: Text('Add to character list'.tr),
-                  ),
-                ],
-              ),
+              // N1：窄屏改上下布局，全宽 TextField 保证长标签（角色名称+解读提示）
+              // 完整显示；宽屏保持同行。
+              child: LayoutBuilder(builder: (context, constraints) {
+                final nameField = TextField(
+                  controller: nameCtrl,
+                  decoration: InputDecoration(
+                      labelText:
+                          'Character name (interpret the three tables, then name)'
+                              .tr,
+                      border: const OutlineInputBorder()),
+                );
+                final addButton = FilledButton(
+                  onPressed: () {
+                    final name = nameCtrl.text.trim();
+                    if (name.isEmpty) return;
+                    c.addToCharacters(name);
+                    nameCtrl.clear();
+                    showSnack(
+                        context,
+                        '"@name" added to the character list.'
+                            .trParams({'name': name}));
+                  },
+                  child: Text('Add to character list'.tr),
+                );
+                if (constraints.maxWidth < 480) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      nameField,
+                      const SizedBox(height: 8),
+                      addButton,
+                    ],
+                  );
+                }
+                return Row(
+                  children: [
+                    Expanded(child: nameField),
+                    const SizedBox(width: 8),
+                    addButton,
+                  ],
+                );
+              }),
             ),
           ),
           if (c.relatedRollResult.value.isNotEmpty) ...[
@@ -291,8 +305,11 @@ class CastCharacterPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(title, style: Theme.of(context).textTheme.titleSmall),
-                const Spacer(),
+                Expanded(
+                  child: Text(title,
+                      style: Theme.of(context).textTheme.titleSmall,
+                      overflow: TextOverflow.ellipsis),
+                ),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.casino, size: 18),
                   label: Text(die == 0 ? 'Roll 1d100'.tr : 'Reroll'.tr),

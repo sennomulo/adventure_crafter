@@ -481,7 +481,10 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
     return Obx(() {
       final adv = c.service.current.value!;
       final focus = adv.plotlines.entryById(widget.tp.plotlineId);
+      // N4：编辑器内容多，缩小弹窗边距；固定尺寸在窄屏会被 Dialog 约束自动收缩。
       return Dialog(
+        insetPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         child: SizedBox(
           width: 760,
           height: 680,
@@ -567,7 +570,11 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Plotline status (set by the player)'.tr),
-                            SegmentedButton<String>(
+                            // N3：三个状态标签在极窄宽度下放不下时保持可横向滚动，
+                            // 不产生整页横向溢出。
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: SegmentedButton<String>(
                               segments: [
                                 ButtonSegment(
                                     value: 'new',
@@ -590,6 +597,7 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
                                           .tr);
                                 }
                               },
+                            ),
                             ),
                           ],
                         ),
@@ -658,11 +666,15 @@ class _TurningPointEditorState extends State<TurningPointEditor> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            // N2：按钮组用 Wrap，窄屏自动换行，避免"改为最合理"被挤出窗口。
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Text('Plot point @index'.trParams({'index': '${i + 1}'}),
-                    style: Theme.of(context).textTheme.titleSmall),
-                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Text('Plot point @index'.trParams({'index': '${i + 1}'}),
+                      style: Theme.of(context).textTheme.titleSmall),
+                ),
                 TextButton.icon(
                   icon: const Icon(Icons.casino, size: 18),
                   label: Text(pp == null ? 'Roll'.tr : 'Reroll'.tr),

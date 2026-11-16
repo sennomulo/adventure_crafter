@@ -183,8 +183,11 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     const Icon(Icons.info_outline, size: 20),
                     const SizedBox(width: 8),
-                    Text('Adventure Crafter (assistant)'.tr,
-                        style: Theme.of(context).textTheme.titleMedium),
+                    // N7：长标题可换行/截断，避免窄屏溢出。
+                    Expanded(
+                      child: Text('Adventure Crafter (assistant)'.tr,
+                          style: Theme.of(context).textTheme.titleMedium),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
